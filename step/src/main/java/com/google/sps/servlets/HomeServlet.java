@@ -21,29 +21,33 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
+import com.google.gson.Gson;
 
 @WebServlet("/home")
 public class HomeServlet extends HttpServlet {
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html");
-
     UserService userService = UserServiceFactory.getUserService();
+    List<String> logInOut = new ArrayList<>();
     if (userService.isUserLoggedIn()) {
       String userEmail = userService.getCurrentUser().getEmail();
       String urlToRedirectToAfterUserLogsOut = "/";
       String logoutUrl = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut);
-
-      response.getWriter().println("<p>Hello " + userEmail + "!</p>");
-      response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
-      response.getWriter().println("<p> Go back to the <a href=\"/index.html\">main page </a>. </p>");
+      logInOut.add(userEmail);
+      logInOut.add(logoutUrl);
+      logInOut.add("Log Out");
     } else {
       String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
-
-      response.getWriter().println("<p>Welcome to Friend Matching Plus </p>");
-      response.getWriter().println("<p>Login <a href=\"" + loginUrl + "\">here</a>.</p>");
+      logInOut.add("Hi, stranger");
+      logInOut.add(loginUrl);
+      logInOut.add("Log In");
     }
+    Gson gson = new Gson();
+    response.getWriter().println((String) gson.toJson(logInOut));
   }
 }
+

@@ -8,8 +8,16 @@
   </head>
   <body>
     <nav> 
-        <a href="/home">Log In </a>
+        <button id="btnlogInOut" onclick="logInOut()">Log In/ Log Out</button>
     </nav>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h1> Welcome to Friend Matching Plus </h1>
+            <p id="log-in-out"> </p>
+        </div>    
+    </div>
     <div id="content">
       <h1>Our Capstone Project</h1>
       <p>This is our Capstone Project</p>
