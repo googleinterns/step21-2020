@@ -37,7 +37,7 @@ public class HomeServlet extends HttpServlet {
 
       response.getWriter().println("<p>Hello " + userEmail + "!</p>");
       response.getWriter().println("<p>Logout <a href=\"" + logoutUrl + "\">here</a>.</p>");
-      response.getWriter().println("<p> Go back to the <a href=\"/list30.html\">main page </a>. </p>");
+      response.getWriter().println("<p> Go back to the <a href=\"/index.html\">main page </a>. </p>");
     } else {
       String urlToRedirectToAfterUserLogsIn = "/";
       String loginUrl = userService.createLoginURL(urlToRedirectToAfterUserLogsIn);
