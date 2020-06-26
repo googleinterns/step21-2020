@@ -14,9 +14,9 @@
 
 package com.google.sps.data.matching;
 
-import com.google.sps.data.user.User;
 import java.util.Collection;
 import java.util.Stack;
+import com.google.sps.data.user.User;
 
 public class MatchManager {
 
