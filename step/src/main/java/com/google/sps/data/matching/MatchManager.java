@@ -45,7 +45,7 @@ public class MatchManager {
           firstUser.addMatch(secondUser);
         }   
         
-        if (!secondUser.getMatches.contains(firstUser)) {
+        if (!secondUser.getMatches().contains(firstUser)) {
           secondUser.addMatch(firstUser);
         }
       }

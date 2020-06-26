@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data.matching;
+package com.google.sps.data.user;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -70,7 +70,7 @@ public class User {
     }
      
     User user = (User) obj; 
-    return this.email.equals(obj.getEmail()); 
+    return this.email.equals(user.getEmail()); 
   }
 
   // Overriden hashCode method
