@@ -48,9 +48,6 @@ public class MatchManager {
       
       // Reminder: all matches are mutual  
       if (!firstUser.isMatchedWith(secondUser)) {
-        // removing the other user from the queue
-        secondUser = matchQueue.pop();
-          
         firstUser.addMatch(secondUser);
         secondUser.addMatch(firstUser);
       /** case where the two users in the queue are already matched, this is handled
