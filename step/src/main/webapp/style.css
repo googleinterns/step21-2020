@@ -6,29 +6,32 @@
 body {
     color: #000;
     background-color: #fff;
+    font-family: 'Roboto', sans-serif;
 }
 nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
   list-style-type: none;
-  margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: bisque;
+  box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
 }
 
 nav a {
   float: right;
   display: block;
-  color: #fff;
-  background-color: bisque;
+  color: #000;
   text-align: center;
-  padding: 14px 16px;
+  padding: 25px 20px;
   text-decoration: none;
 }
 
 nav a:hover:not(.active) {
-  background-color: #111;
+  background-color: #fff;
+  color:#F4B400;
 }
 
 .active {
-  background-color: #ff6699;
+  color: #DB4437;
 }
