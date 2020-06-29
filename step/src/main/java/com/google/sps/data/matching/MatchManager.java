@@ -27,30 +27,33 @@ public class MatchManager {
   }
 
   // Method for adding a user to the list of users to be matched
-  public void getMatch(User user) {
+   // Returns a boolean indicating whether or not the user was successfully matched
+  public boolean getMatch(User user) {
     if (!matchQueue.contains(user)) {
       matchQueue.push(user);
     }
-    manageMatches();     
+    return generateMatch();     
   }
 
   // Method for matching users on a first-come first-serve basis
-  private void manageMatches() {
+    // Returns a boolean indicating whether or not a successful match occured
+  private boolean generateMatch() {
     if (matchQueue.size() >= 2) {
       User firstUser = matchQueue.pop();
-      User secondUser = matchQueue.pop();
+      User secondUser = matchQUeue.peek();
       
-      if (!firstUser.equals(secondUser)) {
-        if (!firstUser.getMatches().contains(secondUser)) {
-          firstUser.addMatch(secondUser);
-        }   
-        
-        if (!secondUser.getMatches().contains(firstUser)) {
-          secondUser.addMatch(firstUser);
-        }
-      }
-      
-    }    
+      // Checking if the users have already been matched
+        // Reminder: all matches are mutual  
+      if (!firstUser.getMatches().contains(secondUser)) {
+        // removing the other user from the queue
+        secondUser = matchQueue.pop();
+          
+        firstUser.addMatch(secondUser);
+        secondUser.addMatch(firstUser);
+        return true;
+      }   
+    }
+    return false;   
   }
 
 }
