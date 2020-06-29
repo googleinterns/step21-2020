@@ -26,8 +26,11 @@ public class MatchManager {
     this.matchQueue = new Stack<>();  
   }
 
-  // Method for adding a user to the list of users to be matched
-   // Returns a boolean indicating whether or not the user was successfully matched
+  /**
+   * Method for adding a user to the list of users to be matched
+   * Returns a boolean indicating whether or not the user was successfully matched
+   * in that instant
+   */ 
   public boolean getMatch(User user) {
     if (!matchQueue.contains(user)) {
       matchQueue.push(user);
@@ -36,24 +39,30 @@ public class MatchManager {
   }
 
   // Method for matching users on a first-come first-serve basis
-    // Returns a boolean indicating whether or not a successful match occured
+  // Returns true when a match is generated or the user is at least
+  // added to the matching queue, false otherwise
   private boolean generateMatch() {
     if (matchQueue.size() >= 2) {
       User firstUser = matchQueue.pop();
-      User secondUser = matchQUeue.peek();
+      User secondUser = matchQueue.pop();
       
-      // Checking if the users have already been matched
-        // Reminder: all matches are mutual  
-      if (!firstUser.getMatches().contains(secondUser)) {
+      // Reminder: all matches are mutual  
+      if (!firstUser.isMatchedWith(secondUser)) {
         // removing the other user from the queue
         secondUser = matchQueue.pop();
           
         firstUser.addMatch(secondUser);
         secondUser.addMatch(firstUser);
-        return true;
+      /** case where the two users in the queue are already matched, this is handled
+          by returning false to the user who most recently tried to get a match and
+          adding the older user back into the queue
+      */   
+      } else {
+        matchQueue.push(firstUser);  
+        return false;  
       }   
     }
-    return false;   
+    return true;   
   }
 
 }

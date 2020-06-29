@@ -58,6 +58,10 @@ public class User {
     }  
   }
 
+  public boolean isMatchedWith(User user) {
+    return matches.contains(user);   
+  }
+
   // Overriden equals method
   @Override
   public boolean equals(Object obj) { 
