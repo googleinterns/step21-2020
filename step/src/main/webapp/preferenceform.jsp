@@ -24,13 +24,14 @@ limitations under the License.
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <title>My Preference Form </title>
   </head>
   <body>
     <nav>
         <a href="<%= logoutURL %>"> Log Out </a>
     </nav>
-    <h1 style="text-align: center"> Welcome to Friend Matching Plus! </h1>
+    <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
     
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   

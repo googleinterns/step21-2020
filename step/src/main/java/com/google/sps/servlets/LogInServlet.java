@@ -46,12 +46,10 @@ public class LogInServlet extends HttpServlet {
 
     boolean theFirstTime = getUserEmail(userService.getCurrentUser().getEmail());
     if (theFirstTime) { 
-      out.println("<div style=\"background: linear-gradient(-45deg,#4285F4,#DB4437, #F4B400, #0F9D58); background-size: 1000% 1000%; background-position: center center; animation: Gradient 20s ease infinite; height: 100vh; \">");
-      out.println("<h1 style=\"text-align: center\"> Welcome to Friend Matching Plus </h1>");
-      out.println("<form method=\"POST\" action=\"/Login\">");
-      out.println("<button>Next</button>");
+      out.println("<h1 style=\"text-align: center; padding-top: 30vh; font-size: 80px\"> Welcome to Friend Matching Plus </h1>");
+      out.println("<form method=\"POST\" action=\"/Login\" style=\"text-align: center;\">");
+      out.println("<button style=\"color: #fff; background-color: #4285F4; border: none; font-size: 40px; padding: 20px 40px;\" > Next</button>");
       out.println("</form>");
-      out.println("</div>");
     } else {
         response.sendRedirect("profile.jsp");
     }

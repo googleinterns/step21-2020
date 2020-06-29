@@ -25,14 +25,15 @@ limitations under the License.
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <title>My Portfolio</title>
   </head>
   <body>
     <nav>
         <a href="<%= logoutURL %>"> Log Out </a>
     </nav>
-    <h1>My Portfolio</h1>
-    <p>Here is your information! </p>
+    <h1>Friend Matching Plus </h1>
+    <p>Here is your profile! </p>
 
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   

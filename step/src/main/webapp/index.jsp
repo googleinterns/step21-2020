@@ -33,11 +33,10 @@ limitations under the License.
   </head>
   <body>
     <nav>
-        <p style="float: left; font-size: 25px"> FRIEND MATCHING PLUS </p>
         <a href="<%= loginURL %>"> Log In </a>
         <a class="active" href="index.jsp"> About Us </a>
     </nav>
-
+    <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
     <% if (userService.isUserLoggedIn()) {
         String userEmail = userService.getCurrentUser().getEmail();
         response.sendRedirect("Login");   
