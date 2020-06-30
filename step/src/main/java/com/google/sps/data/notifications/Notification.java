@@ -15,5 +15,5 @@
 package com.google.sps.data.notification;
 
 public abstract class Notification {
-    
+  // TODO: implement this class    
 }

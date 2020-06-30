@@ -18,48 +18,37 @@ import java.util.Collection;
 import java.util.Stack;
 import com.google.sps.data.user.User;
 
-public class MatchManager {
+public final class MatchManager {
 
-  Stack<User> matchQueue;
+  // TODO: integrate datastore so that match requests aren't lost if the server restarts
+  Stack<User> matchQueue = new Stack<>();
 
-  public MatchManager() {
-    this.matchQueue = new Stack<>();  
+  private MatchManager() {
+
   }
 
-  /**
-   * Method for adding a user to the list of users to be matched
-   * Returns a boolean indicating whether or not the user was successfully matched
-   * in that instant
-   */ 
-  public boolean getMatch(User user) {
-    if (!matchQueue.contains(user)) {
-      matchQueue.push(user);
-    }
-    return generateMatch();     
+  public static void generateMatch(User user) {
+    if (matchQueue.empty()) {
+      matchQueue.push(user);  
+    } else {
+      User matchResult = matchQueue.peek();
+
+      if (!matchResult.isMatchedWith(user) && !matchResult.equals(user)) {
+        // actually removing the match result from the queue
+        matchResult = matchQueue.poll(); 
+        createMatch(matchResult, user);
+      // adding the user to the queue in case there wasn't a successful match for them
+      // this is so they can be matched later      
+      } else if (!matchQueue.contains(user)) {
+        matchQueue.push(user);    
+      }  
+    }    
   }
 
-  // Method for matching users on a first-come first-serve basis
-  // Returns true when a match is generated or the user is at least
-  // added to the matching queue, false otherwise
-  private boolean generateMatch() {
-    if (matchQueue.size() >= 2) {
-      User firstUser = matchQueue.pop();
-      User secondUser = matchQueue.pop();
-      
-      // Reminder: all matches are mutual  
-      if (!firstUser.isMatchedWith(secondUser)) {
-        firstUser.addMatch(secondUser);
-        secondUser.addMatch(firstUser);
-      /** case where the two users in the queue are already matched, this is handled
-          by returning false to the user who most recently tried to get a match and
-          adding the older user back into the queue
-      */   
-      } else {
-        matchQueue.push(firstUser);  
-        return false;  
-      }   
-    }
-    return true;   
+  // helper method for actually adding to people into one another's matches
+  private void createMatch(User firstUser, User secondUser) {
+    firstUser.addMatch(secondUser);
+    secondUser.addMatch(firstUser);
   }
 
 }
