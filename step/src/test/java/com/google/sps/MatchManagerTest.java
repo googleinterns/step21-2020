@@ -14,261 +14,107 @@
 
 package com.google.sps;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Queue;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.Arrays;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import com.google.sps.data.user.User;
+import org.apache.commons.collections4.CollectionUtils;
+import com.google.sps.data.matching.MatchManager;
 
 /** */
 @RunWith(JUnit4.class)
-public final class FindMeetingQueryTest {
-  private static final Collection<Event> NO_EVENTS = Collections.emptySet();
-  private static final Collection<String> NO_ATTENDEES = Collections.emptySet();
+public final class MatchManagerTest {
 
   // Some people that we can use in our tests.
-  private static final String PERSON_A = "Person A";
-  private static final String PERSON_B = "Person B";
+  private static final User USER_A = new User("userA@email.com", "User A");
+  private static final User USER_B = new User("userB@email.com", "User B");
+  private static final User USER_C = new User("userC@email.com", "User C");
 
-  // All dates are the first day of the year 2020.
-  private static final int TIME_0800AM = TimeRange.getTimeInMinutes(8, 0);
-  private static final int TIME_0830AM = TimeRange.getTimeInMinutes(8, 30);
-  private static final int TIME_0900AM = TimeRange.getTimeInMinutes(9, 0);
-  private static final int TIME_0930AM = TimeRange.getTimeInMinutes(9, 30);
-  private static final int TIME_1000AM = TimeRange.getTimeInMinutes(10, 0);
-  private static final int TIME_1100AM = TimeRange.getTimeInMinutes(11, 00);
 
-  private static final int DURATION_30_MINUTES = 30;
-  private static final int DURATION_60_MINUTES = 60;
-  private static final int DURATION_90_MINUTES = 90;
-  private static final int DURATION_1_HOUR = 60;
-  private static final int DURATION_2_HOUR = 120;
+  private void breakDown(Collection<User> users) {
+    MatchManager.clearQueue();
 
-  private FindMeetingQuery query;
-
-  @Before
-  public void setUp() {
-    query = new FindMeetingQuery();
+    for (User user: users) {
+      user.clearMatches();  
+    }
   }
 
   @Test
-  public void optionsForNoAttendees() {
-    MeetingRequest request = new MeetingRequest(NO_ATTENDEES, DURATION_1_HOUR);
+  public void testEmptyQueue() {
+    // Test for when no one is in the matching queue. The user should be added to the
+    // queue and their match list should be empty.
+    MatchManager.generateMatch(USER_A);
 
-    Collection<TimeRange> actual = query.query(NO_EVENTS, request);
-    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
+    Queue matchQueue = MatchManager.getMatchQueue();
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertTrue(matchQueue.contains(USER_A));
+    Assert.assertTrue(CollectionUtils.isEmpty(USER_A.getMatches()));
+    
+    breakDown(Arrays.asList(USER_A));  
   }
 
   @Test
-  public void noOptionsForTooLongOfARequest() {
-    // The duration should be longer than a day. This means there should be no options.
-    int duration = TimeRange.WHOLE_DAY.duration() + 1;
-    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), duration);
+  public void testSuccessfulMatch() {   
+    //Test for a successful match
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_B);
 
-    Collection<TimeRange> actual = query.query(NO_EVENTS, request);
-    Collection<TimeRange> expected = Arrays.asList();
+    Queue matchQueue = MatchManager.getMatchQueue();
 
-    Assert.assertEquals(expected, actual);
+    Assert.assertTrue(matchQueue.isEmpty());
+    Assert.assertTrue(USER_A.isMatchedWith(USER_B));
+    Assert.assertTrue(USER_B.isMatchedWith(USER_A));
+
+    breakDown(Arrays.asList(USER_A, USER_B));  
   }
 
   @Test
-  public void eventSplitsRestriction() {
-    // The event should split the day into two options (before and after the event).
-    Collection<Event> events = Arrays.asList(new Event("Event 1",
-        TimeRange.fromStartDuration(TIME_0830AM, DURATION_30_MINUTES), Arrays.asList(PERSON_A)));
+  public void testUserTryingToMatchTwice() {
+    // Test for when a user tries to match twice consecutively but no one else is
+    // in the match queue
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_A);
 
-    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
+    Queue matchQueue = MatchManager.getMatchQueue();
 
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected =
-        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true));
+    Assert.assertTrue(matchQueue.contains(USER_A));
 
-    Assert.assertEquals(expected, actual);
+    breakDown(Arrays.asList(USER_A));    
   }
 
   @Test
-  public void everyAttendeeIsConsidered() {
-    // Have each person have different events. We should see two options because each person has
-    // split the restricted times.
-    //
-    // Events  :       |--A--|     |--B--|
-    // Day     : |-----------------------------|
-    // Options : |--1--|     |--2--|     |--3--|
+  public void testUsersAlreadyMatched() {
+    // Test for when a user requests a match but the only other person in the match
+    // queue is someone they are already matched with
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_B);
 
-    Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartDuration(TIME_0800AM, DURATION_30_MINUTES),
-            Arrays.asList(PERSON_A)),
-        new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
-            Arrays.asList(PERSON_B)));
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_B);
 
-    MeetingRequest request =
-        new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
+    Queue matchQueue = MatchManager.getMatchQueue();
 
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected =
-        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0800AM, false),
-            TimeRange.fromStartEnd(TIME_0830AM, TIME_0900AM, false),
-            TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY, true));
+    Assert.assertEquals(matchQueue.size(), 2);
+    Assert.assertEquals(USER_A.getMatches().size(), 1);
+    Assert.assertEquals(USER_B.getMatches().size(), 1);
 
-    Assert.assertEquals(expected, actual);
-  }
+    // Third user enters the queue
+    MatchManager.generateMatch(USER_C);
 
-  @Test
-  public void overlappingEvents() {
-    // Have an event for each person, but have their events overlap. We should only see two options.
-    //
-    // Events  :       |--A--|
-    //                     |--B--|
-    // Day     : |---------------------|
-    // Options : |--1--|         |--2--|
+    Assert.assertEquals(matchQueue.size(), 1);
+    Assert.assertTrue(USER_A.isMatchedWith(USER_C));
+    Assert.assertTrue(USER_C.isMatchedWith(USER_A));
 
-    Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartDuration(TIME_0830AM, DURATION_60_MINUTES),
-            Arrays.asList(PERSON_A)),
-        new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_60_MINUTES),
-            Arrays.asList(PERSON_B)));
+    MatchManager.generateMatch(USER_C);
 
-    MeetingRequest request =
-        new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
+    Assert.assertTrue(matchQueue.isEmpty());
+    Assert.assertTrue(USER_B.isMatchedWith(USER_C));
+    Assert.assertTrue(USER_C.isMatchedWith(USER_B));
 
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected =
-        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
-
-    Assert.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void nestedEvents() {
-    // Have an event for each person, but have one person's event fully contain another's event. We
-    // should see two options.
-    //
-    // Events  :       |----A----|
-    //                   |--B--|
-    // Day     : |---------------------|
-    // Options : |--1--|         |--2--|
-
-    Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartDuration(TIME_0830AM, DURATION_90_MINUTES),
-            Arrays.asList(PERSON_A)),
-        new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
-            Arrays.asList(PERSON_B)));
-
-    MeetingRequest request =
-        new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
-
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected =
-        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            TimeRange.fromStartEnd(TIME_1000AM, TimeRange.END_OF_DAY, true));
-
-    Assert.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void doubleBookedPeople() {
-    // Have one person, but have them registered to attend two events at the same time.
-    //
-    // Events  :       |----A----|
-    //                     |--A--|
-    // Day     : |---------------------|
-    // Options : |--1--|         |--2--|
-
-    Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartDuration(TIME_0830AM, DURATION_60_MINUTES),
-            Arrays.asList(PERSON_A)),
-        new Event("Event 2", TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES),
-            Arrays.asList(PERSON_A)));
-
-    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
-
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected =
-        Arrays.asList(TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            TimeRange.fromStartEnd(TIME_0930AM, TimeRange.END_OF_DAY, true));
-
-    Assert.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void justEnoughRoom() {
-    // Have one person, but make it so that there is just enough room at one point in the day to
-    // have the meeting.
-    //
-    // Events  : |--A--|     |----A----|
-    // Day     : |---------------------|
-    // Options :       |-----|
-
-    Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            Arrays.asList(PERSON_A)),
-        new Event("Event 2", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
-            Arrays.asList(PERSON_A)));
-
-    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_30_MINUTES);
-
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected =
-        Arrays.asList(TimeRange.fromStartDuration(TIME_0830AM, DURATION_30_MINUTES));
-
-    Assert.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void ignoresPeopleNotAttending() {
-    // Add an event, but make the only attendee someone different from the person looking to book
-    // a meeting. This event should not affect the booking.
-    Collection<Event> events = Arrays.asList(new Event("Event 1",
-        TimeRange.fromStartDuration(TIME_0900AM, DURATION_30_MINUTES), Arrays.asList(PERSON_A)));
-    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_B), DURATION_30_MINUTES);
-
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
-
-    Assert.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void noConflicts() {
-    MeetingRequest request =
-        new MeetingRequest(Arrays.asList(PERSON_A, PERSON_B), DURATION_30_MINUTES);
-
-    Collection<TimeRange> actual = query.query(NO_EVENTS, request);
-    Collection<TimeRange> expected = Arrays.asList(TimeRange.WHOLE_DAY);
-
-    Assert.assertEquals(expected, actual);
-  }
-
-  @Test
-  public void notEnoughRoom() {
-    // Have one person, but make it so that there is not enough room at any point in the day to
-    // have the meeting.
-    //
-    // Events  : |--A-----| |-----A----|
-    // Day     : |---------------------|
-    // Options :
-
-    Collection<Event> events = Arrays.asList(
-        new Event("Event 1", TimeRange.fromStartEnd(TimeRange.START_OF_DAY, TIME_0830AM, false),
-            Arrays.asList(PERSON_A)),
-        new Event("Event 2", TimeRange.fromStartEnd(TIME_0900AM, TimeRange.END_OF_DAY, true),
-            Arrays.asList(PERSON_A)));
-
-    MeetingRequest request = new MeetingRequest(Arrays.asList(PERSON_A), DURATION_60_MINUTES);
-
-    Collection<TimeRange> actual = query.query(events, request);
-    Collection<TimeRange> expected = Arrays.asList();
-
-    Assert.assertEquals(expected, actual);
+    breakDown(Arrays.asList(USER_A, USER_B, USER_C));    
   }
 }
-

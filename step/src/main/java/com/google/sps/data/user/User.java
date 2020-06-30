@@ -82,4 +82,8 @@ public class User {
   public int hashCode() { 
     return email.hashCode(); 
   }
+
+  public void clearMatches() {
+    matches = new HashSet<>();  
+  }
 }
