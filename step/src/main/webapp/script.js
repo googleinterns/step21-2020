@@ -26,29 +26,3 @@ function addRandomGreeting() {
   const greetingContainer = document.getElementById('greeting-container');
   greetingContainer.innerText = greeting;
 }
-
-function logIn() {
-    modal.style.display = "block";
-}
-
-function logInOut() {
-    fetch('/home')
-      .then((response) => {
-        return response.json();
-      })
-      .then((logInOutURL) => {
-        const messageForm = document.getElementById('log-in-out');
-        const userName = document.createElement('p');
-        userName.innerText = logInOutURL[0];
-        const URL = document.createElement('a');
-        URL.href = logInOutURL[1];
-        URL.innerText = logInOutURL[2];
-        messageForm.appendChild(userName);
-        messageForm.appendChild(URL);
-      });
-    modal.style.display = "block";
-}
-
-function closeModal() {
-    modal.style.display = "none";
-}

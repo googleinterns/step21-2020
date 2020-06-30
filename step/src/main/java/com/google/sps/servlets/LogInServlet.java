@@ -73,7 +73,7 @@ public class LogInServlet extends HttpServlet {
     entity.setProperty("email", email);
     // The put() function automatically inserts new data or updates existing data based on ID
     datastore.put(entity);
-    response.sendRedirect("preferenceform.jsp");
+    response.sendRedirect("infoForm.jsp");
   }
 
   // Returns if the user logs in for the first time. If yes, return true. Otherwise, false.
