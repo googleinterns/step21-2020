@@ -23,6 +23,7 @@ public class User {
   private String email;
   private String name;
   private Collection<User> matches;
+  private Collection<Notification> notifications;
 
   // TODO: determine what fields we want.
   // TODO: update the constructor so that it only needs to take
@@ -35,6 +36,7 @@ public class User {
     this.name = name;
     //TODO: update this to fetch from database instead of making a new hashset    
     this.matches = new HashSet<>();
+    this.
   }
 
   public long getId() {
@@ -93,7 +95,18 @@ public class User {
     return email.hashCode(); 
   }
 
+  // Method for clearing all of a user's matches
   public void clearMatches() {
     matches = new HashSet<>();  
   }
+
+  // Method for adding a notification to a user's collection of notifications
+  public void addNotification(Notification notification) {
+    notifications.add(notification);      
+  }
+
+  public Collection<Notification> getNotifications() {
+    return notifications;     
+  }
+
 }

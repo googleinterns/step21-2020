@@ -50,6 +50,7 @@ public final class DatabaseHandler {
     }
   }
 
+  // Method for clearing all saved data
   public static void clearDatabase() {
     idMap = new HashMap<>();  
   }

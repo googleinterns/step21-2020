@@ -14,14 +14,16 @@
 
 package com.google.sps;
 
-public abstract class Notification {
-  String name;
+public class MatchNotification extends Notification() {
 
-  public Notification(String name) {
-    this.name = name;
-  }
+  private static final String text =
+    "New match alert! You matched with ";
   
-  // Method for putting together and returning the text associated
-  // with the notification.
-  public abstract String getText();
+  public MatchNotification(String name) {
+    super(name);
+  }
+
+  public String getText() {
+    return text + name;      
+  }  
 }

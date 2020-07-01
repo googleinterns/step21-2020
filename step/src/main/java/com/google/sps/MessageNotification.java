@@ -14,14 +14,15 @@
 
 package com.google.sps;
 
-public abstract class Notification {
-  String name;
+public class MessageNotification extends Notification() {
 
-  public Notification(String name) {
-    this.name = name;
-  }
+  private static final text = "New message from ";
   
-  // Method for putting together and returning the text associated
-  // with the notification.
-  public abstract String getText();
+  public MessageNotification(String name) {
+    super(name);
+  }
+
+  public String getText() {
+    return text + name;    
+  }  
 }
