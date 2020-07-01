@@ -12,23 +12,33 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data.user;
+package com.google.sps;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 public class User {
   
+  private long id;
   private String email;
   private String name;
   private Collection<User> matches;
 
   // TODO: determine what fields we want.
-  public User(String email, String name) {
+  // TODO: update the constructor so that it only needs to take
+  //       in an id, and the other fields can then be looked up
+  //       in the database. this update will be made when data-
+  //       -store is integrated
+  public User(long id, String email, String name) {
+    this.id = id;
     this.email = email;
     this.name = name;
     //TODO: update this to fetch from database instead of making a new hashset    
     this.matches = new HashSet<>();
+  }
+
+  public long getId() {
+    return id;    
   }
 
   // Getter method for a user's email

@@ -12,12 +12,11 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data.matching;
+package com.google.sps;
 
 import java.util.Collection;
 import java.util.Queue;
 import java.util.LinkedList;
-import com.google.sps.data.user.User;
 
 public final class MatchManager {
 

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data.notification;
+package com.google.sps;
 
 public abstract class Notification {
   // TODO: implement this class    

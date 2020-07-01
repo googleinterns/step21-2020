@@ -20,7 +20,6 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import com.google.sps.data.user.User;
 import org.apache.commons.collections4.CollectionUtils;
 
 /** */
@@ -28,8 +27,13 @@ import org.apache.commons.collections4.CollectionUtils;
 public final class UserTest {
 
   // Some people that we can use in our tests.
-  private static final User USER_A = new User("userA@email.com", "User A");
-  private static final User USER_B = new User("userB@email.com", "User B");
+  private static final User USER_A = new User(1, "userA@email.com", "User A");
+  private static final User USER_B = new User(2, "userB@email.com", "User B");
+
+  @Test
+  public void testGetId() {
+    Assert.assertEquals(USER_A.getId(), 1);    
+  }
 
   @Test
   public void testGetEmail() {
