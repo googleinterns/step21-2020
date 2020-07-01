@@ -29,6 +29,11 @@ limitations under the License.
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <script src="meetScript.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
     <title>Friend Matching Plus</title>
   </head>
   <body>
@@ -41,5 +46,16 @@ limitations under the License.
         String userEmail = userService.getCurrentUser().getEmail();
         response.sendRedirect("Login");   
     } %>
+
+    <!-- <button type="button" onclick="joinCall()">Join a Google Meet call!</button> -->
+
+    <p>Hangouts Meet API Quickstart</p>
+
+    <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
+
   </body>
 </html>
