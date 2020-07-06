@@ -30,6 +30,8 @@ public final class DatabaseHandlerTest {
   private static final User USER_A = new User(1, "userA@email.com", "User A");
 
   @Test
+  // Adds a user to the database and then retrieves that user to ensure it was
+  // added correctly.
   public void testAddAndGetUser() {
     DatabaseHandler.addUserToDatabase(USER_A);
 
@@ -38,11 +40,15 @@ public final class DatabaseHandlerTest {
     DatabaseHandler.clearDatabase();
   }
 
+  // Tests that a NoSuchElementException is thrown when a user is retrieved who
+  // is not in the database.
   @Test(expected = NoSuchElementException.class)
   public void testNoSuchElementException() {
     DatabaseHandler.getUserById(2);
   }
 
+  // Adds and removes a user from the databse then checks that an exception is
+  // thrown when that user is fetched again.
   @Test(expected = NoSuchElementException.class)
   public void TestRemoveElement() {
     DatabaseHandler.addUserToDatabase(USER_A);
