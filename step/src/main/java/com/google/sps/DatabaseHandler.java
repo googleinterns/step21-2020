@@ -52,7 +52,7 @@ public final class DatabaseHandler {
     }
   }
  
-  // Adding a notification to the hashmap
+  // Storing a user's notification
   public static void addNotification(Notification notification) {
     long userId = notification.getId();
     
@@ -77,9 +77,14 @@ public final class DatabaseHandler {
     }      
   }
 
-  // Method for clearing all saved data
-  public static void clearDatabase() {
+  // Method for clearing all saved user data
+  public static void clearSavedUsers() {
     userMap = new HashMap<>();  
+  }
+
+  // Method for clearing all saved notifications
+  public static void clearSavedNotifications() {
+    notificationMap = new HashMap<>();
   }
 
 }

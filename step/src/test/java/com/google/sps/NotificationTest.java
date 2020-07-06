@@ -27,7 +27,33 @@ public final class NotificationTest {
     new MatchNotification(1, "Ngan", 1);
   private static final MessageNotification messageNotification =
     new MessageNotification(2, "Adam", 2);
+  private static final MatchNotification matchNotificationCopy = 
+    new MatchNotification(1, "Ngan", 1);
+  private static final MatchNotification otherMatchNotification =
+    new MatchNotification(3, "Laila", 3);    
 
+  // Testing the GetId method
+  @Test
+  public void testGetId() {
+    Assert.assertEquals(matchNotification.getId(), 1);
+    Assert.assertEquals(messageNotification.getId(), 2);
+  }
+
+  // Testing the getOtherUser method
+  @Test
+  public void testGetOtherUser() {
+    Assert.assertEquals(matchNotification.getOtherUser(), "Ngan");
+    Assert.assertEquals(messageNotification.getOtherUser(), "Adam");
+  }
+
+  // Testing the getTimestamp method
+  @Test
+  public void testGetTimestamp() {
+    Assert.assertEquals(matchNotification.getTimestamp(), 1);
+    Assert.assertEquals(messageNotification.getTimestamp(), 2);
+  }
+
+  // Testing that match notifications return the correct text
   @Test
   public void testMatchNotification() {
     String actual = matchNotification.getText();
@@ -36,10 +62,30 @@ public final class NotificationTest {
     Assert.assertEquals(actual, expected);
   }
 
+  // Testing that message notifications return the correct text
   @Test
   public void testMessageNotification() {
     String actual = messageNotification.getText();
     String expected = "New message from Adam";
+
+    Assert.assertEquals(actual, expected);
+  }
+
+  // Testing notification equality method
+  @Test
+  public void testEquals() {
+    Assert.assertEquals(matchNotification, matchNotification);
+    Assert.assertEquals(matchNotification, matchNotificationCopy);
+    Assert.assertNotEquals(matchNotification, otherMatchNotification);
+    Assert.assertNotEquals(matchNotification, messageNotification);
+  }
+
+  @Test
+  public void testHashCode() {
+    int actual = matchNotification.hashCode();
+    int expected = (int) matchNotification.getId() * 
+      matchNotification.getOtherUser().hashCode() *
+      (int) matchNotification.getTimestamp(); 
 
     Assert.assertEquals(actual, expected);
   }

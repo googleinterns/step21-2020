@@ -19,11 +19,13 @@ public class MatchNotification extends Notification {
   private static final String NOTIFICATION_TEXT =
     "New match alert! You matched with ";
   
-  public MatchNotification(long id, String name, long timeStamp) {
-    super(id, name, timeStamp);
+  public MatchNotification(long id, String otherUser, long timestamp) {
+    super(id, otherUser, timestamp);
   }
 
+  // Method for putting together and returning the text associated
+  // with the notification.
   public String getText() {
-    return NOTIFICATION_TEXT + name;      
+    return NOTIFICATION_TEXT + otherUser;      
   }  
 }
