@@ -44,7 +44,7 @@ public class LogInServlet extends HttpServlet {
       return;
     }
 
-    boolean theFirstTime = getUserID(userService.getCurrentUser().getUserId());
+    boolean theFirstTime = firstTimeLogIn(userService.getCurrentUser().getUserId());
     if (theFirstTime) { 
       out.println("<h1 style=\"text-align: center; padding-top: 30vh; font-size: 80px\"> Welcome to Friend Matching Plus </h1>");
       out.println("<form method=\"POST\" action=\"/Login\" style=\"text-align: center;\">");
@@ -77,7 +77,7 @@ public class LogInServlet extends HttpServlet {
   }
 
   // Returns if the user logs in for the first time. If yes, return true. Otherwise, false.
-  private boolean getUserID(String id) {
+  private boolean firstTimeLogIn(String id) {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query =
         new Query("UserInfo")
