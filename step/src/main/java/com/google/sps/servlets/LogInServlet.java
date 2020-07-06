@@ -33,7 +33,7 @@ public class LogInServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      response.setContentType("text/html");
+    response.setContentType("text/html");
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
 
@@ -44,7 +44,7 @@ public class LogInServlet extends HttpServlet {
       return;
     }
 
-    boolean theFirstTime = getUserEmail(userService.getCurrentUser().getEmail());
+    boolean theFirstTime = getUserID(userService.getCurrentUser().getUserId());
     if (theFirstTime) { 
       out.println("<h1 style=\"text-align: center; padding-top: 30vh; font-size: 80px\"> Welcome to Friend Matching Plus </h1>");
       out.println("<form method=\"POST\" action=\"/Login\" style=\"text-align: center;\">");
@@ -77,11 +77,11 @@ public class LogInServlet extends HttpServlet {
   }
 
   // Returns if the user logs in for the first time. If yes, return true. Otherwise, false.
-  private boolean getUserEmail(String email) {
+  private boolean getUserID(String id) {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query =
         new Query("UserInfo")
-            .setFilter(new Query.FilterPredicate("email", Query.FilterOperator.EQUAL, email));
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
     if (entity == null) {

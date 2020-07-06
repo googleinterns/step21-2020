@@ -30,34 +30,32 @@ import javax.servlet.http.HttpServletResponse;
 
 @WebServlet("/Info")
 public class InfoServlet extends HttpServlet {
-    // The class stores the user' personal information data
-    @Override
+  // The class stores the user' personal information data
+  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    UserService userService = UserServiceFactory.getUserService();
-    String fname = request.getParameter("fname");
-    String lname = request.getParameter("lname");
-    String phone =request.getParameter("phone");
-    int dbirth = Integer.parseInt(request.getParameter("dbirth"));
-    int mbirth = Integer.parseInt(request.getParameter("mbirth"));
-    int ybirth = Integer.parseInt(request.getParameter("ybirth"));
+    String firstName = request.getParameter("firstName");
+    String lastName = request.getParameter("lastName");
+    int dayBirth = Integer.parseInt(request.getParameter("dayBirth"));
+    int monthBirth = Integer.parseInt(request.getParameter("monthBirth"));
+    int yearBirth = Integer.parseInt(request.getParameter("yearBirth"));
 
+    UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
     String id = userService.getCurrentUser().getUserId();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query =
         new Query("UserInfo")
-            .setFilter(new Query.FilterPredicate("email", Query.FilterOperator.EQUAL, email));
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
-    entity.setProperty("fname", fname);
-    entity.setProperty("lname", lname);
-    entity.setProperty("phone", phone);
-    entity.setProperty("dbirth", dbirth);
-    entity.setProperty("mbirth", mbirth);
-    entity.setProperty("ybirth", ybirth);
+    entity.setProperty("firstName", firstName);
+    entity.setProperty("lastName", lastName);
+    entity.setProperty("dayBirth", dayBirth);
+    entity.setProperty("monthBirth", monthBirth);
+    entity.setProperty("yearBirth", yearBirth);
     datastore.put(entity);
-    response.sendRedirect("profile.jsp");
+    response.sendRedirect("prefForm.jsp");
   }
 }
 
@@ -66,5 +64,4 @@ public class InfoServlet extends HttpServlet {
     Picture: Allow users to add pictures
     Gender: Choose among different gender options
     Organization/ Country
-    Phone Number: 10-digit number only
 */
