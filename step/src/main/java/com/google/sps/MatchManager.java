@@ -32,6 +32,9 @@ public final class MatchManager {
     return matchQueue;
   }
 
+  // FIFO matchmaker -- takes in the user who just requested a match and matches them
+  // with anyone else who is in the queue waiting to be matched or adds them to the
+  // queue to wait to be matched if no on else is in there
   public static void generateMatch(User user) {
     if (matchQueue.isEmpty()) { 
       matchQueue.add(user);  

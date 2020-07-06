@@ -15,12 +15,24 @@
 package com.google.sps;
 
 public abstract class Notification {
-  String name;
+  private long id;  
+  protected String name;
+  private long timeStamp;
 
-  public Notification(String name) {
+  public Notification(long id, String name, long timeStamp) {
+    this.id = id;
     this.name = name;
+    this.timeStamp = timeStamp;
   }
   
+  public long getId() {
+    return id;    
+  }
+
+  public long getTimeStamp() {
+    return timeStamp;  
+  }
+
   // Method for putting together and returning the text associated
   // with the notification.
   public abstract String getText();

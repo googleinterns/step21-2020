@@ -16,6 +16,7 @@ package com.google.sps;
 
 import java.util.HashSet;
 import java.util.Arrays;
+import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -71,7 +72,7 @@ public final class UserTest {
 
   @Test
   public void testHashCode() {
-    Assert.assertEquals(USER_A.hashCode(), "userA@email.com".hashCode());  
+    Assert.assertEquals(USER_A.hashCode(), USER_A.getEmail().hashCode());  
   }
 
 }
