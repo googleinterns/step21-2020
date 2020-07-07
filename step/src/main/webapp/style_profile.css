@@ -1,9 +1,76 @@
+body {
+    background-color: rgb(241, 241, 241);
+}
+#list-selection, #profile-info {
+    display: inline-block;
+}
+#list-selection {
+    width: 30%;
+    text-align: center;
+}
+#profile-info {
+    width: 40%;
+}
 .container {
-    width: 600px;
     background-color: lightcoral;
+    font-family: 'Roboto', sans-serif;
+}
+#profile-pic {
     margin: 0 auto;
+    text-align: center;
+}
+img {
+    border-radius: 50%;
+    width: 200px;
+}
+#navbar-selection > a {
+    text-decoration: none;
+    display: block;
+    padding-top: 25px;
+    font-weight: bold;
+}
+#navbar-selection > a:hover {
+    color: #F4B400;
+}
+.sub-container {
+    float: left;
+}
+h3 a {
+    text-decoration: none;
+    color: black;
 }
 
-#profileInfo {
-    width: 600px;
+h3 a:hover {
+    color: #F4B400;
 }
+.personal-container, .questionaire-container, .matches-container {
+    border-radius: 10px;
+    box-shadow: 3px 10px 20px #aaaaaa;
+    position: relative;
+    background-color: #fff;
+    padding-bottom: 20px;
+}
+.personal-item {
+    color: black;
+    padding: 30px;
+}
+
+.questionaire-item {
+    color: black;
+    padding: 30px;
+    border: 2px;
+}
+
+.item-label, .item-info {
+    display: inline;
+}
+
+.item-label {
+    float:left;
+    font-weight: bold;
+}
+
+.item-info {
+    float: right;
+}
+
