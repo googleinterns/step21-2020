@@ -21,10 +21,11 @@ var DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/
 
 // Authorization scopes required by the API; multiple scopes can be
 // included, separated by spaces.
-var SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+var SCOPES = 
+  // "https://www.googleapis.com/auth/calendar.readonly";
+  "https://www.googleapis.com/auth/calendar";
+  // More scopes at https://developers.google.com/calendar/auth
 
-// var authorizeButton = document.getElementById('authorize_button');
-// var signoutButton = document.getElementById('signout_button');
 var authorizeButton;
 var signoutButton;
 
@@ -52,7 +53,7 @@ function initClient() {
     // Listen for sign-in state changes.
     gapi.auth2.getAuthInstance().isSignedIn.listen(updateSigninStatus);
 
-    // Handle the initial sign-in state.
+    // Handle the initial sign-in state and update the front end.
     updateSigninStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
     authorizeButton.onclick = handleAuthClick;
     signoutButton.onclick = handleSignoutClick;
@@ -131,5 +132,48 @@ function listUpcomingEvents() {
     } else {
       appendPre('No upcoming events found.');
     }
+  });
+}
+
+function addEvent(title) {
+  console.log('addEvent(' + title + ')');
+  // console.log(gapi.client.calendar);
+  // console.log(gapi.client.calendar.calendars);
+  // console.log(gapi.client.calendar.calendars.timeZone);
+  // console.log(gapi.client.calendar.calendars.timezone);
+  // console.log(gapi.client.calendar.settings.timezone);
+  // console.log(gapi.client.calendar.settings.get.timezone);
+  // console.log(gapi.client.calendar.calendars.get('primary'));
+  // console.log(gapi.client.calendar.settings.get('timezone').timezone);
+  // example path: /calendar/v3/calendars/primary/events found from https://github.com/google/google-api-javascript-client/blob/ed1b241471571d1c4b739098dd79a3aee93cb5d3/samples/requestWithBody.html
+  // console.log(gapi.client.calendar.settings.get('/calendar/v3/settings').timezone);
+  // console.log(gapi.client.calendar.settings.get('timezone').value);
+
+  var event = {
+    'summary': title,
+    'description': 'Testing the Google Calendar API',
+    'start': {
+      'dateTime': '2020-07-06T09:00:00-07:00',
+      'timeZone': 'America/Los_Angeles'
+      // 'timeZone': gapi.client.calendar.calendar.timeZone
+    },
+    'end': {
+      'dateTime': '2020-07-06T17:00:00-07:00',
+      'timeZone': 'America/Los_Angeles'
+      // 'timeZone': gapi.client.calendar.calendars.timeZone
+    },
+    'attendees': [
+      {'email': 'lpage@example.com'},
+      {'email': 'sbrin@example.com'}
+    ],
+  };
+
+  var request = gapi.client.calendar.events.insert({
+    'calendarId': 'primary',
+    'resource': event
+  });
+
+  request.execute(function(event) {
+    appendPre('Event created: ' + event.htmlLink);
   });
 }

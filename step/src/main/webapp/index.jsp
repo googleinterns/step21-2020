@@ -37,7 +37,7 @@ limitations under the License.
     <title>Friend Matching Plus</title>
   </head>
   <body>
-    <!-- <nav>
+    <nav>
         <a href="<%= loginURL %>"> Log In </a>
         <a class="active" href="index.jsp"> About Us </a>
     </nav>
@@ -45,7 +45,7 @@ limitations under the License.
     <% if (userService.isUserLoggedIn()) {
         String userEmail = userService.getCurrentUser().getEmail();
         response.sendRedirect("Login");   
-    } %> -->
+    } %>
 
     <p>Google Calendar API Quickstart</p>
 
