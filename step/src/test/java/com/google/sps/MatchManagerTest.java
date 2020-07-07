@@ -28,9 +28,9 @@ import org.apache.commons.collections4.CollectionUtils;
 public final class MatchManagerTest {
 
   // Some people that we can use in our tests.
-  private static final User USER_A = new User(1, "userA@email.com", "User A");
-  private static final User USER_B = new User(2, "userB@email.com", "User B");
-  private static final User USER_C = new User(3, "userC@email.com", "User C");
+  private static final User USER_A = new User("1", "userA@email.com", "User A");
+  private static final User USER_B = new User("2", "userB@email.com", "User B");
+  private static final User USER_C = new User("3", "userC@email.com", "User C");
 
 
   private void breakDown(Collection<User> users) {

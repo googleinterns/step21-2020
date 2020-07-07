@@ -20,7 +20,7 @@ import java.util.ArrayList;
 
 public class User {
   
-  private long id;
+  private String id;
   private String email;
   private String name;
   private Collection<User> matches;
@@ -30,7 +30,7 @@ public class User {
   //       in an id, and the other fields can then be looked up
   //       in the database. this update will be made when data-
   //       -store is integrated
-  public User(long id, String email, String name) {
+  public User(String id, String email, String name) {
     this.id = id;
     this.email = email;
     this.name = name;
@@ -38,7 +38,7 @@ public class User {
     this.matches = new HashSet<>();
   }
 
-  public long getId() {
+  public String getId() {
     return id;    
   }
 

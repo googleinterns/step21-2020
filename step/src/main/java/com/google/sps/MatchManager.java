@@ -59,12 +59,10 @@ public final class MatchManager {
     firstUser.addMatch(secondUser);
     secondUser.addMatch(firstUser);
 
-    long currTime = System.currentTimeMillis();
-
     DatabaseHandler.addNotification(new MatchNotification(firstUser.getId(), 
-      secondUser.getId(), currTime));
+      secondUser.getId()));
     DatabaseHandler.addNotification(new MatchNotification(secondUser.getId(),
-      firstUser.getId(), currTime));  
+      firstUser.getId()));  
   }
 
   // helper method for clearing out the match queue

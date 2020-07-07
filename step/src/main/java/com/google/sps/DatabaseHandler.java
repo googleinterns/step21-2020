@@ -20,13 +20,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
-import com.google.appengine.api.users.User;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 
 public final class DatabaseHandler {
   
@@ -34,66 +36,37 @@ public final class DatabaseHandler {
   private static DatastoreService datastore =
          DatastoreServiceFactory.getDatastoreService();
 
-  // TODO: replace with Datastore
-  private static Map<Long, User> userMap = new HashMap<>();
-  private static Map<Long, Collection<Notification>> notificationMap = new HashMap<>();
+  private static Map<String, Collection<Notification>> notificationMap = new HashMap<>();
 
   private DatabaseHandler() {
 
   }
 
-  // TODO: call this method when a user first signs up
   // Method for adding a user to the database
-  public static void addUserToDatabase(User user, HttpServletRequest request) {
-    userMap.put(user.getId(), user);
-
+  public static void addUser(User user, HttpServletRequest request) {
     String firstName = request.getParameter("firstName");
     String lastName = request.getParameter("lastName");
     int dayBirth = Integer.parseInt(request.getParameter("dayBirth"));
     int monthBirth = Integer.parseInt(request.getParameter("monthBirth"));
     int yearBirth = Integer.parseInt(request.getParameter("yearBirth"));
 
-    // TODO: ask Ngan to pass in userService.getCurrentUser()
-    String email = userService.getCurrentUser().getEmail();
-    String id = userService.getCurrentUser().getUserId();
+    String email = user.getEmail();
+    String id = user.getUserId();
 
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query = new Query("UserInfo")
-            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
-    PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
+    Entity entity = new Entity("User");
     entity.setProperty("firstName", firstName);
     entity.setProperty("lastName", lastName);
     entity.setProperty("dayBirth", dayBirth);
     entity.setProperty("monthBirth", monthBirth);
     entity.setProperty("yearBirth", yearBirth);
+    entity.setProperty("email", email);
+    entity.setProperty("id", id);
     datastore.put(entity);    
-  }
-
-  // Method for getting a user object using an id
-  public static User getUserById(long id) throws NoSuchElementException {
-    if (userMap.containsKey(id)) {
-      return userMap.get(id);    
-    } else {
-      throw new NoSuchElementException();  
-    }
-
-    Query query = new Query("UserInfo")
-            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
-    PreparedQuery results = datastore.prepare(query);        
-
-  }
-
-  // Method for removing a user from our database
-  public static void removeUserById(long id) {
-    if (userMap.containsKey(id)) {
-      userMap.remove(id);    
-    }
   }
  
   // Storing a user's notification
   public static void addNotification(Notification notification) {
-    long userId = notification.getId();
+    String userId = notification.getId();
     
     // adding the user to the hashmap if they're not already in there
     if (!notificationMap.containsKey(userId)) {
@@ -108,17 +81,12 @@ public final class DatabaseHandler {
   }
 
   // Getting a user's notifications using their id
-  public static Collection<Notification> getNotificationsById(long id) {
+  public static Collection<Notification> getNotificationsById(String id) {
     if (notificationMap.containsKey(id)) {
       return notificationMap.get(id);    
     } else {
       throw new NoSuchElementException();  
     }      
-  }
-
-  // Method for clearing all saved user data
-  public static void clearSavedUsers() {
-    userMap = new HashMap<>();  
   }
 
   // Method for clearing all saved notifications

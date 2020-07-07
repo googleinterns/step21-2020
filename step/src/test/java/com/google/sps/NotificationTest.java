@@ -23,34 +23,31 @@ import org.junit.runners.JUnit4;
 @RunWith(JUnit4.class)
 public final class NotificationTest {
 
+  private static final String ONE = "1";
+  private static final String TWO = "2";
+  private static final String THREE = "3"; 
+
   private static final MatchNotification matchNotification =
-    new MatchNotification(1, "Ngan", 1);
+    new MatchNotification(ONE, ONE);
   private static final MessageNotification messageNotification =
-    new MessageNotification(2, "Adam", 2);
+    new MessageNotification(TWO, TWO);
   private static final MatchNotification matchNotificationCopy = 
-    new MatchNotification(1, "Ngan", 1);
+    new MatchNotification(ONE, TWO);
   private static final MatchNotification otherMatchNotification =
-    new MatchNotification(3, "Laila", 3);    
+    new MatchNotification(THREE, TWO);    
 
   // Testing the GetId method
   @Test
   public void testGetId() {
-    Assert.assertEquals(matchNotification.getId(), 1);
-    Assert.assertEquals(messageNotification.getId(), 2);
+    Assert.assertEquals(matchNotification.getId(), "1");
+    Assert.assertEquals(messageNotification.getId(), "2");
   }
 
-  // Testing the getOtherUser method
+  // Testing the getOtherUserId method
   @Test
-  public void testGetOtherUser() {
-    Assert.assertEquals(matchNotification.getOtherUser(), "Ngan");
-    Assert.assertEquals(messageNotification.getOtherUser(), "Adam");
-  }
-
-  // Testing the getTimestamp method
-  @Test
-  public void testGetTimestamp() {
-    Assert.assertEquals(matchNotification.getTimestamp(), 1);
-    Assert.assertEquals(messageNotification.getTimestamp(), 2);
+  public void testGetOtherUserId() {
+    Assert.assertEquals(matchNotification.getOtherUserId(), "1");
+    Assert.assertEquals(messageNotification.getOtherUserId(), "2");
   }
 
   // Testing that match notifications return the correct text
@@ -75,7 +72,9 @@ public final class NotificationTest {
   @Test
   public void testEquals() {
     Assert.assertEquals(matchNotification, matchNotification);
-    Assert.assertEquals(matchNotification, matchNotificationCopy);
+    // these two notifications are not equal because they were not created
+    // at the same time and thus have different timestamps
+    Assert.assertNotEquals(matchNotification, matchNotificationCopy);
     Assert.assertNotEquals(matchNotification, otherMatchNotification);
     Assert.assertNotEquals(matchNotification, messageNotification);
   }
@@ -83,9 +82,8 @@ public final class NotificationTest {
   @Test
   public void testHashCode() {
     int actual = matchNotification.hashCode();
-    int expected = (int) matchNotification.getId() * 
-      matchNotification.getOtherUser().hashCode() *
-      (int) matchNotification.getTimestamp(); 
+    int expected = matchNotification.getId().hashCode() * 
+      matchNotification.getOtherUserId().hashCode(); 
 
     Assert.assertEquals(actual, expected);
   }
