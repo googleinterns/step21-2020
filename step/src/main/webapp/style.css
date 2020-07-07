@@ -35,3 +35,9 @@ nav a:hover:not(.active) {
 .active {
   color: #DB4437;
 }
+
+section {
+    margin-top: 10vh;
+    position: fixed;
+}
+
