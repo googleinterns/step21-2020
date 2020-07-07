@@ -32,6 +32,7 @@ limitations under the License.
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style_profile.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <title>My Profile</title>
   </head>
@@ -57,26 +58,34 @@ limitations under the License.
     %>
 
     <h2> Your Portfolio </h2>
-    <div> 
-        First Name: <%= (String) entity.getProperty("firstName")%>
-        <br>
-        Last Name: <%= (String) entity.getProperty("lastName")%>
-        <br>
-        Date of Birth: <%= String.valueOf(entity.getProperty("monthBirth"))%>/<%= String.valueOf(entity.getProperty("dayBirth"))%>/<%= String.valueOf(entity.getProperty("yearBirth"))%>
+    <div class="container">
+    <div id="profileInfo">
+        <h3> Personal Infomation: </h3>
+        <div> 
+            <p class="menuItem">
+                <label id="firstName"> First Name </label>
+                <div labelledby="firstName"> <%= (String) entity.getProperty("firstName")%> </div>
+            </p>
+            <br>
+            <p class="menuItem">Last Name: <%= (String) entity.getProperty("lastName")%></p>
+            <br>
+            <p class="menuItem">Date of Birth: <%= String.valueOf(entity.getProperty("monthBirth"))%>/<%= String.valueOf(entity.getProperty("dayBirth"))%>/<%= String.valueOf(entity.getProperty("yearBirth"))%></p>
+        </div>
+        <h3> Questionaire: </h3>
+        <div> 
+            <p>Question 1: Are you staying in the US now? <%= (String) entity.getProperty("q1")%> </p>
+            <br>
+            <p>Question 2: Do you have any pets? <%= (String) entity.getProperty("q2")%></p>
+            <br>
+            <p>Question 3: Do you want to only be matched with someone from your institution/company? <%= (String) entity.getProperty("q3")%></p>
+            <br>
+            <p>Question 4: <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank"> Is the dress blue or gold?</a> <%= (String) entity.getProperty("q4")%></p>
+            <br>
+            <p>Question 5: <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel?</a> <%= (String) entity.getProperty("q5")%></p>
+            <br>
+        </div>
     </div>
-
-    <div> 
-        Question 1: Are you staying in the US now? <%= (String) entity.getProperty("q1")%>
-        <br>
-        Question 2: Do you have any pets? <%= (String) entity.getProperty("q2")%>
-        <br>
-        Question 3: Do you want to only be matched with someone from your institution/company? <%= (String) entity.getProperty("q3")%>
-        <br>
-        Question 4: <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank"> Is the dress blue or gold?</a> <%= (String) entity.getProperty("q4")%>
-        <br>
-        Question 5: <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel?</a> <%= (String) entity.getProperty("q5")%>
-        <br>
-    </div>
+    <div>
 
 
   </body>
