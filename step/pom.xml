@@ -35,6 +35,7 @@
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-collections4</artifactId>
       <version>4.0</version>
+    </dependency>  
 
     <dependency>
         <groupId>com.google.code.gson</groupId>
@@ -46,7 +47,6 @@
         <groupId>com.google.appengine</groupId>
         <artifactId>appengine-api-1.0-sdk</artifactId>
         <version>1.9.59</version>
-
     </dependency>
   </dependencies>
   
