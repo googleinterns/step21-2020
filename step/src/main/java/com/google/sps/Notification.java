@@ -16,13 +16,13 @@ package com.google.sps;
 
 public abstract class Notification {
   private long id;  
-  protected String otherUser;
+  protected long otherUserId;
   private long timestamp;
 
-  public Notification(long id, String otherUser, long timestamp) {
+  public Notification(long id, String otherUserId) {
     this.id = id;
-    this.otherUser = otherUser;
-    this.timestamp = timestamp;
+    this.otherUserId = otherUserId;
+    this.timestamp = System.currentTimeMillis();
   }
   
   // Getter method for the ID of the user with whom the notification is
@@ -31,9 +31,9 @@ public abstract class Notification {
     return id;    
   }
 
-  // Method for getting the name of the user who sent the notification.
-  public String getOtherUser() {
-    return otherUser;  
+  // Method for getting the id of the user who sent the notification.
+  public String getOtherUserId() {
+    return otherUserId;  
   }
   
   // Getter method for the time at which the notification occured.
@@ -61,7 +61,7 @@ public abstract class Notification {
   // Overriden hashCode method
   @Override
   public int hashCode() { 
-    return (int) id * otherUser.hashCode() * (int) timestamp; 
+    return (int) id * otherUser.hashCode(); 
   }
 
   // Method for putting together and returning the text associated
