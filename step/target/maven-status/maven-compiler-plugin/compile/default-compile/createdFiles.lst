@@ -1,0 +1,6 @@
+com/google/sps/MatchManager.class
+com/google/sps/DatabaseHandler.class
+com/google/sps/User.class
+com/google/sps/servlets/MatchingServlet.class
+com/google/sps/Notification.class
+com/google/sps/servlets/ChatServlet.class
