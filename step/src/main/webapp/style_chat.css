@@ -45,7 +45,7 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 .form-container .btn {
-  background-color: #4CAF50;
+  background-color:#0F9D58;
   color: white;
   padding: 16px 20px;
   border: none;
@@ -56,5 +56,5 @@ body {font-family: Arial, Helvetica, sans-serif;}
 }
 
 .form-container .cancel {
-  background-color: red;
+  background-color: #DB4437;
 }
