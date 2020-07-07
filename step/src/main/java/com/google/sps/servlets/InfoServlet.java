@@ -64,9 +64,6 @@ public class InfoServlet extends HttpServlet {
     entity.setProperty("monthBirth", monthBirth);
     entity.setProperty("yearBirth", yearBirth);
     datastore.put(entity);
-
-    // RequestDispatcher requestDispatcher = request.getRequestDispatcher("profile.jsp");
-    // requestDispatcher.forward(request, response);
     response.sendRedirect("prefForm.jsp");
   }
 }
