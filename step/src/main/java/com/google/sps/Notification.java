@@ -15,6 +15,7 @@
 package com.google.sps;
 
 public abstract class Notification {
+
   private long id;  
   protected String otherUser;
   private long timestamp;

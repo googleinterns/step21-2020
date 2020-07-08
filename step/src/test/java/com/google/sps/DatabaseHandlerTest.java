@@ -41,6 +41,8 @@ public final class DatabaseHandlerTest {
   // Adds a user to the database and then retrieves that user to ensure it was
   // added correctly.
   @Test
+  // Adds a user to the database and then retrieves that user to ensure it was
+  // added correctly.
   public void testAddAndGetUser() {
     DatabaseHandler.addUserToDatabase(USER_A);
 
