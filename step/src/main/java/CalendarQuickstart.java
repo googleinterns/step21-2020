@@ -49,7 +49,7 @@ public class CalendarQuickstart {
      * If modifying these scopes, delete your previously saved tokens/ folder.
      */
     private static final List<String> SCOPES = Collections.singletonList(CalendarScopes.CALENDAR_READONLY);
-    private static final String CREDENTIALS_FILE_PATH = "/client_secret_427851753576-r0n9jbplnf7t2peic2ltnibeqquemo2j.apps.googleusercontent.com";
+    private static final String CREDENTIALS_FILE_PATH = "/client_secret_427851753576-r0n9jbplnf7t2peic2ltnibeqquemo2j.apps.googleusercontent.com.json";
 
     /**
      * Creates an authorized Credential object.
@@ -61,6 +61,7 @@ public class CalendarQuickstart {
         // Load client secrets.
         InputStream in = CalendarQuickstart.class.getResourceAsStream(CREDENTIALS_FILE_PATH);
         if (in == null) {
+            System.out.println("Working Directory = " + System.getProperty("user.dir"));
             throw new FileNotFoundException("Resource not found: " + CREDENTIALS_FILE_PATH);
         }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));

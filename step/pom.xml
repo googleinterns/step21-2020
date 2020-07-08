@@ -16,6 +16,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 
+  <!-- List of dependencies: https://repo.maven.apache.org/maven2/ -->
   <dependencies>
     <dependency>
       <groupId>javax.servlet</groupId>
@@ -31,7 +32,7 @@
     <dependency>
         <groupId>com.google.appengine</groupId>
         <artifactId>appengine-api-1.0-sdk</artifactId>
-        <version>1.9.59</version>
+        <version>1.9.80</version>
     </dependency>
     <!-- Java: import com.google.api.client.* -->
     <dependency>
@@ -74,6 +75,18 @@
       <groupId>com.google.oauth-client</groupId>
       <artifactId>google-oauth-client-appengine</artifactId>
       <version>1.30.4</version>
+    </dependency>
+    <!-- Java: import com.google.auth.Credentials -->
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-oauth2-http</artifactId>
+      <version>0.16.2</version>
+    </dependency>
+    <!-- Java: import com.google.auth.appengine.AppEngineCredentials -->
+    <dependency>
+      <groupId>com.google.auth</groupId>
+      <artifactId>google-auth-library-appengine</artifactId>
+      <version>0.21.1</version>
     </dependency>
   </dependencies>
   
