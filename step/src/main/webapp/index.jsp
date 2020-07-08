@@ -60,5 +60,13 @@ limitations under the License.
       <!-- <button type="submit" id="oauthButton" formmethod="get">OAuth button</button> -->
     </form>
 
+    <form action="/userapi" method="get">
+      <button type="submit">userapi button</button>
+    </form>
+
+    <form action="/cal" method="get">
+      <button type="submit">/cal button</button>
+    </form>
+
   </body>
 </html>
