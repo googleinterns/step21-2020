@@ -16,6 +16,7 @@ package com.google.sps;
 
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.ArrayList;
 
 public class User {
   
@@ -93,7 +94,9 @@ public class User {
     return email.hashCode(); 
   }
 
+  // Method for clearing all of a user's matches
   public void clearMatches() {
     matches = new HashSet<>();  
   }
+
 }

@@ -15,5 +15,57 @@
 package com.google.sps;
 
 public abstract class Notification {
-  // TODO: implement this class    
+
+  private long id;  
+  protected String otherUser;
+  private long timestamp;
+
+  public Notification(long id, String otherUser, long timestamp) {
+    this.id = id;
+    this.otherUser = otherUser;
+    this.timestamp = timestamp;
+  }
+  
+  // Getter method for the ID of the user with whom the notification is
+  // associated.
+  public long getId() {
+    return id;    
+  }
+
+  // Method for getting the name of the user who sent the notification.
+  public String getOtherUser() {
+    return otherUser;  
+  }
+  
+  // Getter method for the time at which the notification occured.
+  public long getTimestamp() {
+    return timestamp;  
+  }
+
+  // Overriden equals method
+  @Override
+  public boolean equals(Object obj) { 
+    if(this == obj) {
+      return true; 
+    } 
+ 
+    if(obj == null || obj.getClass()!= this.getClass()) {
+      return false;
+    }
+     
+    Notification notification = (Notification) obj;
+    return this.id == notification.getId() &&
+           this.otherUser.equals(notification.getOtherUser()) &&
+           this.timestamp == notification.getTimestamp(); 
+  }
+
+  // Overriden hashCode method
+  @Override
+  public int hashCode() { 
+    return (int) id * otherUser.hashCode() * (int) timestamp; 
+  }
+
+  // Method for putting together and returning the text associated
+  // with the notification.
+  public abstract String getText();
 }
