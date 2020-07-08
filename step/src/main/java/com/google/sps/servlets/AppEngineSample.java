@@ -22,16 +22,25 @@ import com.google.api.client.http.GenericUrl;
 import com.google.api.client.http.BasicAuthentication;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import java.io.IOException;
-import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.ServletException;
 
+/*
+  Uses the currently loggeg-in Google Account user??
+    https://googleapis.dev/java/google-oauth-client/latest/com/google/api/client/extensions/appengine/auth/oauth2/AbstractAppEngineAuthorizationCodeServlet.html
+*/
+
+@WebServlet("/auth")
 public class AppEngineSample extends AbstractAppEngineAuthorizationCodeServlet {
 
   @Override
   protected void doGet(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
     // do stuff
+    
+    System.out.println("AppEngineSample.doGet()");
   }
 
   @Override
@@ -60,4 +69,10 @@ public class AppEngineSample extends AbstractAppEngineAuthorizationCodeServlet {
           // DataStoreFactory is an interface
     // StoredCredential.getDefaultDataStore(DataStoreFactory) returns a DataStore<StoredCredential>
   }
+
+  // @Override
+  // protected abstract String getUserId(HttpServletRequest req)
+  //     throws javax.servlet.ServletException, IOException {
+  //   return "adam"; // TODO idk what should go here, fix it.
+  // }
 }

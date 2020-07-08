@@ -55,5 +55,10 @@ limitations under the License.
 
     <pre id="content" style="white-space: pre-wrap;"></pre>
 
+    <form action="/auth" method="get">
+      <button type="submit">OAuth button</button>
+      <!-- <button type="submit" id="oauthButton" formmethod="get">OAuth button</button> -->
+    </form>
+
   </body>
 </html>
