@@ -17,7 +17,7 @@ limitations under the License.
 <!-- <%-- The Java code in this JSP file runs on the server when the user navigates
      to the homepage. This allows us to insert the Blobstore upload URL into the
      form without building the HTML using print statements in a servlet. --%> -->
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
   <head>
@@ -29,13 +29,25 @@ limitations under the License.
   </head>
   <body>
       <!-- In the future, it would be other's user profile pictures/ names -->
-      <button class="open-button" onclick="openForm()">Chat</button>
+      <h1> Hello </h1>
+      <!-- !Set the condition so the Form won't close after the user types -->
+      <button class="open-button" onclick="openForm()">Person 1</button>
 
       <div class="chat-popup" id="myForm"> 
           <form action="Chat" class="form-container" method="POST">
             <h1> Chat </h1>
-            <label for="msg"><b>Message</b></label>
-            <textarea placeholder="Type message.." name="msg" required></textarea>
+            <label for="text"><b>Message</b></label>
+            <br>
+            <c:forEach items="${messages}" var="message">
+                <tr>
+                    <td><c:out value="${message.email}" /></td>
+                    <td><c:out value="${message.text}" /></td>
+                    <td><c:out value="${message.timestamp}" /></td>
+                </tr>
+                <br>
+            </c:forEach>
+            <textarea placeholder="Type message.." name="text" required></textarea>
+
 
             <button type="submit" class="btn">Send</button>
             <button type="button" class="btn cancel" onclick="closeFrom()">Close</button>
