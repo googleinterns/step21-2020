@@ -26,12 +26,11 @@ public class User {
   private String email;
   private String name;
   private Collection<User> matches;
-  private Key key;
   
 
   public User(String id) {
+    System.out.println("inside constructor");
     this.id = id;
-    this.key = KeyFactory.createKey("User", id);
   }
 
   // ID getter method
@@ -41,14 +40,18 @@ public class User {
 
   // Key getter method
   public Key getKey() {
-    return key;
+    return KeyFactory.createKey("User", id);
   }
 
   // Getter method for a user's email
   public String getEmail() {
+    System.out.println("inside getEmail");
     if (email == null) {
+      System.out.println("email is null");
       email = DatabaseHandler.getUserEmail(id);
+      System.out.println("got email");
     }
+    System.out.println("returning");
     return email;  
   }
 
@@ -76,7 +79,7 @@ public class User {
   // Method for checking if a user is matched with another user
   public boolean isMatchedWith(User user) {
     // ensuring that the matches field is instantiated
-    getMatches();
+    updateMatches();
     return matches.contains(user);   
   }
 

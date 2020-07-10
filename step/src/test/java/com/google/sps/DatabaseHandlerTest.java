@@ -33,6 +33,7 @@ import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 @RunWith(JUnit4.class)
 public final class DatabaseHandlerTest {
 
+  // local datastore service for testing
   private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
