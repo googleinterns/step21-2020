@@ -29,7 +29,6 @@ public class User {
   
 
   public User(String id) {
-    System.out.println("inside constructor");
     this.id = id;
   }
 
@@ -45,13 +44,9 @@ public class User {
 
   // Getter method for a user's email
   public String getEmail() {
-    System.out.println("inside getEmail");
     if (email == null) {
-      System.out.println("email is null");
       email = DatabaseHandler.getUserEmail(id);
-      System.out.println("got email");
     }
-    System.out.println("returning");
     return email;  
   }
 
