@@ -15,20 +15,24 @@
 package com.google.sps;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import javax.servlet.http.HttpServletRequest;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
-import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.EntityNotFoundException;
 
 public final class DatabaseHandler {
   
@@ -36,24 +40,14 @@ public final class DatabaseHandler {
   private static DatastoreService datastore =
          DatastoreServiceFactory.getDatastoreService();
 
-  private static Map<String, Collection<Notification>> notificationMap = new HashMap<>();
-
   private DatabaseHandler() {
 
   }
 
   // Method for adding a user to the database
-  public static void addUser(User user, HttpServletRequest request) {
-    String firstName = request.getParameter("firstName");
-    String lastName = request.getParameter("lastName");
-    int dayBirth = Integer.parseInt(request.getParameter("dayBirth"));
-    int monthBirth = Integer.parseInt(request.getParameter("monthBirth"));
-    int yearBirth = Integer.parseInt(request.getParameter("yearBirth"));
-
-    String email = user.getEmail();
-    String id = user.getUserId();
-
-    Entity entity = new Entity("User");
+  public static void addUser(String firstName, String lastName, int dayBirth,
+    int monthBirth, int yearBirth, String email, String id) {
+    Entity entity = new Entity("User", id);
     entity.setProperty("firstName", firstName);
     entity.setProperty("lastName", lastName);
     entity.setProperty("dayBirth", dayBirth);
@@ -64,34 +58,92 @@ public final class DatabaseHandler {
     datastore.put(entity);    
   }
  
-  // Storing a user's notification
-  public static void addNotification(Notification notification) {
-    String userId = notification.getId();
-    
-    // adding the user to the hashmap if they're not already in there
-    if (!notificationMap.containsKey(userId)) {
-      notificationMap.put(userId, new LinkedList<>());      
-    }
-    
-    // retrieving the user's list of notifications, adding the new notification
-    // to it, and adding it to the hashmap
-    LinkedList<Notification> userNotifications = (LinkedList) notificationMap.get(userId);
-    userNotifications.addFirst(notification);
-    notificationMap.put(notification.getId(), userNotifications);
+  // Adding a user's notificaton to the databse
+  public static void addNotification(String firstId, String secondId,
+      long timestamp, String type) {
+    Entity entity = new Entity("Notification");
+    entity.setProperty("userId", firstId);
+    entity.setProperty("otherUserId", secondId);
+    entity.setProperty("timestamp", timestamp);
+    entity.setProperty("type", type);
+    datastore.put(entity); 
   }
 
   // Getting a user's notifications using their id
-  public static Collection<Notification> getNotificationsById(String id) {
-    if (notificationMap.containsKey(id)) {
-      return notificationMap.get(id);    
-    } else {
-      throw new NoSuchElementException();  
-    }      
+  public static Collection<Notification> getUserNotifications(String id) {
+    Collection<Notification> notifications = new ArrayList<>();
+
+    Filter idFilter = new FilterPredicate("userId", FilterOperator.EQUAL, id);
+
+    // Querying all of the user's notifications from the Datastore.
+    Query query = new Query("Notification").setFilter(idFilter)
+      .addSort("timestamp",SortDirection.DESCENDING);
+
+    PreparedQuery results = datastore.prepare(query);
+
+    // Populating the list
+    for (Entity entity : results.asIterable()) {
+      String firstId = (String) entity.getProperty("userId");
+      String secondId = (String) entity.getProperty("otherUserId");
+      long timestamp = (long) entity.getProperty("timestamp");
+      String notificationType = (String) entity.getProperty("type");
+       
+      Notification notification;
+
+      if (notificationType.equals("matching")) {
+        notification = new MatchNotification(firstId, secondId, timestamp);
+      } else {
+        notification = new MessageNotification(firstId, secondId, timestamp);
+      }
+
+      notifications.add(notification);
+    }
+
+    return notifications;    
   }
 
-  // Method for clearing all saved notifications
-  public static void clearSavedNotifications() {
-    notificationMap = new HashMap<>();
+  // Method for getting a user's email using their id
+  public static String getUserEmail(String id) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      return (String) user.getProperty("email");
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      return null; 
+    }
+  }
+
+  // Method for getting a user's name using their id
+  public static String getUserName(String id) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      String firstName = (String) user.getProperty("firstName");
+      String lastName = (String) user.getProperty("lastName");
+      return firstName + " " + lastName;
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      return null;
+    }
+  }
+
+  // Method for getting all of a user's matches
+  public static Collection<User> getUserMatches(String id) {
+    Filter idFilter = new FilterPredicate("userId", FilterOperator.EQUAL, id);
+    Filter typeFilter = new FilterPredicate("type", FilterOperator.EQUAL, "matching");
+
+
+    CompositeFilter compositeFilter = new CompositeFilter(CompositeFilterOperator.AND, 
+      Arrays.asList(idFilter, typeFilter));
+
+    Query query = new Query("Notification").setFilter(compositeFilter);
+    PreparedQuery results = datastore.prepare(query);
+
+    Collection<User> matches = new ArrayList<>();
+    for (Entity entity: results.asIterable()) {
+      String matchId = (String) entity.getProperty("otherUserId");
+      matches.add(new User(matchId));
+    }
+    return matches;
   }
 
 }

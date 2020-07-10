@@ -19,15 +19,15 @@ public class MatchNotification extends Notification {
   private static final String NOTIFICATION_TEXT =
     "New match alert! You matched with ";
   
-  public MatchNotification(String id, String otherUserId) {
-    super(id, otherUserId);
+  public MatchNotification(String id, String otherUserId, long timestamp) {
+    super(id, otherUserId, timestamp);
   }
 
   // Method for putting together and returning the text associated
   // with the notification.
   public String getText() {
     // TODO: get rid of this when User class is updated to only take in ID
-    User user = new User(otherUserId, "","Ngan");
+    User user = new User(otherUserId);
     return NOTIFICATION_TEXT + user.getName();      
   }  
 }

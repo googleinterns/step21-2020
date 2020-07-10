@@ -56,13 +56,15 @@ public final class MatchManager {
   // helper method for actually adding to people into one another's matches and sending
   // notifications to both users
   private static void createMatch(User firstUser, User secondUser) {
-    firstUser.addMatch(secondUser);
-    secondUser.addMatch(firstUser);
+    firstUser.updateMatches();
+    secondUser.updateMatches();
 
-    DatabaseHandler.addNotification(new MatchNotification(firstUser.getId(), 
-      secondUser.getId()));
-    DatabaseHandler.addNotification(new MatchNotification(secondUser.getId(),
-      firstUser.getId()));  
+    long currTime = System.currentTimeMillis();
+
+    DatabaseHandler.addNotification(firstUser.getId(), 
+      secondUser.getId(), currTime, "matching");
+    DatabaseHandler.addNotification(secondUser.getId(), 
+      firstUser.getId(), currTime, "matching");  
   }
 
   // helper method for clearing out the match queue

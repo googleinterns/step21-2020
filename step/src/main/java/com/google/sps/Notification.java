@@ -20,10 +20,10 @@ public abstract class Notification {
   protected String otherUserId;
   private long timestamp;
 
-  public Notification(String id, String otherUserId) {
+  public Notification(String id, String otherUserId, long timestamp) {
     this.id = id;
     this.otherUserId = otherUserId;
-    this.timestamp = System.currentTimeMillis();
+    this.timestamp = timestamp;
   }
   
   // Getter method for the ID of the user with whom the notification is

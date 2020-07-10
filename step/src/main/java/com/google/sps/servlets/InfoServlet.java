@@ -20,6 +20,7 @@ import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.sps.DatabaseHandler;
 import java.io.IOException;
@@ -35,7 +36,16 @@ public class InfoServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     User user = UserServiceFactory.getUserService().getCurrentUser();
-    DatabaseHandler.addUser(user, request);
+    
+    String firstName = request.getParameter("firstName");
+    String lastName = request.getParameter("lastName");
+    int dayBirth = Integer.parseInt(request.getParameter("dayBirth"));
+    int monthBirth = Integer.parseInt(request.getParameter("monthBirth"));
+    int yearBirth = Integer.parseInt(request.getParameter("yearBirth"));
+    String email = user.getEmail();
+    String id = user.getUserId();
+    
+    DatabaseHandler.addUser(firstName, lastName, dayBirth, monthBirth, yearBirth, email, id);
     response.sendRedirect("prefForm.jsp");
   }
 }
