@@ -40,14 +40,17 @@ limitations under the License.
             <br>
             <c:forEach items="${messages}" var="message">
                 <tr>
-                    <td><c:out value="${message.email}" /></td>
-                    <td><c:out value="${message.text}" /></td>
+                    <td> 
+                        <c:forEach items="${message.text}" var="text">
+                            <td><c:out value="${message.email}" /></td>
+                            <td><c:out value="${text}" /></td>
+                        </c:forEach>
+                    </td>
                     <td><c:out value="${message.timestamp}" /></td>
                 </tr>
                 <br>
             </c:forEach>
             <textarea placeholder="Type message.." name="text" required></textarea>
-
 
             <button type="submit" class="btn">Send</button>
             <button type="button" class="btn cancel" onclick="closeFrom()">Close</button>

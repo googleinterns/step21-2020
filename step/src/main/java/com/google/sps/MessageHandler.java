@@ -12,32 +12,15 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data;
+package com.google.sps;
 
-/** Variables of a comment */
-public final class Message {
-  private final long id; 
-  private final String email;
-  private final String text;
-  private final long timestamp;
+import java.util.Collection;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
-  public Message(long id, String email, String text, long timestamp) {
-    this.id = id;
-    this.email = email;
-    this.text = text;
-    this.timestamp = timestamp;
-  }
-  public long getID() {
-      return id;
-  }
-  public String getEmail() {
-    return email; 
-  }
-  public String getText() {
-      return text;
-  }
-  public long getTimestamp() {
-      return timestamp;
-  }
+public final class MessageHandler {
+  private static Map<Long, User> userMap = new HashMap<>();
+  private static Map<Long, Collection<Notification>> notificationMap = new HashMap<>();
 }
-

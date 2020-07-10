@@ -27,7 +27,7 @@ public final class DatabaseHandler {
   private static Map<Long, Collection<Notification>> notificationMap = new HashMap<>();
 
   private DatabaseHandler() {
-
+      
   }
 
   // TODO: call this method when a user first signs up

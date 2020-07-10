@@ -61,6 +61,10 @@ public final class MatchManager {
 
     long currTime = System.currentTimeMillis();
 
+    // Create an id for each match, the id is linked with the first user's id and the second user's id
+    // MessageManager newMatch = new MessageManager(firstUser, secondUser);
+    // Pass it into MessageManager
+
     DatabaseHandler.addNotification(new MatchNotification(firstUser.getId(), 
       secondUser.getName(), currTime));
     DatabaseHandler.addNotification(new MatchNotification(secondUser.getId(),
@@ -72,5 +76,4 @@ public final class MatchManager {
   public static void clearQueue() {
     matchQueue = new LinkedList<>();
   }
-
 }
