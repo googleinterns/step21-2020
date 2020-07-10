@@ -40,6 +40,7 @@ limitations under the License.
     <nav>
         <a href="<%= loginURL %>"> Log In </a>
         <a class="active" href="index.jsp"> About Us </a>
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
     </nav>
     <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
     <% if (userService.isUserLoggedIn()) {

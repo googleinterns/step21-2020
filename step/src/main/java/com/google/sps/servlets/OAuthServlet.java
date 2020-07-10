@@ -12,6 +12,9 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
+// Generic imports
+import java.util.Arrays;
+
 // import com.google.api.client.googleapis.extensions.appengine.auth.oauth2.AppIdentityCredential;
 // import com.google.api.client.extensions.appengine.auth.oauth2.AppIdentityCredential;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
@@ -31,6 +34,19 @@ import com.google.appengine.api.appidentity.AppIdentityService;
 import com.google.appengine.api.appidentity.AppIdentityServiceFactory;
 import com.google.auth.Credentials;
 import com.google.auth.appengine.AppEngineCredentials; // https://github.com/googleapis/google-auth-library-java/blob/master/appengine/java/com/google/auth/appengine/AppEngineCredentials.java
+
+// createGCalEvent();
+// gcal java api javadoc: https://developers.google.com/resources/api-libraries/documentation/calendar/v3/java/latest/
+import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.Events;
+import com.google.api.services.calendar.model.EventDateTime;
+import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.client.http.BasicAuthentication; // https://googleapis.dev/java/google-http-client/latest/index.html?com/google/api/client/http/HttpRequestInitializer.html
+import com.google.api.client.http.HttpTransport; // https://googleapis.dev/java/google-http-client/latest/com/google/api/client/http/HttpTransport.html
+  import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
 
 /* TODO: comment */
 @WebServlet("/cal")
@@ -54,7 +70,8 @@ public class OAuthServlet extends HttpServlet {
     //   e.printStackTrace();
     // }
 
-    tryAppEngineCredentials();
+    createGCalEvent(); System.out.println("createGCalEvent()");
+    // tryAppEngineCredentials();
     // tryGoogleCredential();
     // tryAppIdentityCredential();
 
@@ -63,6 +80,70 @@ public class OAuthServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+  }
+
+  // Sample code from: https://developers.google.com/calendar/create-events
+  // Refer to the Java quickstart on how to setup the environment:
+  // https://developers.google.com/calendar/quickstart/java
+  // Change the scope to CalendarScopes.CALENDAR and delete any stored
+  // credentials.
+  private void createGCalEvent() {
+    Event event = new Event()
+        .setSummary("Google I/O 2015")
+        .setLocation("800 Howard St., San Francisco, CA 94103")
+        .setDescription("A chance to hear more about Google's developer products.");
+
+    DateTime startDateTime = new DateTime("2020-07-09T09:00:00-07:00");
+    EventDateTime start = new EventDateTime()
+        .setDateTime(startDateTime)
+        .setTimeZone("America/Los_Angeles");
+    event.setStart(start);
+
+    DateTime endDateTime = new DateTime("2020-07-09T17:00:00-07:00");
+    EventDateTime end = new EventDateTime()
+        .setDateTime(endDateTime)
+        .setTimeZone("America/Los_Angeles");
+    event.setEnd(end);
+
+    // String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
+    // event.setRecurrence(Arrays.asList(recurrence));
+
+    EventAttendee[] attendees = new EventAttendee[] {
+        new EventAttendee().setEmail("lpage@example.com"),
+        new EventAttendee().setEmail("sbrin@example.com"),
+    };
+    event.setAttendees(Arrays.asList(attendees));
+
+    // EventReminder[] reminderOverrides = new EventReminder[] {
+    //     new EventReminder().setMethod("email").setMinutes(24 * 60),
+    //     new EventReminder().setMethod("popup").setMinutes(10),
+    // };
+    // Event.Reminders reminders = new Event.Reminders()
+    //     .setUseDefault(false)
+    //     .setOverrides(Arrays.asList(reminderOverrides));
+    // event.setReminders(reminders);
+
+    /*  public Calendar(com.google.api.client.http.HttpTransport transport,
+                    com.google.api.client.json.JsonFactory jsonFactory,
+                    com.google.api.client.http.HttpRequestInitializer httpRequestInitializer)   */
+    String dummyUsername = "adam";
+    String dummyPassword = "1234";
+    Calendar service = new Calendar(new UrlFetchTransport(), // TODO fill this in
+        new JacksonFactory(),
+        new BasicAuthentication(dummyUsername, dummyPassword)); // HttpRequestInitializer is an interface
+
+    // Sample code from: https://developers.google.com/calendar/v3/reference/calendars/insert
+    // Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credentials)
+    //     .setApplicationName("applicationName").build();
+
+    try {
+      String calendarId = "primary";
+      event = service.events().insert(calendarId, event).execute();
+      System.out.printf("Event created: %s\n", event.getHtmlLink());
+    } catch (Exception e) {
+      System.out.println("there was in error in OAuthServlet.doGet() -> createGCalEvent()");
+      e.printStackTrace();
+    }
   }
 
   // https://github.com/googleapis/google-auth-library-java#google-auth-library-appengine

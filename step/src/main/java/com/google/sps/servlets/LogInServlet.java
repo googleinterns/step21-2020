@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import java.io.IOException;
@@ -73,6 +74,10 @@ public class LogInServlet extends HttpServlet {
     entity.setProperty("email", email);
     // The put() function automatically inserts new data or updates existing data based on ID
     datastore.put(entity);
+
+    User user = userService.getCurrentUser();
+    System.out.println(user.toString());
+
     response.sendRedirect("preferenceform.jsp");
   }
 

@@ -38,5 +38,19 @@ limitations under the License.
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   
     } %>
+
+    <form action="/auth" method="get">
+      <button type="submit">OAuth button</button>
+      <!-- <button type="submit" id="oauthButton" formmethod="get">OAuth button</button> -->
+    </form>
+
+    <form action="/userapi" method="get">
+      <button type="submit">userapi button</button>
+    </form>
+
+    <form action="/cal" method="get">
+      <button type="submit">/cal button</button>
+    </form>
+
   </body>
 </html>
