@@ -88,6 +88,12 @@
       <artifactId>google-auth-library-appengine</artifactId>
       <version>0.21.1</version>
     </dependency>
+    <!-- Java: import com.google.api.client.googleapis.extensions.appengine.auth.oauth2 -->
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client-appengine</artifactId>
+      <version>1.30.4</version>
+    </dependency>
   </dependencies>
   
 

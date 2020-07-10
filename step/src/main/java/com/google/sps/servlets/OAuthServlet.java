@@ -14,6 +14,7 @@
 
 // Generic imports
 import java.util.Arrays;
+import java.util.List;
 
 // import com.google.api.client.googleapis.extensions.appengine.auth.oauth2.AppIdentityCredential;
 // import com.google.api.client.extensions.appengine.auth.oauth2.AppIdentityCredential;
@@ -48,6 +49,12 @@ import com.google.api.client.http.BasicAuthentication; // https://googleapis.dev
 import com.google.api.client.http.HttpTransport; // https://googleapis.dev/java/google-http-client/latest/com/google/api/client/http/HttpTransport.html
   import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
 
+// https://github.com/pschuette22/Zeppa-AppEngine/blob/44e15520a3b08f507ba331a5651e3871fc454f4e/zeppa-api/src/main/java/com/zeppamobile/api/googlecalendar/GoogleCalendarUtils.java#L42
+import com.google.api.client.googleapis.extensions.appengine.auth.oauth2.AppIdentityCredential; // https://googleapis.dev/java/google-api-client/latest/com/google/api/client/googleapis/extensions/appengine/auth/oauth2/package-frame.html
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.services.calendar.CalendarScopes;
+
 /* TODO: comment */
 @WebServlet("/cal")
 public class OAuthServlet extends HttpServlet {
@@ -62,13 +69,13 @@ public class OAuthServlet extends HttpServlet {
     // do stuff
     System.out.println("/cal: OAuthServlet.doGet()");
 
-    // CalendarQuickstart calendar = new CalendarQuickstart();
-    // try {
-    //   // calendar.main();
-    // } catch (Exception e) {
-    //   System.out.println("there was in error in OAuthServlet.doGet() when accessing CalendarQuickstart");
-    //   e.printStackTrace();
-    // }
+    CalendarQuickstart calendar = new CalendarQuickstart();
+    try {
+      // calendar.main();
+    } catch (Exception e) {
+      System.out.println("there was in error in OAuthServlet.doGet() when accessing CalendarQuickstart");
+      e.printStackTrace();
+    }
 
     createGCalEvent(); System.out.println("createGCalEvent()");
     // tryAppEngineCredentials();
@@ -128,9 +135,15 @@ public class OAuthServlet extends HttpServlet {
                     com.google.api.client.http.HttpRequestInitializer httpRequestInitializer)   */
     String dummyUsername = "adam";
     String dummyPassword = "1234";
-    Calendar service = new Calendar(new UrlFetchTransport(), // TODO fill this in
-        new JacksonFactory(),
-        new BasicAuthentication(dummyUsername, dummyPassword)); // HttpRequestInitializer is an interface
+    // Calendar service = new Calendar(new UrlFetchTransport(), // TODO fill this in
+    //     new JacksonFactory(),
+    //     new BasicAuthentication(dummyUsername, dummyPassword)); // HttpRequestInitializer is an interface
+
+    // FROYO tech help - https://github.com/pschuette22/Zeppa-AppEngine/blob/44e15520a3b08f507ba331a5651e3871fc454f4e/zeppa-api/src/main/java/com/zeppamobile/api/googlecalendar/GoogleCalendarUtils.java#L42
+    JsonFactory FACTORY = new JacksonFactory();
+    HttpTransport TRANSPORT = new NetHttpTransport();
+    AppIdentityCredential credential = makeServiceAccountCredential();
+    Calendar service = new Calendar.Builder(TRANSPORT, FACTORY, credential).setApplicationName("Zeppa").build();
 
     // Sample code from: https://developers.google.com/calendar/v3/reference/calendars/insert
     // Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credentials)
@@ -145,6 +158,17 @@ public class OAuthServlet extends HttpServlet {
       e.printStackTrace();
     }
   }
+
+  private static AppIdentityCredential makeServiceAccountCredential() {
+    List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
+		AppIdentityCredential credential = new AppIdentityCredential(SCOPES);
+		return credential;
+	}
+
+
+
+
+
 
   // https://github.com/googleapis/google-auth-library-java#google-auth-library-appengine
   private void tryAppEngineCredentials() {
