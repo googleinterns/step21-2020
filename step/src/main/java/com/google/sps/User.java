@@ -22,25 +22,25 @@ import com.google.appengine.api.datastore.KeyFactory;
 
 public class User {
   
-  private String id;
+  private String userServiceUserId;
   private String email;
   private String name;
   private Collection<User> matches;
   private Key key;
 
-  public User(String id) {
-    this.id = id;
+  public User(String userServiceUserId) {
+    this.userServiceUserId = userServiceUserId;
   }
 
   // ID getter method
   public String getId() {
-    return id;    
+    return userServiceUserId;    
   }
 
   // Key getter method
   public Key getKey() {
     if (key == null) {
-      key = KeyFactory.createKey("User", id);
+      key = KeyFactory.createKey("User", userServiceUserId);
     }
     return key;
   }
@@ -48,7 +48,7 @@ public class User {
   // Getter method for a user's email
   public String getEmail() {
     if (email == null) {
-      email = DatabaseHandler.getUserEmail(id);
+      email = DatabaseHandler.getUserEmail(userServiceUserId);
     }
     return email;  
   }
@@ -56,7 +56,7 @@ public class User {
   // Getter method for a user's name
   public String getName() {
     if (name == null) {
-      name = DatabaseHandler.getUserName(id);
+      name = DatabaseHandler.getUserName(userServiceUserId);
     }
     return name;  
   }
@@ -64,14 +64,14 @@ public class User {
   // Getter method for a user's matches
   public Collection<User> getMatches() {
     if (matches == null) {
-      matches = DatabaseHandler.getUserMatches(id);
+      matches = DatabaseHandler.getUserMatches(userServiceUserId);
     }
     return matches;   
   }
 
   // Method for updating a user's matches -- called after the user gets a new match
   public void updateMatches() {
-    matches = DatabaseHandler.getUserMatches(id);
+    matches = DatabaseHandler.getUserMatches(userServiceUserId);
   }
 
   // Method for checking if a user is matched with another user
@@ -93,13 +93,13 @@ public class User {
     }
      
     User user = (User) obj; 
-    return this.id.equals(user.getId()); 
+    return this.userServiceUserId.equals(user.getId()); 
   }
 
   // Overriden hashCode method
   @Override
   public int hashCode() { 
-    return id.hashCode(); 
+    return userServiceUserId.hashCode(); 
   }
 
 }
