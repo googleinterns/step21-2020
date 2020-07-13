@@ -18,6 +18,7 @@ import java.util.Collection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.NoSuchElementException;
+import java.lang.IllegalArgumentException;
 import javax.servlet.http.HttpServletRequest;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
@@ -39,6 +40,8 @@ public final class DatabaseHandler {
   // Accessing Datastore
   private static DatastoreService datastore =
          DatastoreServiceFactory.getDatastoreService();
+  public static final int MATCHING = 1;
+  public static final int MESSAGE = 2; 
 
   private DatabaseHandler() {
 
@@ -58,9 +61,9 @@ public final class DatabaseHandler {
     datastore.put(entity);    
   }
  
-  // Adding a user's notificaton to the databse
+  // Adding a user's notificaton to the database
   public static void addNotification(String firstId, String secondId,
-      long timestamp, String type) {
+      long timestamp, int type) {
     Entity entity = new Entity("Notification");
     entity.setProperty("userId", firstId);
     entity.setProperty("otherUserId", secondId);
@@ -86,14 +89,16 @@ public final class DatabaseHandler {
       String firstId = (String) entity.getProperty("userId");
       String secondId = (String) entity.getProperty("otherUserId");
       long timestamp = (long) entity.getProperty("timestamp");
-      String notificationType = (String) entity.getProperty("type");
+      long notificationType = (long) entity.getProperty("type");
        
       Notification notification;
 
-      if (notificationType.equals("matching")) {
+      if (notificationType == MATCHING) {
         notification = new MatchNotification(firstId, secondId, timestamp);
-      } else {
+      } else if (notificationType == MESSAGE) {
         notification = new MessageNotification(firstId, secondId, timestamp);
+      } else {
+        throw new IllegalArgumentException("Invalid notification type.");
       }
 
       notifications.add(notification);
@@ -129,8 +134,7 @@ public final class DatabaseHandler {
   // Method for getting all of a user's matches
   public static Collection<User> getUserMatches(String id) {
     Filter idFilter = new FilterPredicate("userId", FilterOperator.EQUAL, id);
-    Filter typeFilter = new FilterPredicate("type", FilterOperator.EQUAL, "matching");
-
+    Filter typeFilter = new FilterPredicate("type", FilterOperator.EQUAL, MATCHING);
 
     CompositeFilter compositeFilter = new CompositeFilter(CompositeFilterOperator.AND, 
       Arrays.asList(idFilter, typeFilter));

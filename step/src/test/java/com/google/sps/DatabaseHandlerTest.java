@@ -54,9 +54,9 @@ public final class DatabaseHandlerTest {
 
   // helper method for adding notifications to the database
   private void addNotificationsToDatabase() {
-    DatabaseHandler.addNotification("A", "B", 1, "matching");
-    DatabaseHandler.addNotification("B", "A", 1, "matching");
-    DatabaseHandler.addNotification("A", "B", 2, "message");
+    DatabaseHandler.addNotification("A", "B", 1, DatabaseHandler.MATCHING);
+    DatabaseHandler.addNotification("B", "A", 1, DatabaseHandler.MATCHING);
+    DatabaseHandler.addNotification("A", "B", 2, DatabaseHandler.MESSAGE);
   }
 
   @Test

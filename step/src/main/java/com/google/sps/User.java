@@ -26,7 +26,7 @@ public class User {
   private String email;
   private String name;
   private Collection<User> matches;
-  
+  private Key key;
 
   public User(String id) {
     this.id = id;
@@ -39,7 +39,10 @@ public class User {
 
   // Key getter method
   public Key getKey() {
-    return KeyFactory.createKey("User", id);
+    if (key == null) {
+      key = KeyFactory.createKey("User", id);
+    }
+    return key;
   }
 
   // Getter method for a user's email

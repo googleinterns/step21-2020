@@ -25,7 +25,6 @@ public class MessageNotification extends Notification {
   // Method for putting together and returning the text associated
   // with the notification.
   public String getText() {
-    // TODO: get rid of this when User class is updated to only take in ID
     User user = new User(otherUserId); 
     return NOTIFICATION_TEXT + user.getName();    
   }  

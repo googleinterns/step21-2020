@@ -79,7 +79,7 @@ public final class UserTest {
     MatchManager.generateMatch(USER_A);
     Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
 
-    // Test for when two users have been matches
+    // Test for when two users have been matched
     MatchManager.generateMatch(USER_B);
     Assert.assertEquals(USER_A.getMatches(), new ArrayList<>(Arrays.asList(USER_B)));
     Assert.assertTrue(USER_A.isMatchedWith(USER_B));
