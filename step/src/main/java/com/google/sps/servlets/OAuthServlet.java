@@ -54,6 +54,9 @@ import com.google.api.client.googleapis.extensions.appengine.auth.oauth2.AppIden
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.calendar.CalendarScopes;
+import com.google.api.client.googleapis.extensions.appengine.auth.oauth2.AppIdentityCredential.AppEngineCredentialWrapper;
+import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential; // https://googleapis.dev/java/google-api-client/latest/com/google/api/client/googleapis/testing/auth/oauth2/MockGoogleCredential.html
+// import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential.Builder; // couldn't find maven dependency to make it compile
 
 /* TODO: comment */
 @WebServlet("/cal")
@@ -133,8 +136,8 @@ public class OAuthServlet extends HttpServlet {
     /*  public Calendar(com.google.api.client.http.HttpTransport transport,
                     com.google.api.client.json.JsonFactory jsonFactory,
                     com.google.api.client.http.HttpRequestInitializer httpRequestInitializer)   */
-    String dummyUsername = "adam";
-    String dummyPassword = "1234";
+    // String dummyUsername = "adam";
+    // String dummyPassword = "1234";
     // Calendar service = new Calendar(new UrlFetchTransport(), // TODO fill this in
     //     new JacksonFactory(),
     //     new BasicAuthentication(dummyUsername, dummyPassword)); // HttpRequestInitializer is an interface
@@ -142,7 +145,22 @@ public class OAuthServlet extends HttpServlet {
     // FROYO tech help - https://github.com/pschuette22/Zeppa-AppEngine/blob/44e15520a3b08f507ba331a5651e3871fc454f4e/zeppa-api/src/main/java/com/zeppamobile/api/googlecalendar/GoogleCalendarUtils.java#L42
     JsonFactory FACTORY = new JacksonFactory();
     HttpTransport TRANSPORT = new NetHttpTransport();
-    AppIdentityCredential credential = makeServiceAccountCredential();
+    // AppIdentityCredential credential = makeServiceAccountCredential();
+    GoogleCredential credential = null;
+    try {
+      //  credential = AppEngineCredentialWrapper.getApplicationDefault();
+      //  if(credential.createScopeRequired()) {
+      //     List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
+      //     credential = credential.createScoped(scopes);
+      //  }
+    } catch (Exception e) {
+      System.out.println("There was a problem with GoogleCredential");
+      e.printStackTrace();
+    }
+    // Calendar service = new Calendar.Builder(TRANSPORT, FACTORY, credential).setApplicationName("Zeppa").build();
+
+    // Try MockGoogleCredential
+    credential = new MockGoogleCredential(new MockGoogleCredential.Builder.build());
     Calendar service = new Calendar.Builder(TRANSPORT, FACTORY, credential).setApplicationName("Zeppa").build();
 
     // Sample code from: https://developers.google.com/calendar/v3/reference/calendars/insert

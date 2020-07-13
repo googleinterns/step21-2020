@@ -38,7 +38,7 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
-      <version>1.30.9</version>
+      <version>1.30.10</version>
     </dependency>
     <!-- Java: import com.google.api.services.calendar.* -->
     <dependency>
@@ -94,6 +94,10 @@
       <artifactId>google-api-client-appengine</artifactId>
       <version>1.30.4</version>
     </dependency>
+    <!-- Java: import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential -->
+    <!-- <dependency>
+      <!-- Couldn't find maven dependency for MockGoogleCredential.Builder -->
+    </dependency> -->
   </dependencies>
   
 
