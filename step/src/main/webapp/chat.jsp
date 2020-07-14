@@ -40,8 +40,8 @@ limitations under the License.
             <br>
             <c:forEach items="${messages}" var="m">
                 <tr>
-                    <td><c:out value="${m.getID()}"/> to </td>
-                    <td><c:out value="${m.getUserID()}"/>: </td>
+                    <td><c:out value="${m.getSenderID()}"/> to </td>
+                    <td><c:out value="${m.getRecipientID()}"/>: </td>
                     <td><c:out value="${m.getText()}"/></td>
                     <td><c:out value="${m.timestamp()}"/></td>
                 </tr>

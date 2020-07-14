@@ -37,9 +37,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
 
 public final class MessageHandler {
-  // TODO: integrate datastore so that match requests aren't lost if the server restarts
-  private static User firstUser;
-  private static User secondUser;
+  // TODO: integrate datastore so that messages users send and receive from each other aren't lost if the server restarts
   private static List<Message> messages = new ArrayList<>();
   private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 

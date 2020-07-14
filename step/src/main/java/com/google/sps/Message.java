@@ -12,30 +12,32 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps.data;
+package com.google.sps;
 
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*; 
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
-/** Variables of a comment */
+/** Variables of a message */
 public final class Message {
-  private final String id; 
-  private final String userID; 
+  private final String sender; 
+  private final String recipient; 
   private final String text; 
   private final long timestamp;
 
-  public Message(String id, String userID, String text, long timestamp) {
-      this.id = id;
-      this.userID = userID;
+  public Message(String sender, String recipient, String text, long timestamp) {
+      this.sender = sender;
+      this.recipient = recipient;
       this.text = text;
       this.timestamp = timestamp;
   }
-  public String getID() {
-      return id;
+  public String getSenderID() {
+      return sender;
   }
-  public String getUserID() {
-      return userID;
+  public String getRecipientID() {
+      return recipient;
   }
   public String getText() {
       return text;
@@ -56,8 +58,8 @@ public final class Message {
     }
 
     Message message = (Message) other;
-    return this.id.equals(message.getID()) &&
-           this.userID.equals(message.getUserID()) &&
+    return this.sender.equals(message.getSenderID()) &&
+           this.recipient.equals(message.getRecipientID()) &&
            this.text.equals(message.getText()) &&
            String.valueOf(this.timestamp).equals(String.valueOf(message.timestamp()));
   }
@@ -65,7 +67,7 @@ public final class Message {
   //Overriden hashCode method
   @Override
   public int hashCode() {
-      return id.hashCode() * userID.hashCode();
+      return sender.hashCode() * recipient.hashCode();
   }
 }
 
