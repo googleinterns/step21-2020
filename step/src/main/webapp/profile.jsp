@@ -26,17 +26,26 @@ limitations under the License.
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <title>My Portfolio</title>
+    <title>Friend Matching Plus</title>
   </head>
-  <body>
+  <body onload="getMatches()">
     <nav>
         <a href="<%= logoutURL %>"> Log Out </a>
     </nav>
     <h1>Friend Matching Plus </h1>
-    <p>Here is your profile! </p>
 
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   
     } %>
+
+    <script>
+      function getMatches() {
+        fetch('/Homepage')
+          .then((response) => {
+            // TODO: print to screen
+            console.log(response.json());
+          });
+      }
+    </script>  
   </body>
 </html>

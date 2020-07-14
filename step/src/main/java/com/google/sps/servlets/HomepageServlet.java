@@ -16,6 +16,12 @@ package com.google.sps.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+import com.google.sps.DatabaseHandler;
+import com.google.sps.User;
+import com.google.sps.Notification;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import javax.servlet.annotation.WebServlet;
@@ -26,22 +32,40 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Homepage")
 public class HomepageServlet extends HttpServlet {
 
+  private static final int NUM_NOTIFS_TO_DISPLAY = 10;
+
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // Getting the current user's id
-    String id = userService.getCurrentUser().getUserId();
-
     response.setContentType("text/html");
     PrintWriter out = response.getWriter();
+    UserService userService = UserServiceFactory.getUserService();
+    String id = userService.getCurrentUser().getUserId();
 
-    Collection<User> userMatches = DatabaseHandler.getUserMatches();
+    Collection<User> userMatches = DatabaseHandler.getUserMatches(id);
+    Collection<Notification> notifications = DatabaseHandler.getUserNotifications(id);
+    JSONArray matchesArray = new JSONArray();
+    JSONArray notificationsArray = new JSONArray();
 
+    for (User match: userMatches) {
+      JSONObject matchJson = new JSONObject();
+      matchJson.put("name", match.getName());
+      matchJson.put("email", match.getEmail());
+      matchesArray.add(matchJson);
+    }
 
-  }
+    int notificationCounter = 0;
+    for (Notification notification: notifications) {
+      if (notificationCounter == NUM_NOTIFS_TO_DISPLAY) {
+        break;
+      }
+      notificationsArray.add(notification.getText());
+    }
 
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    JSONObject userData = new JSONObject();
+    userData.put("matches", matchesArray);
+    userData.put("notifications", notificationsArray);
 
+    out.println(userData);
   }
 
 }
