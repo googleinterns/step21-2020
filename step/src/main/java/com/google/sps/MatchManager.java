@@ -28,8 +28,14 @@ public final class MatchManager {
   }
 
   // Getter method for the match queue (for testing purposes)
-  public static Queue getMatchQueue() {
+  public static Queue<User> getMatchQueue() {
     return matchQueue;
+  }
+
+  // Getter method to return a deep copy of the match queue (for testing purposes).
+  // The returned queue can be modified without the changes effecting the actual match queue.
+  public static Queue<User> getDeepCopyMatchQueue() {
+    return new LinkedList<User>(matchQueue);
   }
 
   // FIFO matchmaker -- takes in the user who just requested a match and matches them
@@ -56,6 +62,7 @@ public final class MatchManager {
   // Helper method for actually adding to people into one another's matches and sending
   // notifications to both users
   private static void createMatch(User firstUser, User secondUser) {
+    System.out.println("MatchManager.createMatch()");
     long currTime = System.currentTimeMillis();
 
     DatabaseHandler.addNotification(firstUser.getId(), 

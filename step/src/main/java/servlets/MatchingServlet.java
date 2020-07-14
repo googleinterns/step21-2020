@@ -14,7 +14,14 @@
 
 package com.google.sps.servlets;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.sps.MatchManager;
+// import com.google.sps.User;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,6 +33,29 @@ public class MatchingServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     // TODO: implement
+  }
+
+  @Override
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    System.out.println("/matching.doPost()");
+
+    String requestType = request.getParameter("requestType");
+    if(requestType.equals("match-request")) {
+      System.out.println("/matching.doPost():match-request");
+
+      UserService userService = UserServiceFactory.getUserService();
+      com.google.appengine.api.users.User userServiceUser = userService.getCurrentUser();
+      com.google.sps.User currentUser = new com.google.sps.User(userServiceUser.getUserId());
+
+      MatchManager.generateMatch(currentUser);
+      Queue<com.google.sps.User> matchingQueue = MatchManager.getDeepCopyMatchQueue();
+      while (!matchingQueue.isEmpty()) {
+        System.out.println(matchingQueue.remove().getName()); // FIXME entity not found
+      }
+
+      response.sendRedirect("/profile.jsp");
+    }
+    
   }
 
 }
