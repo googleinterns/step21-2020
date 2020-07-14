@@ -64,7 +64,7 @@ limitations under the License.
             <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
             <div id="navbar-selection"> 
                 <a href="#personal-container">Personal Information</a>
-                <a href="#questionaire-container">Questionaire</a> 
+                <a href="#questionaire-container">Questionaire</a>
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
             </div>
@@ -117,22 +117,10 @@ limitations under the License.
             </div>
             <h3> Find a Match! </h3>
             <div class="find-a-match-container" id="find-a-match-container">
-              <!-- <button type="button" id="find-a-match-button" onclick="requestMatch()">Find a match!</button> -->
-
               <form action="/matching" method="post">
                 <input type="hidden" id="requestType" name="requestType" value="match-request">
-                <!-- <input type="hidden" id="userObj" name="userObj" value="<% userService.getCurrentUser(); %>"> -->
-                <!-- <input type="hidden" id="custId" name="custId" value="3487"> -->
                 <button type="submit" value="Submit">Find a match!</button>
-
-                <!-- <input type="submit" onclick="parseNumCharactersParam()"> -->
               </form>
-
-              <script type="text/javascript">
-                function requestMatch() {
-                  
-                }
-              </script>
             </div>
             <h3></h3> <!-- Padding at bottom of page -->
         </div>

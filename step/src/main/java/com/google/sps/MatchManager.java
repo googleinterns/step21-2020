@@ -62,7 +62,6 @@ public final class MatchManager {
   // Helper method for actually adding to people into one another's matches and sending
   // notifications to both users
   private static void createMatch(User firstUser, User secondUser) {
-    System.out.println("MatchManager.createMatch()");
     long currTime = System.currentTimeMillis();
 
     DatabaseHandler.addNotification(firstUser.getId(), 
