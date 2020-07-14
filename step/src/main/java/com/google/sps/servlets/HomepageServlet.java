@@ -53,6 +53,11 @@ public class HomepageServlet extends HttpServlet {
       matchesArray.add(matchJson);
     }
 
+    JSONObject testObject = new JSONObject();
+    testObject.put("name", "Match One");
+    testObject.put("email", "matchOne@email.com");
+    matchesArray.add(testObject);
+
     int notificationCounter = 0;
     for (Notification notification: notifications) {
       if (notificationCounter == NUM_NOTIFS_TO_DISPLAY) {
@@ -60,6 +65,8 @@ public class HomepageServlet extends HttpServlet {
       }
       notificationsArray.add(notification.getText());
     }
+    notificationsArray.add("You matched with Match One!");
+    notificationsArray.add("New message from Match One!");
 
     JSONObject userData = new JSONObject();
     userData.put("matches", matchesArray);

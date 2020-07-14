@@ -3,11 +3,13 @@
   margin-right: auto;
   width: 650px;
 }
+
 body {
     color: #000;
     background-color: #fff;
     font-family: 'Roboto', sans-serif;
 }
+
 nav {
   position: fixed;
   top: 0;
@@ -37,7 +39,21 @@ nav a:hover:not(.active) {
 }
 
 section {
-    margin-top: 10vh;
-    position: fixed;
+  margin-top: 10vh;
+  position: fixed;
 }
 
+.column {
+  display: grid;
+  grid-template-columns: 3fr 1fr;
+  column-gap: 10%;
+}
+
+.match-name {
+  margin-bottom: 0;
+}
+
+.match-email {
+  font-family: 'Arial', sans-serif;
+  margin-top: 0;
+}

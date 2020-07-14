@@ -34,6 +34,17 @@ limitations under the License.
     </nav>
     <h1>Friend Matching Plus </h1>
 
+    <div class="column">
+      <div id="match-container" class="row">
+        Matches
+      </div>
+      <div id="notification-container" class="row">
+        Notifications
+      </div>
+    </div>  
+
+
+
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   
     } %>
@@ -42,9 +53,55 @@ limitations under the License.
       function getMatches() {
         fetch('/Homepage')
           .then((response) => {
-            // TODO: print to screen
-            console.log(response.json());
+            return response.json();
+          })
+          .then((json) => {
+            matches = json["matches"];
+            notifications = json["notifications"];
+
+            renderMatches(matches);
+            renderNotifications(notifications);
           });
+      }
+
+      function renderMatches(matches) {
+        const matchContainer = document.getElementById('match-container');
+        matches.forEach(match => {
+          name = match["name"];
+          email = match["email"];
+
+          const matchDiv = document.createElement('div');
+
+          const nameElement = document.createElement('p');
+          nameElement.innerText = name;
+          nameElement.className = 'match-name';
+          matchDiv.appendChild(nameElement);
+          
+          const emailElement = document.createElement('p');
+          emailElement.innerText = email;
+          emailElement.className = 'match-email';
+          matchDiv.appendChild(emailElement);
+
+          matchDiv.className = 'match';
+          matchContainer.appendChild(matchDiv);
+
+          const lineBreak = document.createElement('br');
+          matchContainer.appendChild(lineBreak);
+        });
+
+      }
+
+      function renderNotifications(notifications) {
+        const notificationContainer = document.getElementById('notification-container');
+        notifications.forEach(notification => {
+          const notificationElement = document.createElement('p');
+          notificationElement.innerText = notification;
+          notificationContainer.appendChild(notificationElement);
+
+          const lineElement = document.createElement('hr');
+          lineElement.className = 'horizontal-line';
+          notificationContainer.appendChild(lineElement);
+        });
       }
     </script>  
   </body>
