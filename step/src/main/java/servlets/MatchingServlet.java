@@ -29,8 +29,8 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/matching")
 public class MatchingServlet extends HttpServlet {
 
-  public static String REQUEST_TYPE = "requestType";
-  public static String REQUEST_TYPE_MATCH = "match-request";
+  public static String REQUEST_TYPE = "request-type";
+  public static String REQUEST_TYPE_MATCH = "request-type-match";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {

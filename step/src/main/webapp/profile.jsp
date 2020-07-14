@@ -118,7 +118,7 @@ limitations under the License.
             <h3> Find a Match! </h3>
             <div class="find-a-match-container" id="find-a-match-container">
               <form action="/matching" method="post">
-                <input type="hidden" id="requestType" name="requestType" value="match-request">
+                <input type="hidden" id="request-type" name="request-type" value="request-type-match">
                 <button type="submit" value="Submit">Find a match!</button>
               </form>
             </div>
