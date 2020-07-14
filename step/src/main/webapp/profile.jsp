@@ -92,7 +92,9 @@ limitations under the License.
       }
 
       function renderNotifications(notifications) {
-        const notificationContainer = document.getElementById('notification-container');
+        const notificationContainer = 
+          document.getElementById('notification-container');
+          
         notifications.forEach(notification => {
           const notificationElement = document.createElement('p');
           notificationElement.innerText = notification;
