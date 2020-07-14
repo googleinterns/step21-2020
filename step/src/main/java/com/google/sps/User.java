@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
+
 public class User {
   
   private String userServiceUserId;
@@ -101,5 +102,4 @@ public class User {
   public int hashCode() { 
     return userServiceUserId.hashCode(); 
   }
-
 }

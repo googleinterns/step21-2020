@@ -12,21 +12,20 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.sps;
+package com.google.sps.servlets;
 
-public class MatchNotification extends Notification {
+import java.io.IOException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-  private static final String NOTIFICATION_TEXT =
-    "New match alert! You matched with ";
-  
-  public MatchNotification(String id, String otherUserId, long timestamp) {
-    super(id, otherUserId, timestamp);
+@WebServlet("/matching")
+public class MatchingServlet extends HttpServlet {
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    // TODO: implement
   }
 
-  // Method for putting together and returning the text associated
-  // with the notification.
-  public String getText() {
-    User user = new User(otherUserId);
-    return NOTIFICATION_TEXT + user.getName();      
-  }  
 }
