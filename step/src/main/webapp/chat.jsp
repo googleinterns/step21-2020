@@ -38,14 +38,16 @@ limitations under the License.
             <h1> Chat </h1>
             <label for="text"><b>Message</b></label>
             <br>
-            <c:forEach items="${conversations}" var="c">
+            <c:forEach items="${messages}" var="m">
                 <tr>
-                    <td><c:out value="${c.getID()}"/> to </td>
-                    <td><c:out value="${c.getUserID()}"/>: </td>
-                    <td><c:out value="${c.getText()}"/></td>
-                    <td><c:out value="${c.timestamp()}"/></td>
+                    <td><c:out value="${m.getID()}"/> to </td>
+                    <td><c:out value="${m.getUserID()}"/>: </td>
+                    <td><c:out value="${m.getText()}"/></td>
+                    <td><c:out value="${m.timestamp()}"/></td>
                 </tr>
             </c:forEach>
+            <% String user = request.getParameter("user"); %>
+            <input type="hidden" name="user" value="<%= user %>"> </input>
             <textarea placeholder="Type message.." name="text" required></textarea>
 
             <button type="submit" class="btn">Send</button>
