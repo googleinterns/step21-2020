@@ -54,6 +54,7 @@ public final class MessageHandler {
   }
 
   public static List<Message> getMessages(String id, String otherUserID) {
+    // Filter all the messages that the first user and the seconds user sent to each other
     Filter firstUserSenderFilter = new FilterPredicate("Sender", FilterOperator.EQUAL, id);
     Filter secondUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, otherUserID);
     Filter firstUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, id);
