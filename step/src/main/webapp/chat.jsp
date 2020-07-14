@@ -38,17 +38,13 @@ limitations under the License.
             <h1> Chat </h1>
             <label for="text"><b>Message</b></label>
             <br>
-            <c:forEach items="${messages}" var="message">
+            <c:forEach items="${conversations}" var="c">
                 <tr>
-                    <td> 
-                        <c:forEach items="${message.text}" var="text">
-                            <td><c:out value="${message.email}" /></td>
-                            <td><c:out value="${text}" /></td>
-                        </c:forEach>
-                    </td>
-                    <td><c:out value="${message.timestamp}" /></td>
+                    <td><c:out value="${c.getID()}"/> to </td>
+                    <td><c:out value="${c.getUserID()}"/>: </td>
+                    <td><c:out value="${c.getText()}"/></td>
+                    <td><c:out value="${c.timestamp()}"/></td>
                 </tr>
-                <br>
             </c:forEach>
             <textarea placeholder="Type message.." name="text" required></textarea>
 

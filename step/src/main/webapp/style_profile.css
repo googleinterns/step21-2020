@@ -19,9 +19,17 @@ body {
     margin: 0 auto;
     text-align: center;
 }
-img {
+#profile-pic > img {
     border-radius: 50%;
     width: 200px;
+}
+.match-pic {
+    display: inline;
+    padding: 20px;
+}
+.match-pic > img {
+    border-radius: 50%;
+    width: 100px;
 }
 #navbar-selection > a {
     text-decoration: none;

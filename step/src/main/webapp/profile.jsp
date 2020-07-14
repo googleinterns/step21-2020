@@ -112,6 +112,13 @@ limitations under the License.
                 </div> 
             </div>
             <h3> <a href="chat.jsp"> Your Matches </a> </h3>
+            <div class="matches-container" id="matches-container"> 
+                <!-- Link each picture with an id manually -->
+                <div class="match-pic"> <img src="avatar.png" alt="Profile Picture"> </div> <!-- 105190215126253104141 -->
+                <div class="match-pic"> <img src="avatar.png" alt="Profile Picture"> </div> <!-- 117015317981368465184 -->
+                <div class="match-pic"> <img src="avatar.png" alt="Profile Picture"> </div> <!-- 124226138196895601162 -->
+                <div class="match-pic"> <img src="avatar.png" alt="Profile Picture"> </div> <!-- 185804764220139124118 -->               
+            </div>
         </div>
     </div>
   </body>

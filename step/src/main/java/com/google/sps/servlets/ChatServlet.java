@@ -22,6 +22,7 @@ import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
 import com.google.sps.data.Message;
+import com.google.sps.data.Conversation;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import java.util.ArrayList;
@@ -37,26 +38,23 @@ import com.google.appengine.api.users.UserServiceFactory;
 @WebServlet("/Chat")
 public class ChatServlet extends HttpServlet {
 
-  List<String> messageList = new ArrayList<>();
-
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Query query = new Query("Message").addSort("timestamp", SortDirection.ASCENDING);
 
+    Query query = new Query("Conversation").addSort("timestamp", SortDirection.ASCENDING);
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     PreparedQuery results = datastore.prepare(query);
-
-    List<Message> messages = new ArrayList<>();
+    List<Conversation> conversations = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
-      long id = entity.getKey().getId();
-      String otherUserID = (String) entity.getProperty("otherUserID");
-      String email = (String) entity.getProperty("email");
-      long timestamp = (long) entity.getProperty("timestamp");
-      Message message = new Message(id,otherUserID, email, messageList, timestamp);
-      messages.add(message);
+        String id = (String) entity.getProperty("Sender");
+        String otherUserID = (String) entity.getProperty("Recipient");
+        String text = (String) entity.getProperty("Message");
+        long timestamp = (long) entity.getProperty("timestamp");
+        Conversation c = new Conversation(id, otherUserID, text, timestamp);
+        conversations.add(c);
     }
-    request.setAttribute("messages", messages);
-    request.getRequestDispatcher("/chat.jsp").forward(request, response);   
+    request.setAttribute("conversations", conversations);
+    request.getRequestDispatcher("chat.jsp").forward(request, response);
   }
 
   @Override
@@ -66,41 +64,14 @@ public class ChatServlet extends HttpServlet {
     String id = userService.getCurrentUser().getUserId();
     String otherUserID = "116864793199754962735"; // add a random user id
     String text = request.getParameter("text");
-    messageList.add(text);
     long timestamp = System.currentTimeMillis();
-
-    Entity messageEntity = new Entity("Message");
+    Entity messageEntity = new Entity("Conversation");
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query =
-        new Query("Message")
-            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id)).setFilter(new Query.FilterPredicate("otherUserID", Query.FilterOperator.EQUAL, otherUserID));
-    PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
-    if (entity != null) {
-        // If the person chat with each other before
-        entity.setProperty("text", messageList);
-        datastore.put(entity);
-    } else {
-        messageEntity.setProperty("id", id);
-        messageEntity.setProperty("otherUserID", otherUserID);
-        messageEntity.setProperty("email", email);
-        messageEntity.setProperty("text", messageList);
-        messageEntity.setProperty("timestamp", timestamp);
-        datastore.put(messageEntity);
-    }
+    messageEntity.setProperty("Sender",id);
+    messageEntity.setProperty("Recipient", otherUserID);
+    messageEntity.setProperty("Message", text);
+    messageEntity.setProperty("timestamp", timestamp);
+    datastore.put(messageEntity);
     doGet(request, response);
-  }
-
-  private boolean chatfirstTimeLogIn(String id, String otherUserID) {
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query =
-        new Query("Message")
-            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id)).setFilter(new Query.FilterPredicate("otherUserID", Query.FilterOperator.EQUAL, otherUserID));
-    PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
-    if (entity == null) {
-      return true;
-    }
-    return false;
   }
 }

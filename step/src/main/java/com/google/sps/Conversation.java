@@ -20,18 +20,23 @@ import java.io.*;
 import com.google.sps.data.Conversation;
 
 /** Variables of a comment */
-public final class Message {
-  private final long id; 
+public final class Conversation {
+  private final String id; 
+  private final String userID; 
   private final String text; 
   private final long timestamp;
 
-  public Message(long id, String text, long timestamp) {
+  public Conversation(String id, String userID, String text, long timestamp) {
       this.id = id;
+      this.userID = userID;
       this.text = text;
       this.timestamp = timestamp;
   }
-  public long getID() {
+  public String getID() {
       return id;
+  }
+  public String getUserID() {
+      return userID;
   }
   public String getText() {
       return text;
