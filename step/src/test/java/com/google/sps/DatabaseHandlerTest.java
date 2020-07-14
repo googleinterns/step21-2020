@@ -14,6 +14,7 @@
 
 package com.google.sps;
 
+import java.lang.IllegalArgumentException;
 import java.util.HashSet;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -21,75 +22,116 @@ import java.util.Collection;
 import java.util.NoSuchElementException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.apache.commons.collections4.CollectionUtils;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /** */
 @RunWith(JUnit4.class)
 public final class DatabaseHandlerTest {
 
-  private static final User USER_A = new User(1, "userA@email.com", "User A");
-  private static final User USER_B = new User(2, "userB@email.com", "User B");
-  private static final User USER_C = new User(3, "userC@email.com", "User C");
+  // local datastore service for testing
+  private final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-  private static final Notification MATCH_NOTIFICATION =
-    new MatchNotification(1, "User A", 1);
-  private static final Notification MESSAGE_NOTIFICATION =
-    new MessageNotification(2, "User B", 2);  
+  @Before
+  public void setUp() {
+    helper.setUp();
+  }
 
-  // Adds a user to the database and then retrieves that user to ensure it was
-  // added correctly.
+  @After
+  public void tearDown() {
+    helper.tearDown();
+  }
+
+  // helper method for adding a user to the database
+  private void addUserToDatabase() {
+    DatabaseHandler.addUser("User", "A", 1, 1, 2000, "userA@email.com", "1");
+  }
+
+  // helper method for adding notifications to the database
+  private void addNotificationsToDatabase() {
+    DatabaseHandler.addNotification("A", "B", 1, DatabaseHandler.MATCHING);
+    DatabaseHandler.addNotification("B", "A", 1, DatabaseHandler.MATCHING);
+    DatabaseHandler.addNotification("A", "B", 2, DatabaseHandler.MESSAGE);
+  }
+
+  private void addInvalidNotificationToDatabase() {
+    // The last paramater is illegal because the number used doesn't correspond
+    // to one of the allowed notification types
+    DatabaseHandler.addNotification("A", "B", 1, 2000);
+  }
+
   @Test
-  // Adds a user to the database and then retrieves that user to ensure it was
-  // added correctly.
-  public void testAddAndGetUser() {
-    DatabaseHandler.addUserToDatabase(USER_A);
-
-    User fetchedUser = DatabaseHandler.getUserById(1);
-    Assert.assertEquals(fetchedUser, USER_A);
-    DatabaseHandler.clearSavedUsers();
+  // Testing that a user's email is retrieved correctly
+  public void testGetEmail() {
+    addUserToDatabase();
+    String email = DatabaseHandler.getUserEmail("1");
+    Assert.assertEquals(email, "userA@email.com");
   }
 
-  // Tests that a NoSuchElementException is thrown when a user is retrieved who
-  // is not in the database.
-  @Test(expected = NoSuchElementException.class)
-  public void testNoSuchElementException() {
-    DatabaseHandler.getUserById(USER_B.getId());
+  @Test
+  // Testing that a user's name is retrieved correctly
+  public void testGetUserName() {
+    addUserToDatabase();
+    String name = DatabaseHandler.getUserName("1");
+    Assert.assertEquals(name, "User A");
   }
 
-  // Adds and removes a user from the databse then checks that an exception is
-  // thrown when that user is fetched again.
-  @Test(expected = NoSuchElementException.class)
-  public void TestRemoveElement() {
-    DatabaseHandler.addUserToDatabase(USER_A);
-    DatabaseHandler.removeUserById(USER_A.getId());
-    DatabaseHandler.getUserById(USER_A.getId());  
+  @Test
+  // Test for when there is no such user in the databse
+  public void testNoSuchUser() {
+    String email = DatabaseHandler.getUserEmail("1");
+    Assert.assertEquals(email, null);
+    String name = DatabaseHandler.getUserName("1");
+    Assert.assertEquals(name, null);
   }
 
-  // Test for adding and retrieving notifications
-  @Test(expected = NoSuchElementException.class)
-  public void testAddAndGetNotifications() {
-    
-    /* Case where the user does not have any notifications yet and so
-       has not been added to the notification datastore. This should
-       throw a NoSuchElementException */ 
-    DatabaseHandler.getNotificationsById(USER_A.getId());
+  @Test
+  // Test for when a user has no notifications
+  public void testNoNotifications() {
+    Assert.assertEquals(DatabaseHandler.getUserNotifications("C"), new LinkedList<>());
+  }
 
-    // Adding and retrieving one notification
-    DatabaseHandler.addNotification(MATCH_NOTIFICATION);
-    Collection<Notification> actual =
-      DatabaseHandler.getNotificationsById(USER_A.getId());
-    Collection<Notification> expected =
-      new LinkedList<>(Arrays.asList(MATCH_NOTIFICATION));
+  @Test
+  // Testing notification fetching
+  public void testGetNotifications() {
+    addNotificationsToDatabase();
+    Collection<Notification> actual = DatabaseHandler.getUserNotifications("A");
+    Collection<Notification> expected = new LinkedList<>(Arrays.asList(
+      new MessageNotification("A", "B", 2), new MatchNotification("A", "B", 1)));
     Assert.assertEquals(actual, expected);
 
-    // Adding another notification and retrieving all notifications
-    // Notifications should be ordered from most recent to oldest
-    DatabaseHandler.addNotification(MESSAGE_NOTIFICATION);
-    actual = DatabaseHandler.getNotificationsById(USER_A.getId());
-    expected = new LinkedList<>(Arrays.asList(MESSAGE_NOTIFICATION, MATCH_NOTIFICATION));
-    Assert.assertEquals(actual, expected);          
+    actual = DatabaseHandler.getUserNotifications("B");
+    expected = new LinkedList<>(Arrays.asList(
+      new MatchNotification("B", "A", 1)));
+    Assert.assertEquals(actual, expected);    
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  // Test for when a notification has an illegal type
+  public void testGetInvalidNotification() {
+    addInvalidNotificationToDatabase();
+    DatabaseHandler.getUserNotifications("A");
+  } 
+
+  @Test
+  // Testing match fetching for a user with no matches
+  public void testNoMatches() {
+    Assert.assertEquals(DatabaseHandler.getUserMatches("A"), new LinkedList<>());
+  }
+
+  @Test
+  // Testing match fetching for users with matches
+  public void testGetMatches() {
+   addNotificationsToDatabase();
+   Collection<User> actual = DatabaseHandler.getUserMatches("A"); 
+   Collection<User> expected = new LinkedList<>(Arrays.asList(new User("B"))); 
+   Assert.assertEquals(actual, expected); 
   }
 
 }

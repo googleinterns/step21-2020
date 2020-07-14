@@ -19,26 +19,43 @@ import java.util.Collection;
 import java.util.Arrays;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.apache.commons.collections4.CollectionUtils;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /** */
 @RunWith(JUnit4.class)
 public final class MatchManagerTest {
 
   // Some people that we can use in our tests.
-  private static final User USER_A = new User(1, "userA@email.com", "User A");
-  private static final User USER_B = new User(2, "userB@email.com", "User B");
-  private static final User USER_C = new User(3, "userC@email.com", "User C");
+  private static final User USER_A = new User("1");
+  private static final User USER_B = new User("2");
+  private static final User USER_C = new User("3");
 
+  // local datastore service for testing
+  private final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());
 
-  private void breakDown(Collection<User> users) {
+  @Before
+  public void setUp() {
+    helper.setUp();
+  }
+
+  @After
+  public void tearDown() {
+    helper.tearDown();
     MatchManager.clearQueue();
+  }
 
-    for (User user: users) {
-      user.clearMatches();  
-    }
+  // helper method for adding a user to the database
+  private void addUserToDatabase() {
+    DatabaseHandler.addUser("User", "A", 1, 1, 2000, "userA@email.com", "1");
+    DatabaseHandler.addUser("User", "B", 2, 2, 2002, "userB@email.com", "2");
+    DatabaseHandler.addUser("User", "C", 3, 3, 2003, "userC@email.com", "3");
   }
 
   @Test
@@ -50,9 +67,7 @@ public final class MatchManagerTest {
     Queue matchQueue = MatchManager.getMatchQueue();
 
     Assert.assertTrue(matchQueue.contains(USER_A));
-    Assert.assertTrue(CollectionUtils.isEmpty(USER_A.getMatches()));
-    
-    breakDown(Arrays.asList(USER_A));  
+    Assert.assertTrue(CollectionUtils.isEmpty(USER_A.getMatches()));  
   }
 
   @Test
@@ -65,9 +80,7 @@ public final class MatchManagerTest {
 
     Assert.assertTrue(matchQueue.isEmpty());
     Assert.assertTrue(USER_A.isMatchedWith(USER_B));
-    Assert.assertTrue(USER_B.isMatchedWith(USER_A));
-
-    breakDown(Arrays.asList(USER_A, USER_B));  
+    Assert.assertTrue(USER_B.isMatchedWith(USER_A));  
   }
 
   @Test
@@ -79,9 +92,7 @@ public final class MatchManagerTest {
 
     Queue matchQueue = MatchManager.getMatchQueue();
 
-    Assert.assertTrue(matchQueue.contains(USER_A));
-
-    breakDown(Arrays.asList(USER_A));    
+    Assert.assertTrue(matchQueue.contains(USER_A));   
   }
 
   @Test
@@ -111,8 +122,6 @@ public final class MatchManagerTest {
 
     Assert.assertTrue(matchQueue.isEmpty());
     Assert.assertTrue(USER_B.isMatchedWith(USER_C));
-    Assert.assertTrue(USER_C.isMatchedWith(USER_B));
-
-    breakDown(Arrays.asList(USER_A, USER_B, USER_C));    
+    Assert.assertTrue(USER_C.isMatchedWith(USER_B));  
   }
 }

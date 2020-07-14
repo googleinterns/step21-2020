@@ -19,60 +19,85 @@ import java.util.Arrays;
 import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.Before;
+import org.junit.After;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.apache.commons.collections4.CollectionUtils;
+import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
+import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 
 /** */
 @RunWith(JUnit4.class)
 public final class UserTest {
 
-  // Some people that we can use in our tests.
-  private static final User USER_A = new User(1, "userA@email.com", "User A");
-  private static final User USER_B = new User(2, "userB@email.com", "User B");
+  private static final User USER_A = new User("1");
+  private static final User USER_B = new User("2");
 
-  @Test
-  public void testGetId() {
-    Assert.assertEquals(USER_A.getId(), 1);    
+  // local datastore service for testing
+  private final LocalServiceTestHelper helper =
+      new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());  
+
+  @Before
+  public void setUp() {
+    helper.setUp();
+    addUsersToDatabase();
+  }
+
+  @After
+  public void tearDown() {
+    helper.tearDown();
+  }
+
+  // helper method for adding a user to the database
+  private void addUsersToDatabase() {
+    DatabaseHandler.addUser("User", "A", 1, 1, 2000, "userA@email.com", "1");
+    DatabaseHandler.addUser("User", "B", 2, 2, 2002, "userB@email.com", "2");
   }
 
   @Test
+  // Testing email fetching
   public void testGetEmail() {
     Assert.assertEquals(USER_A.getEmail(), "userA@email.com");
+    Assert.assertEquals(USER_B.getEmail(), "userB@email.com");
   }
 
   @Test
+  // Testing name fetching
   public void testGetName() {
-    Assert.assertEquals(USER_A.getName(), "User A");  
+    Assert.assertEquals(USER_A.getName(), "User A");
+    Assert.assertEquals(USER_B.getName(), "User B");  
   }
 
   @Test
+  // Testing match fetching
   public void testMatchFunctionality() {
-    Assert.assertEquals(USER_A.getMatches(), new HashSet<>());
+    // Test for when a user does not yet have any matches
+    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
 
-    USER_A.addMatch(USER_B);
-    Assert.assertEquals(USER_A.getMatches(),
-      new HashSet<User>(Arrays.asList(USER_B)));
-    Assert.assertTrue(USER_A.isMatchedWith(USER_B));  
+    // Test for when the user is the only person in the queue
+    MatchManager.generateMatch(USER_A);
+    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
 
-    USER_A.removeMatch(USER_B);
-    Assert.assertEquals(USER_A.getMatches(), new HashSet<>());
-    Assert.assertFalse(USER_A.isMatchedWith(USER_B));
-
-    USER_A.addMatch(USER_B);
-    USER_A.clearMatches();
-    Assert.assertEquals(USER_A.getMatches(), new HashSet<>());      
+    // Test for when two users have been matched
+    MatchManager.generateMatch(USER_B);
+    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>(Arrays.asList(USER_B)));
+    Assert.assertTrue(USER_A.isMatchedWith(USER_B));
+    Assert.assertEquals(USER_B.getMatches(), new ArrayList<>(Arrays.asList(USER_A)));
+    Assert.assertTrue(USER_B.isMatchedWith(USER_A));  
   }
 
   @Test
+  // Testing the overriden equals method in the User class
   public void testEquals() {
     Assert.assertEquals(USER_A, USER_A);
     Assert.assertNotEquals(USER_A, USER_B);    
   }
 
   @Test
+  // Testing the overriden hashcode method in the User class
   public void testHashCode() {
-    Assert.assertEquals(USER_A.hashCode(), USER_A.getEmail().hashCode());  
+    Assert.assertEquals(USER_A.hashCode(), "1".hashCode());  
   }
 
 }

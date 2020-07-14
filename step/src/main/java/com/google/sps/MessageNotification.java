@@ -18,13 +18,14 @@ public class MessageNotification extends Notification {
 
   private static final String NOTIFICATION_TEXT = "New message from ";
   
-  public MessageNotification(String id, String otherUser, long timestamp) {
-    super(id, otherUser, timestamp);
+  public MessageNotification(String id, String otherUserId, long timestamp) {
+    super(id, otherUserId, timestamp);
   }
 
   // Method for putting together and returning the text associated
   // with the notification.
   public String getText() {
-    return NOTIFICATION_TEXT + otherUser;    
+    User user = new User(otherUserId); 
+    return NOTIFICATION_TEXT + user.getName();    
   }  
 }
