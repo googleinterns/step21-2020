@@ -19,8 +19,10 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.sps.DatabaseHandler;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +38,9 @@ public class InfoServlet extends HttpServlet {
   // The class stores the user' personal information data
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    User user = UserServiceFactory.getUserService().getCurrentUser();
     HttpSession session = request.getSession();
+
     String firstName = request.getParameter("firstName");
     session.setAttribute("firstName", firstName);
     String lastName = request.getParameter("lastName");
@@ -46,24 +50,10 @@ public class InfoServlet extends HttpServlet {
     int monthBirth = Integer.parseInt(request.getParameter("monthBirth"));
     session.setAttribute("monthBirth", monthBirth);
     int yearBirth = Integer.parseInt(request.getParameter("yearBirth"));
-    session.setAttribute("yearBirth", yearBirth);
-
-    UserService userService = UserServiceFactory.getUserService();
-    String email = userService.getCurrentUser().getEmail();
-    String id = userService.getCurrentUser().getUserId();
-
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Query query =
-        new Query("UserInfo")
-            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
-    PreparedQuery results = datastore.prepare(query);
-    Entity entity = results.asSingleEntity();
-    entity.setProperty("firstName", firstName);
-    entity.setProperty("lastName", lastName);
-    entity.setProperty("dayBirth", dayBirth);
-    entity.setProperty("monthBirth", monthBirth);
-    entity.setProperty("yearBirth", yearBirth);
-    datastore.put(entity);
+    String email = user.getEmail();
+    String id = user.getUserId();
+    
+    DatabaseHandler.addUser(firstName, lastName, dayBirth, monthBirth, yearBirth, email, id);
     response.sendRedirect("prefForm.jsp");
   }
 }

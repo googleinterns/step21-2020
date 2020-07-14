@@ -17,59 +17,68 @@ package com.google.sps;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.ArrayList;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
+
 
 public class User {
   
-  private long id;
+  private String userServiceUserId;
   private String email;
   private String name;
   private Collection<User> matches;
+  private Key key;
 
-  // TODO: determine what fields we want.
-  // TODO: update the constructor so that it only needs to take
-  //       in an id, and the other fields can then be looked up
-  //       in the database. this update will be made when data-
-  //       -store is integrated
-  public User(long id, String email, String name) {
-    this.id = id;
-    this.email = email;
-    this.name = name;
-    //TODO: update this to fetch from database instead of making a new hashset    
-    this.matches = new HashSet<>();
+  public User(String userServiceUserId) {
+    this.userServiceUserId = userServiceUserId;
   }
 
-  public long getId() {
-    return id;    
+  // ID getter method
+  public String getId() {
+    return userServiceUserId;    
+  }
+
+  // Key getter method
+  public Key getKey() {
+    if (key == null) {
+      key = KeyFactory.createKey("User", userServiceUserId);
+    }
+    return key;
   }
 
   // Getter method for a user's email
   public String getEmail() {
+    if (email == null) {
+      email = DatabaseHandler.getUserEmail(userServiceUserId);
+    }
     return email;  
   }
 
   // Getter method for a user's name
   public String getName() {
+    if (name == null) {
+      name = DatabaseHandler.getUserName(userServiceUserId);
+    }
     return name;  
   }
 
   // Getter method for a user's matches
   public Collection<User> getMatches() {
-    return matches;    
+    if (matches == null) {
+      matches = DatabaseHandler.getUserMatches(userServiceUserId);
+    }
+    return matches;   
   }
 
-  // Method for adding a match for a user
-  public void addMatch(User user) {
-    matches.add(user);   
+  // Method for updating a user's matches -- called after the user gets a new match
+  public void updateMatches() {
+    matches = DatabaseHandler.getUserMatches(userServiceUserId);
   }
 
-  // Method for removing a match for a user
-  public void removeMatch(User user) {
-    if (matches.contains(user)) {
-      matches.remove(user);  
-    }  
-  }
-
+  // Method for checking if a user is matched with another user
   public boolean isMatchedWith(User user) {
+    // ensuring that the matches field is instantiated
+    updateMatches();
     return matches.contains(user);   
   }
 
@@ -85,18 +94,12 @@ public class User {
     }
      
     User user = (User) obj; 
-    return this.email.equals(user.getEmail()); 
+    return this.userServiceUserId.equals(user.getId()); 
   }
 
   // Overriden hashCode method
   @Override
   public int hashCode() { 
-    return email.hashCode(); 
+    return userServiceUserId.hashCode(); 
   }
-
-  // Method for clearing all of a user's matches
-  public void clearMatches() {
-    matches = new HashSet<>();  
-  }
-
 }
