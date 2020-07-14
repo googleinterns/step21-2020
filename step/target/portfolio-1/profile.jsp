@@ -52,7 +52,7 @@ limitations under the License.
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query =
-        new Query("UserInfo")
+        new Query("User")
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
@@ -111,7 +111,19 @@ limitations under the License.
                     <div class="item-info"> <%= (String) entity.getProperty("q5")%> </div>
                 </div> 
             </div>
-            <h3> Your Matches </h3>
+            <h3> <a href="chat.jsp"> Your Matches </a> </h3>
+            <div class="matches-container" id="matches-container"> 
+                <!-- Link each picture with an id manually -->
+                <form id="matches" action="chat.jsp" method="POST"> 
+                    <!-- These values here are users' id. Currently, they are created manually to get tested. In the future, it would be added automatically after a new match -->
+                    <input type="radio" oninput="this.className = ''" name="user" value="105190215126253104141" id="m1"> </input> 
+                    <input type="radio" oninput="this.className = ''" name="user" value="117015317981368465184" id="m2"> </input>
+                    <input type="radio" oninput="this.className = ''" name="user" value="124226138196895601162" id="m3"> </input>
+                    <input type="radio" oninput="this.className = ''" name="user" value="185804764220139124118" id="m4"> </input>
+                    <input type="radio" oninput="this.className = ''" name="user" value="113287168061472172812" id="m4"> </input> <!-- admin -->
+                    <input type="submit" name="Submit"> </input>
+                </form>
+            </div>
         </div>
     </div>
   </body>

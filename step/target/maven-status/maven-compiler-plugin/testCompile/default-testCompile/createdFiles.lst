@@ -1,3 +1,5 @@
-com/google/sps/UserTest.class
-com/google/sps/MatchManagerTest.class
 com/google/sps/DatabaseHandlerTest.class
+com/google/sps/UserTest.class
+com/google/sps/MessageTest.class
+com/google/sps/MatchManagerTest.class
+com/google/sps/MessageHandlerTest.class

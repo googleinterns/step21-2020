@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
-import com.google.sps.data.Message;
+import com.google.sps.Message;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -41,15 +41,12 @@ public final class MessageHandler {
   private static List<Message> messages = new ArrayList<>();
   private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
-  public static void addMessage(String id, String otherUserID, String text, long timestamp) {
-    // Check if the user'id exists in Datastore
-    User firstUser = getUser(id);
-    User secondUser = getUser(otherUserID);
+  public static void addMessage(Message m) {
     Entity messageEntity = new Entity("Message");
-    messageEntity.setProperty("Sender",id);
-    messageEntity.setProperty("Recipient", otherUserID);
-    messageEntity.setProperty("Text", text);
-    messageEntity.setProperty("timestamp", timestamp);
+    messageEntity.setProperty("Sender",m.getSenderID());
+    messageEntity.setProperty("Recipient", m.getRecipientID());
+    messageEntity.setProperty("Text", m.getText());
+    messageEntity.setProperty("timestamp", m.timestamp());
     datastore.put(messageEntity);
   }
 
@@ -80,15 +77,4 @@ public final class MessageHandler {
     }
     return messages;
   } 
-
-  public static User getUser(String id) {
-    try {
-        Entity user = datastore.get((new User(id)).getKey());
-        User u = new User(id);
-        return u;
-    } catch (EntityNotFoundException e) {
-        System.err.println("The user does not exist ");
-        return null;
-    }
-  }
 }

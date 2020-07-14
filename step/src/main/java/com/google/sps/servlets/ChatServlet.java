@@ -21,7 +21,7 @@ import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
 import com.google.gson.Gson;
-import com.google.sps.data.Message;
+import com.google.sps.Message;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import java.util.ArrayList;
@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-/** Servlet responsible for listing tasks. */
+/** Servlet responsible for listing messages. */
 @WebServlet("/Chat")
 public class ChatServlet extends HttpServlet {
 
@@ -58,7 +58,8 @@ public class ChatServlet extends HttpServlet {
     String otherUserID = request.getParameter("user");
     String text = request.getParameter("text");
     long timestamp = System.currentTimeMillis();
-    MessageHandler.addMessage(id, otherUserID, text, timestamp);
+    Message m = new Message(id, otherUserID, text, timestamp);
+    MessageHandler.addMessage(m);
     doGet(request, response);
   }
 }

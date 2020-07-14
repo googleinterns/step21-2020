@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="3" failures="0" name="com.google.sps.DatabaseHandlerTest" time="0.005" errors="0" skipped="0">
+<testsuite tests="8" failures="0" name="com.google.sps.DatabaseHandlerTest" time="0.146" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="OpenJDK Runtime Environment"/>
     <property name="java.vm.version" value="11.0.7+10-post-Debian-3deb10u1"/>
@@ -60,7 +60,12 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value=""/>
   </properties>
-  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testAddAndGetUser" time="0.003"/>
-  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testNoSuchElementException" time="0.001"/>
-  <testcase classname="com.google.sps.DatabaseHandlerTest" name="TestRemoveElement" time="0.001"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testGetEmail" time="0.031"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testNoSuchUser" time="0.012"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testGetInvalidNotification" time="0.023"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testGetNotifications" time="0.035"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testNoNotifications" time="0.008"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testGetUserName" time="0.007"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testGetMatches" time="0.018"/>
+  <testcase classname="com.google.sps.DatabaseHandlerTest" name="testNoMatches" time="0.012"/>
 </testsuite>
