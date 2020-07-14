@@ -68,7 +68,7 @@ public class LogInServlet extends HttpServlet {
     String id = userService.getCurrentUser().getUserId();
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    Entity entity = new Entity("UserInfo", id);
+    Entity entity = new Entity("User", id);
     entity.setProperty("id", id);
     entity.setProperty("email", email);
     // The put() function automatically inserts new data or updates existing data based on ID
@@ -80,7 +80,7 @@ public class LogInServlet extends HttpServlet {
   private boolean firstTimeLogIn(String id) {
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query =
-        new Query("UserInfo")
+        new Query("User")
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();

@@ -15,12 +15,81 @@
 package com.google.sps;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.Queue;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.UUID;
+import com.google.sps.data.Message;
+import com.google.appengine.api.datastore.PreparedQuery;
+import com.google.appengine.api.datastore.Query;
+import com.google.appengine.api.datastore.Query.SortDirection;
+import com.google.appengine.api.datastore.Query.CompositeFilter;
+import com.google.appengine.api.datastore.Query.CompositeFilterOperator;
+import com.google.appengine.api.datastore.Query.Filter;
+import com.google.appengine.api.datastore.Query.FilterOperator;
+import com.google.appengine.api.datastore.Query.FilterPredicate;
+import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.EntityNotFoundException;
+import com.google.appengine.api.datastore.DatastoreService;
+import com.google.appengine.api.datastore.DatastoreServiceFactory;
+
 
 public final class MessageHandler {
-  private static Map<Long, User> userMap = new HashMap<>();
-  private static Map<Long, Collection<Notification>> notificationMap = new HashMap<>();
+  // TODO: integrate datastore so that match requests aren't lost if the server restarts
+  private static User firstUser;
+  private static User secondUser;
+  private static List<Message> messages = new ArrayList<>();
+  private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
+  public static void addMessage(String id, String otherUserID, String text, long timestamp) {
+    // Check if the user'id exists in Datastore
+    User firstUser = getUser(id);
+    User secondUser = getUser(otherUserID);
+    Entity messageEntity = new Entity("Message");
+    messageEntity.setProperty("Sender",id);
+    messageEntity.setProperty("Recipient", otherUserID);
+    messageEntity.setProperty("Text", text);
+    messageEntity.setProperty("timestamp", timestamp);
+    datastore.put(messageEntity);
+  }
+
+  public static List<Message> getMessages(String id, String otherUserID) {
+    Filter firstUserSenderFilter = new FilterPredicate("Sender", FilterOperator.EQUAL, id);
+    Filter secondUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, otherUserID);
+    Filter firstUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, id);
+    Filter secondUserSenderFilter = new FilterPredicate("Sender", FilterOperator.EQUAL, otherUserID);
+
+    CompositeFilter compositeFilter = new CompositeFilter(CompositeFilterOperator.OR, Arrays.asList(
+        new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(
+            firstUserSenderFilter, secondUserRecipientFilter)), 
+        new CompositeFilter(CompositeFilterOperator.AND, Arrays.asList(
+            firstUserRecipientFilter, secondUserSenderFilter
+    ))));
+
+    Query query = new Query("Message").setFilter(compositeFilter).addSort("timestamp", SortDirection.ASCENDING);;
+    PreparedQuery results = datastore.prepare(query);
+    List<Message> messages = new ArrayList<>();
+    for (Entity entity : results.asIterable()) {
+        String sender = (String) entity.getProperty("Sender");
+        String recipient = (String) entity.getProperty("Recipient");
+        String text = (String) entity.getProperty("Text");
+        long timestamp = (long) entity.getProperty("timestamp");
+        Message m = new Message(sender, recipient, text, timestamp);
+        messages.add(m);
+    }
+    return messages;
+  } 
+
+  public static User getUser(String id) {
+    try {
+        Entity user = datastore.get((new User(id)).getKey());
+        User u = new User(id);
+        return u;
+    } catch (EntityNotFoundException e) {
+        System.err.println("The user does not exist ");
+        return null;
+    }
+  }
 }

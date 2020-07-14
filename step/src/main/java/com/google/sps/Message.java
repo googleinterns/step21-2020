@@ -47,7 +47,19 @@ public final class Message {
   //Overriden equals method
   @Override
   public boolean equals(Object other) {
-    return other instanceof Message && equals(this, (Message) other);
+    if (this == other) {
+        return true;
+    }
+
+    if (other == null || this.getClass() != other.getClass()) {
+        return false;
+    }
+
+    Message message = (Message) other;
+    return this.id.equals(message.getID()) &&
+           this.userID.equals(message.getUserID()) &&
+           this.text.equals(message.getText()) &&
+           String.valueOf(this.timestamp).equals(String.valueOf(message.timestamp()));
   }
 
   //Overriden hashCode method

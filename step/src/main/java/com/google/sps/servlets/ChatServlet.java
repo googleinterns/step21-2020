@@ -27,6 +27,8 @@ import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
+import com.google.sps.DatabaseHandler;
+import com.google.sps.MessageHandler;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,24 +41,14 @@ public class ChatServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    Query query = new Query("Message").addSort("timestamp", SortDirection.ASCENDING);
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+    // Query query = new Query("Message").addSort("timestamp", SortDirection.ASCENDING);
+    // DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     UserService userService = UserServiceFactory.getUserService();
-    PreparedQuery results = datastore.prepare(query);
+    // PreparedQuery results = datastore.prepare(query);
     String id = userService.getCurrentUser().getUserId();
-    String otherUserID = request.getParameter("user"); // add a random user id
+    String otherUserID = request.getParameter("user");
     List<Message> messages = new ArrayList<>();
-    for (Entity entity : results.asIterable()) {
-        // Filter the messages two users text each other from the messaging database
-        if ((entity.getProperty("Sender").equals(otherUserID) && entity.getProperty("Recipient").equals(id)) || (entity.getProperty("Recipient").equals(otherUserID) && entity.getProperty("Sender").equals(id))) {
-            String sender = (String) entity.getProperty("Sender");
-            String recipient = (String) entity.getProperty("Recipient");
-            String text = (String) entity.getProperty("Text");
-            long timestamp = (long) entity.getProperty("timestamp");
-            Message m = new Message(sender, recipient, text, timestamp);
-            messages.add(m);
-        }
-    }
+    messages = MessageHandler.getMessages(id, otherUserID);
     request.setAttribute("messages", messages);
     request.getRequestDispatcher("chat.jsp").forward(request, response);
   }
@@ -67,16 +59,9 @@ public class ChatServlet extends HttpServlet {
     String email = userService.getCurrentUser().getEmail();
     String id = userService.getCurrentUser().getUserId();
     String otherUserID = request.getParameter("user");
-    //String otherUserID = "116864793199754962735"; // add a random user id
     String text = request.getParameter("text");
     long timestamp = System.currentTimeMillis();
-    Entity messageEntity = new Entity("Message");
-    DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-    messageEntity.setProperty("Sender",id);
-    messageEntity.setProperty("Recipient", otherUserID);
-    messageEntity.setProperty("Text", text);
-    messageEntity.setProperty("timestamp", timestamp);
-    datastore.put(messageEntity);
+    MessageHandler.addMessage(id, otherUserID, text, timestamp);
     doGet(request, response);
   }
 }
