@@ -130,36 +130,6 @@ public final class DatabaseHandler {
       return null;
     }
   }
- 
-  // Storing a user's notification
-  public static void addNotification(Notification notification) {
-    long userId = notification.getId();
-    
-    // adding the user to the hashmap if they're not already in there
-    if (!notificationMap.containsKey(userId)) {
-      notificationMap.put(userId, new LinkedList<>());      
-    }
-    
-    // retrieving the user's list of notifications, adding the new notification
-    // to it, and adding it to the hashmap
-    LinkedList<Notification> userNotifications = (LinkedList) notificationMap.get(userId);
-    userNotifications.addFirst(notification);
-    notificationMap.put(notification.getId(), userNotifications);
-  }
-
-  // Getting a user's notifications using their id
-  public static Collection<Notification> getNotificationsById(long id) {
-    if (notificationMap.containsKey(id)) {
-      return notificationMap.get(id);    
-    } else {
-      throw new NoSuchElementException();  
-    }      
-  }
-
-  // Method for clearing all saved user data
-  public static void clearSavedUsers() {
-    userMap = new HashMap<>();  
-  }
 
   // Method for getting all of a user's matches
   public static Collection<User> getUserMatches(String id) {
