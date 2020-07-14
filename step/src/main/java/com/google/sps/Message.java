@@ -17,7 +17,6 @@ package com.google.sps.data;
 import java.util.List;
 import java.util.ArrayList;
 import java.io.*; 
-import com.google.sps.data.Conversation;
 
 /** Variables of a comment */
 public final class Message {
@@ -43,6 +42,18 @@ public final class Message {
   }
   public long timestamp() {
       return timestamp;
+  }
+
+  //Overriden equals method
+  @Override
+  public boolean equals(Object other) {
+    return other instanceof Message && equals(this, (Message) other);
+  }
+
+  //Overriden hashCode method
+  @Override
+  public int hashCode() {
+      return id.hashCode() * userID.hashCode();
   }
 }
 

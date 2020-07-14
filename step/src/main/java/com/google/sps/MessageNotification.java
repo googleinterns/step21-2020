@@ -18,7 +18,7 @@ public class MessageNotification extends Notification {
 
   private static final String NOTIFICATION_TEXT = "New message from ";
   
-  public MessageNotification(long id, String otherUser, long timestamp) {
+  public MessageNotification(String id, String otherUser, long timestamp) {
     super(id, otherUser, timestamp);
   }
 
