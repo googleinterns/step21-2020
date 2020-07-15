@@ -43,18 +43,16 @@ section {
   position: fixed;
 }
 
-.notification-column {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  column-gap: 10%;
-  margin-right: 5%;
-}
-
 .match-name {
   margin-bottom: 0;
+  font-weight:  bold;
 }
 
 .match-email {
   font-family: 'Arial', sans-serif;
   margin-top: 0;
+}
+
+#page-right {
+  margin-left: 4%;
 }

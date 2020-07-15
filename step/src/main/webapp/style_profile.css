@@ -43,7 +43,7 @@ h3 a {
 h3 a:hover {
     color: #F4B400;
 }
-.personal-container, .questionaire-container, .matches-container {
+.personal-container, .questionaire-container, .matches-container, .find-a-match-container {
     border-radius: 10px;
     box-shadow: 3px 10px 20px #aaaaaa;
     position: relative;

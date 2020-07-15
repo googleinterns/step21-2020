@@ -51,7 +51,7 @@ limitations under the License.
 
     DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
     Query query =
-        new Query("UserInfo")
+        new Query("User")
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
@@ -62,9 +62,10 @@ limitations under the License.
         <div class="sub-container" id="list-selection">
             <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
             <div id="navbar-selection"> 
-                <a href="#personal-container"> Personal Information </a>
-                <a href="#questionaire-container"> Questionaire </a> 
-                <a href="#matches-container">Your Matches </a>
+                <a href="#personal-container">Personal Information</a>
+                <a href="#questionaire-container">Questionaire</a>
+                <a href="#matches-container">Your Matches</a>
+                <a href="#find-a-match-container">Find a match!</a>
             </div>
         </div>
         <div class="sub-container" id="profile-info"> 
@@ -111,18 +112,23 @@ limitations under the License.
                 </div> 
             </div>
             <h3> Your Matches </h3>
+
             <div id="match-container">
             </div>   
         </div>
   
-        <div class="sub-container">
-        <div class="notification-column">
-          <div class="row">
-          </div>
-          <div id="notification-container" class="row">
+        <div class="sub-container" id="page-right">
+            <h3> Find a Match! </h3>
+            <div class="find-a-match-contaner" id="find-a-match-container">
+              <form action="/matching" method="post">
+                <input type="hidden" id="request-type" name="request-type" value="request-type-match">
+                <button type="submit" value="Submit">Find a match!</button>
+              </form>
+              </div>
+            <div id="notification-container" class="find-a-match-container">
             <h3> Notifications </h3>
-          </div>
-        </div>
+            </div>
+            <h3></h3> <!-- Padding at bottom of page -->
         </div>
     </div>
 
@@ -159,7 +165,7 @@ limitations under the License.
           emailElement.className = 'match-email';
           matchDiv.appendChild(emailElement);
 
-          matchDiv.className = 'match';
+          matchDiv.className = 'matches-container';
           matchContainer.appendChild(matchDiv);
 
           const lineBreak = document.createElement('br');

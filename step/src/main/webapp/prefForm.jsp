@@ -90,7 +90,7 @@ limitations under the License.
                 <label for="q5yanny"> Yanny </label>
             </p>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q4" value="Laurel" id="q5laurel">
+                <input type="radio" oninput="this.className = ''" name="q5" value="Laurel" id="q5laurel">
                 <label for="q5laurel"> Laurel </label>
             </p>
         </div>
