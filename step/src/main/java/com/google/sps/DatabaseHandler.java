@@ -114,6 +114,7 @@ public final class DatabaseHandler {
       return (String) user.getProperty("email");
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
       return null; 
     }
   }
@@ -127,6 +128,7 @@ public final class DatabaseHandler {
       return firstName + " " + lastName;
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
       return null;
     }
   }

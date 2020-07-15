@@ -33,20 +33,19 @@ limitations under the License.
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_profile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <title>My Profile</title>
+    <title>Friend Matching Plus</title>
+
   </head>
-  <body>
+  <body onload="getMatches()">
     <nav>
         <a href="<%= logoutURL %>"> Log Out </a>
     </nav>
-    <h1>Friend Matching Plus </h1>
+    <h1>Friend Matching Plus </h1> 
 
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   
-    } %>
-
+    } %> 
     <%
     String id = userService.getCurrentUser().getUserId();
 
@@ -58,17 +57,18 @@ limitations under the License.
     Entity entity = results.asSingleEntity();
     %>
 
-    <h2> Your Portfolio </h2>
+    <h2> Your Profile </h2>
     <div class="container">
         <div class="sub-container" id="list-selection">
             <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
             <div id="navbar-selection"> 
-                <a href="#personal-container"> Personal Information </a>
-                <a href="#questionaire-container"> Questionaire </a> 
-                <a href="#matches-container">Your Matches </a>
+                <a href="#personal-container">Personal Information</a>
+                <a href="#questionaire-container">Questionaire</a>
+                <a href="#matches-container">Your Matches</a>
+                <a href="#find-a-match-container">Find a match!</a>
             </div>
         </div>
-        <div class="sub-container" id="profile-info">
+        <div class="sub-container" id="profile-info"> 
             <h3> <a href="infoForm.jsp"> Personal Infomation </a> </h3>
             <div class="personal-container" id="personal-container">
                 <div class="personal-item">
@@ -111,20 +111,86 @@ limitations under the License.
                     <div class="item-info"> <%= (String) entity.getProperty("q5")%> </div>
                 </div> 
             </div>
-            <h3> <a href="chat.jsp"> Your Matches </a> </h3>
-            <div class="matches-container" id="matches-container"> 
-                <!-- Link each picture with an id manually -->
-                <form id="matches" action="chat.jsp" method="POST"> 
-                    <!-- These values here are users' id. Currently, they are created manually to get tested. In the future, it would be added automatically after a new match -->
-                    <input type="radio" oninput="this.className = ''" name="user" value="105190215126253104141" id="m1"> </input> 
-                    <input type="radio" oninput="this.className = ''" name="user" value="117015317981368465184" id="m2"> </input>
-                    <input type="radio" oninput="this.className = ''" name="user" value="124226138196895601162" id="m3"> </input>
-                    <input type="radio" oninput="this.className = ''" name="user" value="185804764220139124118" id="m4"> </input>
-                    <input type="radio" oninput="this.className = ''" name="user" value="113287168061472172812" id="m4"> </input> <!-- admin -->
-                    <input type="submit" name="Submit"> </input>
+            <h3> Your Matches </h3>
+            <div class="matches-container" id="matches-container">
+                    <div id="match-item"> </div>
+            </div>
+        </div>
+            
+
+        <div class="sub-container" id="page-right">
+            <h3> Find a Match! </h3>
+                
+            <div id="find-a-match-container">
+                <form class="match-button" action="/matching" method="post">
+                    <input type="hidden" id="request-type" name="request-type" value="request-type-match">
+                    <button type="submit" value="Submit">Find a match!</button>
                 </form>
+            </div>
+            <h3> Notifications </h3>
+            <div class="find-a-match-container">
+                <div class="match-item" id="notification-container"></div>
+                <br>
             </div>
         </div>
     </div>
+
+        <script>
+      function getMatches() {
+        fetch('/Homepage')
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            matches = json["matches"];
+            notifications = json["notifications"];
+
+            renderMatches(matches);
+            renderNotifications(notifications);
+          });
+      }
+
+      function renderMatches(matches) {
+        const matchContainer = document.getElementById('match-item');
+        matches.forEach(match => {
+          name = match["name"];
+          email = match["email"];
+
+          const matchDiv = document.createElement('div');
+          matchDiv.className = 'match-item';
+
+          const nameElement = document.createElement('div');
+          nameElement.innerText = name;
+          nameElement.className = 'match-name';
+          matchDiv.appendChild(nameElement);
+          
+          const emailElement = document.createElement('div');
+          emailElement.innerText = email;
+          emailElement.className = 'match-email';
+          matchDiv.appendChild(emailElement);
+
+          matchContainer.appendChild(matchDiv);
+
+          const lineBreak = document.createElement('br');
+          matchContainer.appendChild(lineBreak);
+        });
+
+      }
+
+      function renderNotifications(notifications) {
+        const notificationContainer = 
+          document.getElementById('notification-container');
+          
+        notifications.forEach(notification => {
+          const notificationElement = document.createElement('p');
+          notificationElement.innerText = notification;
+          notificationContainer.appendChild(notificationElement);
+
+          const lineElement = document.createElement('hr');
+          lineElement.className = 'horizontal-line';
+          notificationContainer.appendChild(lineElement);
+        });
+      }
+    </script> 
   </body>
 </html>
