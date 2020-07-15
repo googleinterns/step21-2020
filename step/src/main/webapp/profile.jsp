@@ -33,20 +33,19 @@ limitations under the License.
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_profile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <title>My Profile</title>
+    <title>Friend Matching Plus</title>
+
   </head>
-  <body>
+  <body onload="getMatches()">
     <nav>
         <a href="<%= logoutURL %>"> Log Out </a>
     </nav>
-    <h1>Friend Matching Plus </h1>
+    <h1>Friend Matching Plus </h1> 
 
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   
-    } %>
-
+    } %> 
     <%
     String id = userService.getCurrentUser().getUserId();
 
@@ -58,7 +57,7 @@ limitations under the License.
     Entity entity = results.asSingleEntity();
     %>
 
-    <h2> Your Portfolio </h2>
+    <h2> Your Profile </h2>
     <div class="container">
         <div class="sub-container" id="list-selection">
             <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
@@ -69,7 +68,7 @@ limitations under the License.
                 <a href="#find-a-match-container">Find a match!</a>
             </div>
         </div>
-        <div class="sub-container" id="profile-info">
+        <div class="sub-container" id="profile-info"> 
             <h3> <a href="infoForm.jsp"> Personal Infomation </a> </h3>
             <div class="personal-container" id="personal-container">
                 <div class="personal-item">
@@ -113,17 +112,82 @@ limitations under the License.
                 </div> 
             </div>
             <h3> Your Matches </h3>
-            <div class="matches-container" id="matches-container">
-            </div>
+
+            <div id="match-container">
+            </div>   
+        </div>
+  
+        <div class="sub-container" id="page-right">
             <h3> Find a Match! </h3>
-            <div class="find-a-match-container" id="find-a-match-container">
+            <div class="find-a-match-contaner" id="find-a-match-container">
               <form action="/matching" method="post">
                 <input type="hidden" id="request-type" name="request-type" value="request-type-match">
                 <button type="submit" value="Submit">Find a match!</button>
               </form>
+              </div>
+            <div id="notification-container" class="find-a-match-container">
+            <h3> Notifications </h3>
             </div>
             <h3></h3> <!-- Padding at bottom of page -->
         </div>
     </div>
+
+        <script>
+      function getMatches() {
+        fetch('/Homepage')
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            matches = json["matches"];
+            notifications = json["notifications"];
+
+            renderMatches(matches);
+            renderNotifications(notifications);
+          });
+      }
+
+      function renderMatches(matches) {
+        const matchContainer = document.getElementById('match-container');
+        matches.forEach(match => {
+          name = match["name"];
+          email = match["email"];
+
+          const matchDiv = document.createElement('div');
+
+          const nameElement = document.createElement('p');
+          nameElement.innerText = name;
+          nameElement.className = 'match-name';
+          matchDiv.appendChild(nameElement);
+          
+          const emailElement = document.createElement('p');
+          emailElement.innerText = email;
+          emailElement.className = 'match-email';
+          matchDiv.appendChild(emailElement);
+
+          matchDiv.className = 'matches-container';
+          matchContainer.appendChild(matchDiv);
+
+          const lineBreak = document.createElement('br');
+          matchContainer.appendChild(lineBreak);
+        });
+
+      }
+
+      function renderNotifications(notifications) {
+        const notificationContainer = 
+          document.getElementById('notification-container');
+          
+        notifications.forEach(notification => {
+          const notificationElement = document.createElement('p');
+          notificationElement.innerText = notification;
+          notificationContainer.appendChild(notificationElement);
+
+          const lineElement = document.createElement('hr');
+          lineElement.className = 'horizontal-line';
+          notificationContainer.appendChild(lineElement);
+        });
+      }
+    </script> 
   </body>
 </html>
