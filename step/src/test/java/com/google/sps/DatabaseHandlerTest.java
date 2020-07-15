@@ -14,6 +14,7 @@
 
 package com.google.sps;
 
+import java.lang.IllegalArgumentException;
 import java.util.HashSet;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -57,6 +58,12 @@ public final class DatabaseHandlerTest {
     DatabaseHandler.addNotification("A", "B", 1, DatabaseHandler.MATCHING);
     DatabaseHandler.addNotification("B", "A", 1, DatabaseHandler.MATCHING);
     DatabaseHandler.addNotification("A", "B", 2, DatabaseHandler.MESSAGE);
+  }
+
+  private void addInvalidNotificationToDatabase() {
+    // The last paramater is illegal because the number used doesn't correspond
+    // to one of the allowed notification types
+    DatabaseHandler.addNotification("A", "B", 1, 2000);
   }
 
   @Test
@@ -103,6 +110,13 @@ public final class DatabaseHandlerTest {
     expected = new LinkedList<>(Arrays.asList(
       new MatchNotification("B", "A", 1)));
     Assert.assertEquals(actual, expected);    
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  // Test for when a notification has an illegal type
+  public void testGetInvalidNotification() {
+    addInvalidNotificationToDatabase();
+    DatabaseHandler.getUserNotifications("A");
   } 
 
   @Test

@@ -28,6 +28,7 @@ public abstract class Notification {
   
   // Getter method for the ID of the user with whom the notification is
   // associated.
+
   public String getId() {
     return id;    
   }

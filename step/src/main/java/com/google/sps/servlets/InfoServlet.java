@@ -29,18 +29,26 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpSession;
 
 @WebServlet("/Info")
 public class InfoServlet extends HttpServlet {
   // The class stores the user' personal information data
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
     User user = UserServiceFactory.getUserService().getCurrentUser();
-    
+    HttpSession session = request.getSession();
+
     String firstName = request.getParameter("firstName");
+    session.setAttribute("firstName", firstName);
     String lastName = request.getParameter("lastName");
+    session.setAttribute("lastName", lastName);
     int dayBirth = Integer.parseInt(request.getParameter("dayBirth"));
+    session.setAttribute("dayBirth", dayBirth);
     int monthBirth = Integer.parseInt(request.getParameter("monthBirth"));
+    session.setAttribute("monthBirth", monthBirth);
     int yearBirth = Integer.parseInt(request.getParameter("yearBirth"));
     String email = user.getEmail();
     String id = user.getUserId();

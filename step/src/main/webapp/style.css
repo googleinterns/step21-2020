@@ -43,10 +43,11 @@ section {
   position: fixed;
 }
 
-.column {
+.notification-column {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 1fr 1.5fr;
   column-gap: 10%;
+  margin-right: 5%;
 }
 
 .match-name {
