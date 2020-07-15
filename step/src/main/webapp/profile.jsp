@@ -168,7 +168,6 @@ limitations under the License.
           emailElement.innerText = email;
           emailElement.className = 'match-email';
           matchDiv.appendChild(emailElement);
-
           matchContainer.appendChild(matchDiv);
 
           const lineBreak = document.createElement('br');
