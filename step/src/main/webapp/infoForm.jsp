@@ -42,13 +42,13 @@ limitations under the License.
     <section class="infoform">
     <form id="regForm" action="Info" method="POST"> 
         <div class="tab"> Name: 
-            <p><input placeholder="First Name" oninput="this.className = ''"  name="firstName"></p>
-            <p><input placeholder="Last Name" oninput="this.className = ''"  name="lastName"></p>
+            <p><input placeholder="First Name" oninput="this.className = ''"  name="firstName" required></p>
+            <p><input placeholder="Last Name" oninput="this.className = ''"  name="lastName" required></p>
         </div>
         <div class="tab"> Birthday
-            <p>Day<input placeholder="dd" oninput="this.className = ''" name="dayBirth"></p>
-            <p>Month<input placeholder="mm" oninput="this.className = ''" name="monthBirth"></p>
-            <p>Year<input placeholder="yy" oninput="this.className = ''" name="yearBirth"></p>
+            <p>Day<input placeholder="dd" oninput="this.className = ''" name="dayBirth" required></p>
+            <p>Month<input placeholder="mm" oninput="this.className = ''" name="monthBirth" required></p>
+            <p>Year<input placeholder="yyyy" oninput="this.className = ''" name="yearBirth" required></p>
         </div>
         <div style="overflow:auto;">
             <div style="float:right;">

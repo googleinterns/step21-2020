@@ -40,8 +40,8 @@ limitations under the License.
         response.sendRedirect("index.jsp");   
     } %>
     <section class="prefform">
-    <form id="regForm" action="Pref" method="POST"> 
-        <div class="tab"> Are you staying in the US now? 
+    <form id="regForm" action="Pref" method="POST">
+        <div class="tab"> Are you staying in the US now?
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes">
                 <label for="q1yes"> Yes </label>
@@ -49,7 +49,7 @@ limitations under the License.
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="No" id="q1no">
                 <label for="q1no"> No </label>
-            </p>
+            </p>   
         </div>
         <br>  
         <div class="tab"> Do you have any pets? 
