@@ -30,7 +30,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow.
 import com.google.api.client.auth.oauth2.Credential;
 import javax.servlet.http.HttpServlet;
 import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
@@ -52,7 +51,9 @@ public class OAuth2Servlet extends HttpServlet{
   private String CLIENT_ID = "";
   private String CLIENT_SECRET = ""; // TODO read from client_secret.json
   List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
-  private String AUTH_REDIRECT_URI = "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
+  private String AUTH_REDIRECT_URI = 
+    // "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
+    "http://brenda-ding-pod-step-20.uc.r.appspot.com/oauth2";
 
   @Override
   public void init() {
@@ -82,11 +83,20 @@ public class OAuth2Servlet extends HttpServlet{
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     System.out.println("/oauth2.doGet()");
+    System.out.println("getContextPath(): " + request.getContextPath());
+    System.out.println("getPathInfo(): " + request.getPathInfo());
+    System.out.println("getRequestURI(): " + request.getRequestURI());
+    System.out.println("getRequestURL(): " + request.getRequestURL());
+    System.out.println("getServletPath()" + request.getServletPath());
+    System.out.println();
+
 
     // If authCode is not null, the user has been redirected from Google's authorization server.
     // Else, this is a normal GET request.
     String authCode = request.getParameter("code");
     if(authCode == null) {
+      System.out.println("Beginning the authorization code flow...");
+
       // Authorization code flow:
       // 1) End user logins into your app. Generate a user ID that is unique for your app
       UserService userService = UserServiceFactory.getUserService();
@@ -132,6 +142,10 @@ public class OAuth2Servlet extends HttpServlet{
       String userId = userServiceUser.getUserId();
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
       System.out.println("credential: " + credential);
+      System.out.println("Authorization code flow complete.");
+
+      // test the calendar event being created
+      CalendarManager.createTestGCalEvent(credential);
 
       // Done.
       response.sendRedirect("/profile.jsp");
