@@ -51,8 +51,8 @@ public final class UserTest {
 
   // helper method for adding a user to the database
   private void addUsersToDatabase() {
-    DatabaseHandler.addUser("User", "A", 1, 1, 2000, "userA@email.com", "1");
-    DatabaseHandler.addUser("User", "B", 2, 2, 2002, "userB@email.com", "2");
+    DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
+    DatabaseHandler.addUser("User", "B", "2", "2", "2002", "userB@email.com", "2");
   }
 
   @Test

@@ -43,16 +43,6 @@ section {
   position: fixed;
 }
 
-.match-name {
-  margin-bottom: 0;
-  font-weight:  bold;
-}
-
-.match-email {
-  font-family: 'Arial', sans-serif;
-  margin-top: 0;
-}
-
 #page-right {
   margin-left: 4%;
 }

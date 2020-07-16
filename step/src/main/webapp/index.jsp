@@ -27,19 +27,23 @@ limitations under the License.
 <html>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style_index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
     <title>Friend Matching Plus</title>
   </head>
   <body>
-    <nav>
-        <a href="<%= loginURL %>"> Log In </a>
-        <a class="active" href="index.jsp"> About Us </a>
-    </nav>
-    <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
-    <% if (userService.isUserLoggedIn()) {
-        String userEmail = userService.getCurrentUser().getEmail();
-        response.sendRedirect("Login");   
-    } %>
+        <nav>
+            <a href="<%= loginURL %>"> Log In </a>
+            <a class="active" href="index.jsp"> Home </a>
+        </nav>
+        <ul>
+            <li> Friend </li>
+            <li> Matching </li>
+            <li> Plus </li>
+        </ul>
+        <% if (userService.isUserLoggedIn()) {
+            String userEmail = userService.getCurrentUser().getEmail();
+            response.sendRedirect("Login");   
+        } %>
   </body>
 </html>
