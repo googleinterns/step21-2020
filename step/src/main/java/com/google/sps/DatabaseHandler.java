@@ -51,6 +51,16 @@ public final class DatabaseHandler {
   public static void addUser(String firstName, String lastName, int dayBirth,
     int monthBirth, int yearBirth, String email, String id) {
     Entity entity = new Entity("User", id);
+
+    if (firstName == null && lastName == null) {
+      firstName = "Unknown";
+      lastName = "Name";
+    } else if (firstName == null) {
+      firstName = "";
+    } else if (lastName == null) {
+      lastName = "";
+    }
+
     entity.setProperty("firstName", firstName);
     entity.setProperty("lastName", lastName);
     entity.setProperty("dayBirth", dayBirth);
@@ -69,7 +79,9 @@ public final class DatabaseHandler {
     entity.setProperty("otherUserId", secondId);
     entity.setProperty("timestamp", timestamp);
     entity.setProperty("type", type);
-    datastore.put(entity); 
+    if (firstId != null && secondId != null) {
+      datastore.put(entity);
+    } 
   }
 
   // Getting a user's notifications using their id

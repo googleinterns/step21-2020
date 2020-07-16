@@ -30,11 +30,17 @@ public abstract class Notification {
   // associated.
 
   public String getId() {
+    if (id == null) {
+      id = "";
+    }
     return id;    
   }
 
   // Method for getting the id of the user who sent the notification.
   public String getOtherUserId() {
+    if (otherUserId == null) {
+      otherUserId = "";
+    }
     return otherUserId;  
   }
   
