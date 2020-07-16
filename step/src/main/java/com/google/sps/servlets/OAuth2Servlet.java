@@ -52,8 +52,9 @@ public class OAuth2Servlet extends HttpServlet{
   private String CLIENT_SECRET = ""; // TODO read from client_secret.json
   List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
   private String AUTH_REDIRECT_URI = 
-    // "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
-    "http://brenda-ding-pod-step-20.uc.r.appspot.com/oauth2";
+    "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
+    // "http://brenda-ding-pod-step-20.uc.r.appspot.com/oauth2";
+    // "https://brenda-ding-pod-step-20.ue.r.appspot.com/oauth2";
 
   @Override
   public void init() {

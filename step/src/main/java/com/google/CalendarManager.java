@@ -95,6 +95,13 @@ public class CalendarManager {
       googleCalendarCredential)
       .setApplicationName("Adam").build();
 
-    System.out.println("Created test calendar event.");
+    try {
+      String calendarId = "primary";
+      event = service.events().insert(calendarId, event).execute();
+      System.out.printf("Event created: %s\n", event.getHtmlLink());
+    } catch (Exception e) {
+      System.out.println("there was in error in CalendarManager.createTestGCalEvent()");
+      e.printStackTrace();
+    }
   }
 }
