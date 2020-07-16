@@ -31,7 +31,6 @@ limitations under the License.
   </head>
   <body>
     <nav>
-        <a href="<%= logoutURL %>"> Log Out </a>
         <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
     </nav>
     

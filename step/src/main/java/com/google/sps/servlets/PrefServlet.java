@@ -69,6 +69,11 @@ public class PrefServlet extends HttpServlet {
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
+
+    if (entity == null) {
+      response.sendRedirect("index.jsp");
+    }
+
     entity.setProperty("q1", q1);
     entity.setProperty("q2", q2);
     entity.setProperty("q3", q3);
