@@ -20,7 +20,7 @@ import java.util.LinkedList;
 
 public final class MatchManager {
 
-  // TODO: integrate datastore so that match requests aren't lost if the server restarts
+  // Integrate datastore so that match requests aren't lost if the server restarts
   private static Queue<User> matchQueue = new LinkedList<>();
 
   private MatchManager() {

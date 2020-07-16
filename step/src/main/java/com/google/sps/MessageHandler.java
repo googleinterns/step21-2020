@@ -37,7 +37,7 @@ import com.google.appengine.api.datastore.DatastoreServiceFactory;
 
 
 public final class MessageHandler {
-  // TODO: integrate datastore so that messages users send and receive from each other aren't lost if the server restarts
+  // Integrate datastore so that messages users send and receive from each other aren't lost if the server restarts
   private static List<Message> messages = new ArrayList<>();
   private static DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
 
@@ -64,7 +64,7 @@ public final class MessageHandler {
             firstUserRecipientFilter, secondUserSenderFilter
     ))));
 
-    Query query = new Query("Message").setFilter(compositeFilter).addSort("timestamp", SortDirection.ASCENDING);;
+    Query query = new Query("Message").setFilter(compositeFilter).addSort("timestamp", SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
     List<Message> messages = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
@@ -72,9 +72,10 @@ public final class MessageHandler {
         String recipient = (String) entity.getProperty("Recipient");
         String text = (String) entity.getProperty("Text");
         long timestamp = (long) entity.getProperty("timestamp");
-        Message m = new Message(sender, recipient, text, timestamp);
-        messages.add(m);
+        Message message = new Message(sender, recipient, text, timestamp);
+        messages.add(message);
     }
     return messages;
   } 
 }
+

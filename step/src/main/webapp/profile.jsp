@@ -111,7 +111,7 @@ limitations under the License.
                     <div class="item-info"> <%= (String) entity.getProperty("q5")%> </div>
                 </div> 
             </div>
-            <h3> Your Matches </h3>
+            <h3> Your matches </h3>
             <div class="matches-container" id="matches-container">
                     <div id="match-item"> </div>
             </div>

@@ -16,28 +16,27 @@ package com.google.sps;
 
 import java.util.List;
 import java.util.ArrayList;
-import java.io.*; 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 /** Variables of a message */
 public final class Message {
-  private final String sender; 
-  private final String recipient; 
+  private final String senderID; 
+  private final String recipientID; 
   private final String text; 
   private final long timestamp;
 
-  public Message(String sender, String recipient, String text, long timestamp) {
-      this.sender = sender;
-      this.recipient = recipient;
+  public Message(String senderID, String recipientID, String text, long timestamp) {
+      this.senderID = senderID;
+      this.recipientID = recipientID;
       this.text = text;
       this.timestamp = timestamp;
   }
   public String getSenderID() {
-      return sender;
+      return senderID;
   }
   public String getRecipientID() {
-      return recipient;
+      return recipientID;
   }
   public String getText() {
       return text;
@@ -58,8 +57,8 @@ public final class Message {
     }
 
     Message message = (Message) other;
-    return this.sender.equals(message.getSenderID()) &&
-           this.recipient.equals(message.getRecipientID()) &&
+    return this.senderID.equals(message.getSenderID()) &&
+           this.recipientID.equals(message.getRecipientID()) &&
            this.text.equals(message.getText()) &&
            String.valueOf(this.timestamp).equals(String.valueOf(message.timestamp()));
   }
@@ -67,7 +66,7 @@ public final class Message {
   //Overriden hashCode method
   @Override
   public int hashCode() {
-      return sender.hashCode() * recipient.hashCode();
+      return senderID.hashCode() * recipientID.hashCode();
   }
 }
 
