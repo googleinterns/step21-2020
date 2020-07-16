@@ -163,7 +163,7 @@ limitations under the License.
           nameElement.innerText = name;
           nameElement.className = 'match-name';
           matchDiv.appendChild(nameElement);
-          
+
           const emailElement = document.createElement('div');
           emailElement.innerText = email;
           emailElement.className = 'match-email';
