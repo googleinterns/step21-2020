@@ -50,7 +50,7 @@ public final class DatabaseHandlerTest {
 
   // helper method for adding a user to the database
   private void addUserToDatabase() {
-    DatabaseHandler.addUser("User", "A", 1, 1, 2000, "userA@email.com", "1");
+    DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
   }
 
   // helper method for adding notifications to the database
