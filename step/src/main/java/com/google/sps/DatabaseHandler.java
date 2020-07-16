@@ -44,12 +44,12 @@ public final class DatabaseHandler {
   public static final int MESSAGE = 2; 
 
   private DatabaseHandler() {
-
+      
   }
 
   // Method for adding a user to the database
-  public static void addUser(String firstName, String lastName, int dayBirth,
-    int monthBirth, int yearBirth, String email, String id) {
+  public static void addUser(String firstName, String lastName, String dayBirth,
+    String monthBirth, String yearBirth, String email, String id) {
     Entity entity = new Entity("User", id);
     entity.setProperty("firstName", firstName);
     entity.setProperty("lastName", lastName);

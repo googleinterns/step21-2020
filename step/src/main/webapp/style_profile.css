@@ -1,7 +1,7 @@
 body {
     background-color: rgb(241, 241, 241);
 }
-#list-selection, #profile-info {
+#list-selection, #profile-info, #page-right {
     display: inline-block;
 }
 #list-selection {
@@ -11,6 +11,10 @@ body {
 #profile-info {
     width: 40%;
 }
+
+#page-right {
+    width: 25%;
+}
 .container {
     background-color: lightcoral;
     font-family: 'Roboto', sans-serif;
@@ -19,9 +23,17 @@ body {
     margin: 0 auto;
     text-align: center;
 }
-img {
+#profile-pic > img {
     border-radius: 50%;
     width: 200px;
+}
+.match-pic {
+    display: inline;
+    padding: 20px;
+}
+.match-pic > img {
+    border-radius: 50%;
+    width: 100px;
 }
 #navbar-selection > a {
     text-decoration: none;
@@ -43,6 +55,7 @@ h3 a {
 h3 a:hover {
     color: #F4B400;
 }
+
 .personal-container, .questionaire-container, .matches-container, .find-a-match-container {
     border-radius: 10px;
     box-shadow: 3px 10px 20px #aaaaaa;
@@ -61,16 +74,31 @@ h3 a:hover {
     border: 2px;
 }
 
+.match-item {
+    padding: 30px;
+    color: black;
+    border: 2px;
+}
+
+.match-button {
+    padding: 20px;
+}
+
 .item-label, .item-info {
     display: inline;
 }
 
-.item-label {
+.match-name, .match-email {
+    display: inline;
+}
+
+
+.item-label, .match-name {
     float:left;
     font-weight: bold;
 }
 
-.item-info {
+.item-info, .match-email {
     float: right;
 }
 

@@ -41,7 +41,7 @@ limitations under the License.
     } %>
     <section class="infoform">
     <form id="regForm" action="Info" method="POST"> 
-        <div class="tab"> Name: 
+        <div class="tab"> Name
             <p><input placeholder="First Name" oninput="this.className = ''"  name="firstName"></p>
             <p><input placeholder="Last Name" oninput="this.className = ''"  name="lastName"></p>
         </div>

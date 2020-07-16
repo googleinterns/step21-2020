@@ -111,24 +111,27 @@ limitations under the License.
                     <div class="item-info"> <%= (String) entity.getProperty("q5")%> </div>
                 </div> 
             </div>
-            <h3> Your Matches </h3>
-
-            <div id="match-container">
-            </div>   
+            <h3> Your matches </h3>
+            <div class="matches-container" id="matches-container">
+                    <div id="match-item"> </div>
+            </div>
         </div>
-  
+            
+
         <div class="sub-container" id="page-right">
             <h3> Find a Match! </h3>
-            <div class="find-a-match-contaner" id="find-a-match-container">
-              <form action="/matching" method="post">
-                <input type="hidden" id="request-type" name="request-type" value="request-type-match">
-                <button type="submit" value="Submit">Find a match!</button>
-              </form>
-              </div>
-            <div id="notification-container" class="find-a-match-container">
-            <h3> Notifications </h3>
+                
+            <div id="find-a-match-container">
+                <form class="match-button" action="/matching" method="post">
+                    <input type="hidden" id="request-type" name="request-type" value="request-type-match">
+                    <button type="submit" value="Submit">Find a match!</button>
+                </form>
             </div>
-            <h3></h3> <!-- Padding at bottom of page -->
+            <h3> Notifications </h3>
+            <div class="find-a-match-container">
+                <div class="match-item" id="notification-container"></div>
+                <br>
+            </div>
         </div>
     </div>
 
@@ -148,24 +151,23 @@ limitations under the License.
       }
 
       function renderMatches(matches) {
-        const matchContainer = document.getElementById('match-container');
+        const matchContainer = document.getElementById('match-item');
         matches.forEach(match => {
           name = match["name"];
           email = match["email"];
 
           const matchDiv = document.createElement('div');
+          matchDiv.className = 'match-item';
 
-          const nameElement = document.createElement('p');
+          const nameElement = document.createElement('div');
           nameElement.innerText = name;
           nameElement.className = 'match-name';
           matchDiv.appendChild(nameElement);
-          
-          const emailElement = document.createElement('p');
+
+          const emailElement = document.createElement('div');
           emailElement.innerText = email;
           emailElement.className = 'match-email';
           matchDiv.appendChild(emailElement);
-
-          matchDiv.className = 'matches-container';
           matchContainer.appendChild(matchDiv);
 
           const lineBreak = document.createElement('br');
