@@ -53,7 +53,13 @@ public class InfoServlet extends HttpServlet {
     String email = user.getEmail();
     String id = user.getUserId();
     
-    DatabaseHandler.addUser(firstName, lastName, dayBirth, monthBirth, yearBirth, email, id);
+    // Ensuring that only users who have filled all of the info fields out are added to the database
+    if (firstName != null && lastName != null && dayBirth != 0 && monthBirth != 0 &&
+      yearBirth != 0 && email != null && id != null) {
+      System.out.println("Adding to database!!!!!!!!!!!!!!!!!!!!!!!!!!");  
+      DatabaseHandler.addUser(firstName, lastName, dayBirth, monthBirth, yearBirth, email, id);
+    }
+
     response.sendRedirect("prefForm.jsp");
   }
 }
