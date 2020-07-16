@@ -27,47 +27,23 @@ limitations under the License.
 <html>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
-    <script src="gcalScript.js"></script>
-    <script async defer src="https://apis.google.com/js/api.js"
-      onload="this.onload=function(){};handleClientLoad()"
-      onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script>
+    <link rel="stylesheet" href="style_index.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
     <title>Friend Matching Plus</title>
   </head>
   <body>
     <nav>
         <a href="<%= loginURL %>"> Log In </a>
-        <a class="active" href="index.jsp"> About Us </a>
-        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        <a class="active" href="index.jsp"> Home </a>
     </nav>
-    <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
+    <ul>
+        <li> Friend </li>
+        <li> Matching </li>
+        <li> Plus </li>
+    </ul>
     <% if (userService.isUserLoggedIn()) {
         String userEmail = userService.getCurrentUser().getEmail();
         response.sendRedirect("Login");   
     } %>
-
-    <p>Google Calendar API Quickstart</p>
-
-    <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" style="display: none;">Authorize</button>
-    <button id="signout_button" style="display: none;">Sign Out</button>
-
-    <pre id="content" style="white-space: pre-wrap;"></pre>
-
-    <form action="/auth" method="get">
-      <button type="submit">OAuth button</button>
-      <!-- <button type="submit" id="oauthButton" formmethod="get">OAuth button</button> -->
-    </form>
-
-    <form action="/userapi" method="get">
-      <button type="submit">userapi button</button>
-    </form>
-
-    <form action="/cal" method="get">
-      <button type="submit">/cal button</button>
-    </form>
-
   </body>
 </html>

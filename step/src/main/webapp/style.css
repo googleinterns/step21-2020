@@ -3,11 +3,13 @@
   margin-right: auto;
   width: 650px;
 }
+
 body {
     color: #000;
     background-color: #fff;
     font-family: 'Roboto', sans-serif;
 }
+
 nav {
   position: fixed;
   top: 0;
@@ -34,4 +36,13 @@ nav a:hover:not(.active) {
 
 .active {
   color: #DB4437;
+}
+
+section {
+  margin-top: 10vh;
+  position: fixed;
+}
+
+#page-right {
+  margin-left: 4%;
 }

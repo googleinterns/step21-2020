@@ -1,0 +1,104 @@
+body {
+    background-color: rgb(241, 241, 241);
+}
+#list-selection, #profile-info, #page-right {
+    display: inline-block;
+}
+#list-selection {
+    width: 30%;
+    text-align: center;
+}
+#profile-info {
+    width: 40%;
+}
+
+#page-right {
+    width: 25%;
+}
+.container {
+    background-color: lightcoral;
+    font-family: 'Roboto', sans-serif;
+}
+#profile-pic {
+    margin: 0 auto;
+    text-align: center;
+}
+#profile-pic > img {
+    border-radius: 50%;
+    width: 200px;
+}
+.match-pic {
+    display: inline;
+    padding: 20px;
+}
+.match-pic > img {
+    border-radius: 50%;
+    width: 100px;
+}
+#navbar-selection > a {
+    text-decoration: none;
+    display: block;
+    padding-top: 25px;
+    font-weight: bold;
+}
+#navbar-selection > a:hover {
+    color: #F4B400;
+}
+.sub-container {
+    float: left;
+}
+h3 a {
+    text-decoration: none;
+    color: black;
+}
+
+h3 a:hover {
+    color: #F4B400;
+}
+
+.personal-container, .questionaire-container, .matches-container, .find-a-match-container {
+    border-radius: 10px;
+    box-shadow: 3px 10px 20px #aaaaaa;
+    position: relative;
+    background-color: #fff;
+    padding-bottom: 20px;
+}
+.personal-item {
+    color: black;
+    padding: 30px;
+}
+
+.questionaire-item {
+    color: black;
+    padding: 30px;
+    border: 2px;
+}
+
+.match-item {
+    padding: 30px;
+    color: black;
+    border: 2px;
+}
+
+.match-button {
+    padding: 20px;
+}
+
+.item-label, .item-info {
+    display: inline;
+}
+
+.match-name, .match-email {
+    display: inline;
+}
+
+
+.item-label, .match-name {
+    float:left;
+    font-weight: bold;
+}
+
+.item-info, .match-email {
+    float: right;
+}
+
