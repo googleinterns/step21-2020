@@ -27,24 +27,22 @@ nav a:hover:not(.active) {
   color:#F4B400;
 }
 
-.prefform, #regForm, .tab {
+.infoform, .prefform, #regForm, .tab {
     margin: 0 auto;
     display: inline-block;
     text-align: center;
 }
 
-.prefform {
+.infoform, .prefform {
     width: 100%;
-    margin: 0 auto;
 }
 
 #regForm {
-  background-color: #ffffff;
+  background-color: #fff;
   margin: 100px auto;
-  font-family: Raleway;
+  font-size: 50px;
+  font-family: 'Roboto', sans-serif;
   padding: 40px;
-  width: 70%;
-  min-width: 300px;
   display: inline-block;
   text-align: center;
   align-items: center;
@@ -71,6 +69,11 @@ input.invalid {
   display: none;
 }
 
+.tab > p {
+    font-size: 20px;
+    font-family: Raleway;
+}
+
 button {
   background-color: #F4B400;
   color: #ffffff;
@@ -87,11 +90,6 @@ button:hover {
 
 #prevBtn {
   background-color: #bbbbbb;
-}
-
-.question {
-    font-size: 25px;
-    font-family: 'Roboto', sans-serif;
 }
 
 /* Make circles that indicate the steps of the form: */
