@@ -95,9 +95,7 @@
       <version>1.30.4</version>
     </dependency>
     <!-- Java: import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential -->
-    <!-- <dependency>
       <!-- Couldn't find maven dependency for MockGoogleCredential.Builder -->
-    </dependency> -->
   </dependencies>
   
 

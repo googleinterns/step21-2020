@@ -148,7 +148,7 @@ public class OAuthServlet extends HttpServlet {
     // AppIdentityCredential credential = makeServiceAccountCredential();
     GoogleCredential credential = null;
     try {
-      //  credential = AppEngineCredentialWrapper.getApplicationDefault();
+       credential = AppEngineCredentialWrapper.getApplicationDefault();
       //  if(credential.createScopeRequired()) {
       //     List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
       //     credential = credential.createScoped(scopes);
@@ -157,11 +157,11 @@ public class OAuthServlet extends HttpServlet {
       System.out.println("There was a problem with GoogleCredential");
       e.printStackTrace();
     }
-    // Calendar service = new Calendar.Builder(TRANSPORT, FACTORY, credential).setApplicationName("Zeppa").build();
+    Calendar service = new Calendar.Builder(TRANSPORT, FACTORY, credential).setApplicationName("Zeppa").build();
 
     // Try MockGoogleCredential
-    credential = new MockGoogleCredential(new MockGoogleCredential.Builder.build());
-    Calendar service = new Calendar.Builder(TRANSPORT, FACTORY, credential).setApplicationName("Zeppa").build();
+    // credential = new MockGoogleCredential(new MockGoogleCredential.Builder.build());
+    // Calendar service = new Calendar.Builder(TRANSPORT, FACTORY, credential).setApplicationName("Zeppa").build();
 
     // Sample code from: https://developers.google.com/calendar/v3/reference/calendars/insert
     // Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credentials)
