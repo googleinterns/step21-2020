@@ -39,6 +39,7 @@ limitations under the License.
   </head>
   <body onload="getMatches()">
     <nav>
+        <button type="button" id="log-out"> Hello </button>
         <a href="<%= logoutURL %>"> Log Out </a>
     </nav>
     <img src="logo.png" alt="logo" id="logo">
@@ -69,7 +70,7 @@ limitations under the License.
             </div>
         </div>
         <div class="sub-container" id="profile-info"> 
-            <h3> <a href="infoForm.jsp"> Personal Infomation </a> </h3>
+            <h3> <a href="infoForm.jsp" style="#4B0082;"> Personal Infomation </a> </h3>
             <div class="personal-container" id="personal-container">
                 <div class="personal-item">
                     <div class="item-label"> First Name </div> 
@@ -88,7 +89,8 @@ limitations under the License.
                     <div class="item-info"><%= String.valueOf(entity.getProperty("monthBirth"))%>/<%= String.valueOf(entity.getProperty("dayBirth"))%>/<%= String.valueOf(entity.getProperty("yearBirth"))%> </div> 
                 </div>
             </div>
-            <h3> <a href="prefForm.jsp"> Questionaire </a> </h3>
+            <br><br>
+            <h3> <a href="prefForm.jsp" style="#4B0082;"> Questionaire </a> </h3>
             <div class="questionaire-container" id="questionaire-container"> 
                 <div class="questionaire-item"> 
                     <div class="item-label"> Are you staying in the US now? </div> 
@@ -111,6 +113,7 @@ limitations under the License.
                     <div class="item-info"> <%= (String) entity.getProperty("q5")%> </div>
                 </div> 
             </div>
+            <br><br>
             <h3> Your matches </h3>
             <div class="matches-container" id="matches-container">
                     <div id="match-item"> </div>
@@ -144,38 +147,30 @@ limitations under the License.
           .then((json) => {
             matches = json["matches"];
             notifications = json["notifications"];
-
             renderMatches(matches);
             renderNotifications(notifications);
           });
       }
-
       function renderMatches(matches) {
         const matchContainer = document.getElementById('match-item');
         matches.forEach(match => {
           name = match["name"];
           email = match["email"];
-
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match-item';
-
           const nameElement = document.createElement('div');
           nameElement.innerText = name;
           nameElement.className = 'match-name';
           matchDiv.appendChild(nameElement);
-
           const emailElement = document.createElement('div');
           emailElement.innerText = email;
           emailElement.className = 'match-email';
           matchDiv.appendChild(emailElement);
           matchContainer.appendChild(matchDiv);
-
           const lineBreak = document.createElement('br');
           matchContainer.appendChild(lineBreak);
         });
-
       }
-
       function renderNotifications(notifications) {
         const notificationContainer = 
           document.getElementById('notification-container');
@@ -184,7 +179,6 @@ limitations under the License.
           const notificationElement = document.createElement('p');
           notificationElement.innerText = notification;
           notificationContainer.appendChild(notificationElement);
-
           const lineElement = document.createElement('hr');
           lineElement.className = 'horizontal-line';
           notificationContainer.appendChild(lineElement);
@@ -193,3 +187,6 @@ limitations under the License.
     </script> 
   </body>
 </html>
+            
+
+
