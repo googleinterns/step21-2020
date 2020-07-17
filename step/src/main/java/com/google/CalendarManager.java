@@ -46,6 +46,9 @@ import com.google.api.client.auth.oauth2.Credential;
 public class CalendarManager {
   private CalendarManager() {}
 
+  // TODO: method to return required scope to OAuth2Servlet
+  // TODO: method to return true/false is user is authenticated (javascript support too)
+
   public static void createMatchEvent(String userId1, String userId2) {
     // Check if user1 is authenticated
     // Check if user2 is authenticated

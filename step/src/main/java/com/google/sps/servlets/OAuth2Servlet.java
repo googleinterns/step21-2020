@@ -15,6 +15,8 @@
 // Generic imports
 import java.util.List;
 import java.util.Arrays;
+import java.io.FileReader;
+import java.io.FileNotFoundException;
 
 // Servlet imports
 import java.io.IOException;
@@ -24,11 +26,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 // Authorization imports
-import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow.Builder;
 import com.google.api.client.auth.oauth2.Credential;
-import javax.servlet.http.HttpServlet;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
@@ -44,38 +45,48 @@ import com.google.appengine.api.users.UserServiceFactory;
 import com.google.api.services.calendar.CalendarScopes;
 
 @WebServlet("/oauth2")
-public class OAuth2Servlet extends HttpServlet{
+public class OAuth2Servlet extends HttpServlet {
 
   private GoogleAuthorizationCodeFlow authFlow;
-  // TODO change to GoogleClientSecrets
-  private String CLIENT_ID = "";
-  private String CLIENT_SECRET = ""; // TODO read from client_secret.json
   List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
-  private String AUTH_REDIRECT_URI = 
+  private static String AUTH_REDIRECT_URI = // TODO find a way to get rid of this constant
     "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
     // "http://brenda-ding-pod-step-20.uc.r.appspot.com/oauth2";
     // "https://brenda-ding-pod-step-20.ue.r.appspot.com/oauth2";
+  private static String CLIENT_SECRETS_JSON_PATH = "./WEB-INF/classes/client_secrets.json";
 
   @Override
   public void init() {
-    // new GoogleAuthorizationCodeFlow.Builder(
-      // HttpTransport transport,
-      // JsonFactory jsonFactory,
-      // String clientId,
-      // String clientSecret,
-      // Collection<String> scopes
-    // );
-
     // https://googleapis.dev/java/google-api-client/latest/com/google/api/client/googleapis/auth/oauth2/GoogleClientSecrets.html
-    // GoogleClientSecrets.load(jsonFactory, client_secret);
+
+    GoogleClientSecrets clientSecret = null;
+    try {
+      clientSecret =
+        GoogleClientSecrets.load(
+          new JacksonFactory(),
+          new FileReader(CLIENT_SECRETS_JSON_PATH)
+        );
+    } catch (FileNotFoundException e) { // thrown by FileReader constructor
+      printError("Unable to find client_secrets.json at " + CLIENT_SECRETS_JSON_PATH);
+    } catch (IOException e) { // thrown by GoogleClientSecrets.load()
+      printError("Unable to create the GoogleClientSecrets");
+    }
+    // catch (Exception e) {
+      // TODO abort oauth process as authFlow won't be able to be created properly
+      // return; // TODO error handle
+    // }
 
     authFlow = new GoogleAuthorizationCodeFlow.Builder(
       new NetHttpTransport(),
       new JacksonFactory(),
-      CLIENT_ID,
-      CLIENT_SECRET, // TODO: DELETE THIS
+      clientSecret,
       SCOPES
     ).build();
+
+    if(authFlow == null) {
+      // TODO error handle
+      printError("authentication flow was unable to be initialized");
+    }
   }
 
   /**
@@ -83,26 +94,21 @@ public class OAuth2Servlet extends HttpServlet{
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("/oauth2.doGet()");
-    System.out.println("getContextPath(): " + request.getContextPath());
-    System.out.println("getPathInfo(): " + request.getPathInfo());
-    System.out.println("getRequestURI(): " + request.getRequestURI());
-    System.out.println("getRequestURL(): " + request.getRequestURL());
-    System.out.println("getServletPath()" + request.getServletPath());
-    System.out.println();
-
-
     // If authCode is not null, the user has been redirected from Google's authorization server.
     // Else, this is a normal GET request.
     String authCode = request.getParameter("code");
     if(authCode == null) {
-      System.out.println("Beginning the authorization code flow...");
+      System.out.println("Beginning authorization code flow...");
 
       // Authorization code flow:
       // 1) End user logins into your app. Generate a user ID that is unique for your app
       UserService userService = UserServiceFactory.getUserService();
       com.google.appengine.api.users.User userServiceUser = userService.getCurrentUser();
       String userId = userServiceUser.getUserId();
+      if(userId == null) {
+        // TODO error handle
+        printError("Unable to obtain userId");
+      }
 
       // 2) Call AuthorizationCodeFlow.loadCredential(String userId) to check if the end-user's
       //    credentials are already known. If so, we're done.
@@ -141,6 +147,7 @@ public class OAuth2Servlet extends HttpServlet{
       UserService userService = UserServiceFactory.getUserService();
       com.google.appengine.api.users.User userServiceUser = userService.getCurrentUser();
       String userId = userServiceUser.getUserId();
+      // TODO(adamsamuelson): might be a deprecated method, look at setDataStoreFactory() in .Builder
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
       System.out.println("credential: " + credential);
       System.out.println("Authorization code flow complete.");
@@ -157,6 +164,10 @@ public class OAuth2Servlet extends HttpServlet{
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
+  }
+
+  private static void printError(String errorMessage) {
+    System.err.println("ERROR: " + errorMessage);
   }
 
 }
