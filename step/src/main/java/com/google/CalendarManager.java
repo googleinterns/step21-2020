@@ -14,6 +14,8 @@
 
 // Generic imports
 import java.util.Arrays;
+import java.util.List;
+import java.util.ArrayList;
 
 // Google Calendar API imports
 import com.google.api.services.calendar.Calendar;
@@ -21,6 +23,7 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventAttendee;
+import com.google.api.services.calendar.CalendarScopes;
 
 // Authorization imports
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -48,6 +51,7 @@ public class CalendarManager {
 
   // TODO: method to return required scope to OAuth2Servlet
   // TODO: method to return true/false is user is authenticated (javascript support too)
+  // TODO: delete extra maven imports
 
   public static void createMatchEvent(String userId1, String userId2) {
     // Check if user1 is authenticated
@@ -95,8 +99,8 @@ public class CalendarManager {
     Calendar service = new Calendar.Builder(
       new NetHttpTransport(),
       new JacksonFactory(),
-      googleCalendarCredential)
-      .setApplicationName("Adam").build();
+      googleCalendarCredential
+    ).setApplicationName("Friend Matching Plus").build(); // TODO: not sure iff app name matters
 
     try {
       String calendarId = "primary";
@@ -106,5 +110,11 @@ public class CalendarManager {
       System.out.println("there was in error in CalendarManager.createTestGCalEvent()");
       e.printStackTrace();
     }
+  }
+
+  public static List<String> getScopes() {
+    List<String> scopes = new ArrayList<>();
+    scopes.add(CalendarScopes.CALENDAR_EVENTS); // "View and edit events on all your calendars"
+    return scopes;
   }
 }

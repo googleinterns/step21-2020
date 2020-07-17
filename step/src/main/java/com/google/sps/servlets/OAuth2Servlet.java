@@ -41,14 +41,10 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-// Google Calendar API imports
-import com.google.api.services.calendar.CalendarScopes;
-
 @WebServlet("/oauth2")
 public class OAuth2Servlet extends HttpServlet {
 
   private GoogleAuthorizationCodeFlow authFlow;
-  List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR);
   private static String AUTH_REDIRECT_URI = // TODO find a way to get rid of this constant
     "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
     // "http://brenda-ding-pod-step-20.uc.r.appspot.com/oauth2";
@@ -80,7 +76,7 @@ public class OAuth2Servlet extends HttpServlet {
       new NetHttpTransport(),
       new JacksonFactory(),
       clientSecret,
-      SCOPES
+      CalendarManager.getScopes()
     ).build();
 
     if(authFlow == null) {
@@ -126,7 +122,7 @@ public class OAuth2Servlet extends HttpServlet {
       System.out.println("authCodeRequestUrl: " + authCodeRequestUrl.toString());
       response.sendRedirect(authRedirectUrl);
       return;
-
+      // TODO handle when the user rejects oauth request  
     } else {
       System.out.println("authCode: " + authCode);
 
