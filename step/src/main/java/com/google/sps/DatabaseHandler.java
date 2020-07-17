@@ -52,13 +52,12 @@ public final class DatabaseHandler {
     int monthBirth, int yearBirth, String email, String id) {
     Entity entity = new Entity("User", id);
 
-    if (firstName == null && lastName == null) {
+    if (firstName == null) {
       firstName = "Unknown";
-      lastName = "Name";
-    } else if (firstName == null) {
-      firstName = "";
-    } else if (lastName == null) {
-      lastName = "";
+    } 
+    
+    if (lastName == null) {
+      lastName = "Unknown";
     }
 
     entity.setProperty("firstName", firstName);

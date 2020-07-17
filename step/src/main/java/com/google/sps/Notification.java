@@ -30,9 +30,6 @@ public abstract class Notification {
   // associated.
 
   public String getId() {
-    if (id == null) {
-      id = "";
-    }
     return id;    
   }
 
