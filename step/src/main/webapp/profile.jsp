@@ -41,7 +41,7 @@ limitations under the License.
     <nav>
         <a href="<%= logoutURL %>"> Log Out </a>
     </nav>
-    <h1>Friend Matching Plus </h1> 
+    <img src="logo.png" alt="logo" id="logo">
 
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   
@@ -57,9 +57,9 @@ limitations under the License.
     Entity entity = results.asSingleEntity();
     %>
 
-    <h2> Your Profile </h2>
     <div class="container">
         <div class="sub-container" id="list-selection">
+            <h2> Your Profile </h2>
             <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
             <div id="navbar-selection"> 
                 <a href="#personal-container">Personal Information</a>
