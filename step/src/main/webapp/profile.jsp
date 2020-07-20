@@ -39,8 +39,9 @@ limitations under the License.
   </head>
   <body onload="getMatches()">
     <nav>
-        <button type="button" id="log-out-button"> Log Out </button>
-        <a href="<%= logoutURL %>" id="log-out-text"> Log Out </a>
+        <form>
+          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
+        </form>
     </nav>
     <img src="logo.png" alt="logo" id="logo">
 
