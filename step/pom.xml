@@ -59,7 +59,6 @@
       <version>4.1</version>
     </dependency>    
 
-
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
@@ -77,70 +76,13 @@
       <artifactId>json-simple</artifactId>
       <version>1.1</version>
     </dependency>
-    <!-- Java: import com.google.api.client.* -->
-    <dependency>
-      <groupId>com.google.api-client</groupId>
-      <artifactId>google-api-client</artifactId>
-      <version>1.30.10</version>
-    </dependency>
-    <!-- Java: import com.google.api.services.calendar.* -->
+
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-calendar</artifactId>
       <version>v3-rev20200610-1.30.9</version>
     </dependency>
-    <!-- Java: TODO -->
-    <dependency>
-      <groupId>com.google.oauth-client</groupId>
-      <artifactId>google-oauth-client</artifactId>
-      <version>1.30.4</version>
-    </dependency>
-    <!-- Java: import com.google.api.client.extensions.java6.auth.oauth2 -->
-    <dependency>
-      <groupId>com.google.oauth-client</groupId>
-      <artifactId>google-oauth-client-java6</artifactId>
-      <version>1.30.4</version>
-    </dependency>
-    <!-- Java: import com.google.api.client.extensions.jetty.auth.oauth2 -->
-    <dependency>
-      <groupId>com.google.oauth-client</groupId>
-      <artifactId>google-oauth-client-jetty</artifactId>
-      <version>1.30.4</version>
-    </dependency>
-    <!-- Java: TODO -->
-    <dependency>
-      <groupId>com.google.oauth-client</groupId>
-      <artifactId>google-oauth-client-servlet</artifactId>
-      <version>1.30.4</version>
-    </dependency>
-    <!-- Java: TODO -->
-    <dependency>
-      <groupId>com.google.oauth-client</groupId>
-      <artifactId>google-oauth-client-appengine</artifactId>
-      <version>1.30.4</version>
-    </dependency>
-    <!-- Java: import com.google.auth.Credentials -->
-    <dependency>
-      <groupId>com.google.auth</groupId>
-      <artifactId>google-auth-library-oauth2-http</artifactId>
-      <version>0.16.2</version>
-    </dependency>
-    <!-- Java: import com.google.auth.appengine.AppEngineCredentials -->
-    <dependency>
-      <groupId>com.google.auth</groupId>
-      <artifactId>google-auth-library-appengine</artifactId>
-      <version>0.21.1</version>
-    </dependency>
-    <!-- Java: import com.google.api.client.googleapis.extensions.appengine.auth.oauth2 -->
-    <dependency>
-      <groupId>com.google.api-client</groupId>
-      <artifactId>google-api-client-appengine</artifactId>
-      <version>1.30.4</version>
-    </dependency>
-    <!-- Java: import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential -->
-      <!-- Couldn't find maven dependency for MockGoogleCredential.Builder -->
   </dependencies>
-  
   
 
   <build>
