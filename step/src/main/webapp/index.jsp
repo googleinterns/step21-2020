@@ -33,17 +33,17 @@ limitations under the License.
   </head>
   <body>
     <nav>
-        <a href="<%= loginURL %>"> Log In </a>
-        <a class="active" href="index.jsp"> Home </a>
+      <a href="<%= loginURL %>"> Log In </a>
+      <a class="active" href="index.jsp"> Home </a>
     </nav>
     <ul>
-        <li> Friend </li>
-        <li> Matching </li>
-        <li> Plus </li>
+      <li> Friend </li>
+      <li> Matching </li>
+      <li> Plus </li>
     </ul>
     <% if (userService.isUserLoggedIn()) {
-        String userEmail = userService.getCurrentUser().getEmail();
-        response.sendRedirect("Login");   
+      String userEmail = userService.getCurrentUser().getEmail();
+      response.sendRedirect("Login");
     } %>
   </body>
 </html>
