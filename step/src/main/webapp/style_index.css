@@ -65,6 +65,7 @@ body {
   font-size: 30px;
   color: #f7f9f9;
   font-family: 'Roboto', sans-serif;
+  position: absolute;
 }
 
 .showcase .showcase-inner {
