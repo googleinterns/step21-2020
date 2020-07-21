@@ -23,9 +23,8 @@ limitations under the License.
 <html>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_pref.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
     <script src="script.js"></script>
     <title>My Preference Form </title>
   </head>
@@ -40,8 +39,9 @@ limitations under the License.
         response.sendRedirect("index.jsp");   
     } %>
     <section class="prefform">
-    <form id="regForm" action="Pref" method="POST">
-        <div class="tab"> Are you staying in the US now?
+    <form id="regForm" action="Pref" method="POST"> 
+        <div class="tab"> <div class="question"> Are you staying in the US now? </div>
+
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes">
                 <label for="q1yes"> Yes </label>
@@ -52,7 +52,7 @@ limitations under the License.
             </p>   
         </div>
         <br>  
-        <div class="tab"> Do you have any pets? 
+        <div class="tab"> <div class="question"> Do you have any pets? </div>
             <p>
                 <input type="radio" oninput="this.className = ''" name="q2" value="Yes" id="q2yes">
                 <label for="q2yes"> Yes </label>
@@ -63,7 +63,7 @@ limitations under the License.
             </p>
         </div>
         <br>  
-        <div class="tab"> Do you have any siblings? 
+        <div class="tab"> <div class="question"> Do you have any siblings? </div>
             <p>
                 <input type="radio" oninput="this.className = ''" name="q3" value="Yes" id="q3yes">
                 <label for="q3yes"> Yes </label>
@@ -74,7 +74,7 @@ limitations under the License.
             </p>
         </div>
         <br>  
-        <div class="tab"> <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank"> Is the dress blue or gold? </a>
+        <div class="tab"> <div class="question"> <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank"> Is the dress blue or gold? </a> </div>
             <p>
                 <input type="radio" oninput="this.className = ''" name="q4" value="Blue" id="q4blue">
                 <label for="q4blue"> Blue </label>
@@ -84,7 +84,7 @@ limitations under the License.
                 <label for="q4gold"> Gold </label>
             </p>
         </div>
-        <div class="tab"> <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel? </a>
+        <div class="tab"> <div class="question"> <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel? </a> </div>
             <p>
                 <input type="radio" oninput="this.className = ''" name="q5" value="Yanny" id="q5yanny">
                 <label for="q5yanny"> Yanny </label>
