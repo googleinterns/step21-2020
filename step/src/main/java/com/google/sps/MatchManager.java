@@ -42,9 +42,13 @@ public final class MatchManager {
   // with anyone else who is in the queue waiting to be matched or adds them to the
   // queue to wait to be matched if no on else is in there
   public static void generateMatch(User user) {
-    if (matchQueue.isEmpty()) { 
+    System.out.println("generating match");
+
+    if (matchQueue.isEmpty()) {
+      System.out.println("queue is empty"); 
       matchQueue.add(user);  
     } else {
+      System.out.println("queue is not empty");
       User matchResult = matchQueue.peek();
 
       if (!matchResult.isMatchedWith(user) && !matchResult.equals(user)) {
