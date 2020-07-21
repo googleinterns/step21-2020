@@ -32,32 +32,20 @@ import javax.servlet.http.HttpServletResponse;
 public class PrefServlet extends HttpServlet {
   // The class stores the user' personal information data
   private static final String UNKNOWN = "Unknown";
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String q1 = request.getParameter("q1");
-    if (q1 == null) {
-      q1 = UNKNOWN;
-    }
-
-    String q2 = request.getParameter("q2");
-    if (q2 == null) {
-      q2 = UNKNOWN;
-    }
-
-    String q3 = request.getParameter("q3");
-    if (q3 == null) {
-      q3 = UNKNOWN;
-    }
-
-    String q4 = request.getParameter("q4");
-    if (q4 == null) {
-      q4 = UNKNOWN;
-    }
-
-    String q5 = request.getParameter("q5");
-    if (q5 == null) {
-      q5 = UNKNOWN;
-    }
+    
+    String q1 = request.getParameter("q1") == null ? UNKNOWN : request.getParameter("q1");
+    String q2 = request.getParameter("q2") == null ? UNKNOWN : request.getParameter("q2");
+    String q3 = request.getParameter("q3") == null ? UNKNOWN : request.getParameter("q3");
+    String q4 = request.getParameter("q4") == null ? UNKNOWN : request.getParameter("q4");
+    String q5 = request.getParameter("q5") == null ? UNKNOWN : request.getParameter("q5");
 
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();

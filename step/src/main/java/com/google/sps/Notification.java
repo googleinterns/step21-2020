@@ -21,6 +21,10 @@ public abstract class Notification {
   private long timestamp;
 
   public Notification(String id, String otherUserId, long timestamp) {
+    if (id == null || otherUserId == null) {
+      throw new IllegalArgumentException("Neither user IDs can be null!");
+    }
+
     this.id = id;
     this.otherUserId = otherUserId;
     this.timestamp = timestamp;

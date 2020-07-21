@@ -41,7 +41,8 @@ public final class DatabaseHandler {
   private static DatastoreService datastore =
          DatastoreServiceFactory.getDatastoreService();
   public static final int MATCHING = 1;
-  public static final int MESSAGE = 2; 
+  public static final int MESSAGE = 2;
+  private static final String UNKNOWN = "Unkown"; 
 
   private DatabaseHandler() {
 
@@ -53,11 +54,11 @@ public final class DatabaseHandler {
     Entity entity = new Entity("User", id);
 
     if (firstName == null) {
-      firstName = "Unknown";
+      firstName = UNKNOWN;
     } 
     
     if (lastName == null) {
-      lastName = "Unknown";
+      lastName = UNKNOWN;
     }
 
     entity.setProperty("firstName", firstName);
@@ -73,14 +74,17 @@ public final class DatabaseHandler {
   // Adding a user's notificaton to the database
   public static void addNotification(String firstId, String secondId,
       long timestamp, int type) {
+    
+    if (firstId == null || secondId == null) {
+      throw new NullPointerException();
+    }
+    
     Entity entity = new Entity("Notification");
     entity.setProperty("userId", firstId);
     entity.setProperty("otherUserId", secondId);
     entity.setProperty("timestamp", timestamp);
     entity.setProperty("type", type);
-    if (firstId != null && secondId != null) {
-      datastore.put(entity);
-    } 
+    datastore.put(entity);
   }
 
   // Getting a user's notifications using their id
