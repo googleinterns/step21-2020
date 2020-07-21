@@ -38,61 +38,22 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.DataStore;
 import com.google.sps.CalendarManager; // TODO delete when done with test event
+import com.google.sps.OAuth2Utilities;
 
 @WebServlet("/oauth2")
 public class OAuth2Servlet extends HttpServlet {
 
-  public final static String CREDENTIAL_STORE_ID = "credential_datastore"; 
-  private GoogleAuthorizationCodeFlow authFlow; // TODO: temporary public
-  private final static String CLIENT_SECRETS_JSON_PATH = "./WEB-INF/classes/client_secrets.json";
-  private final static String AUTH_REDIRECT_URI = // TODO find a way to get rid of this constant
-    "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
-    // "https://brenda-ding-pod-step-20.ue.r.appspot.com/oauth2";
+  private final static String AUTH_REDIRECT_URI = OAuth2Utilities.AUTH_REDIRECT_URI;
+  private GoogleAuthorizationCodeFlow authFlow;
 
   @Override
   public void init() {
-
-    // Load the client id and secret from client_secrets.json into a GoogleClientSecrets object
-    GoogleClientSecrets clientSecret = null;
     try {
-      clientSecret =
-        GoogleClientSecrets.load(
-          new JacksonFactory(),
-          new FileReader(CLIENT_SECRETS_JSON_PATH)
-        );
-    } catch (FileNotFoundException e) { // thrown by FileReader constructor
-      printError("Unable to find client_secrets.json at " + CLIENT_SECRETS_JSON_PATH);
-    } catch (IOException e) { // thrown by GoogleClientSecrets.load()
-      printError("Unable to load the GoogleClientSecrets");
+      authFlow = OAuth2Utilities.getAuthFlow();
+    } catch (Exception e) {
+      printError(e.getMessage());
+      printError("Unable to initialize authFlow. User won't be able to be authenticated");
     }
-
-    if (clientSecret == null) {
-      printError("clientSecret was unable to be initialized. "
-                  + "User won't be able to be authenticated");
-    }
-
-    DataStore<StoredCredential> credentialDataStore = null;
-    try {
-      credentialDataStore = new AppEngineDataStoreFactory().getDataStore(CREDENTIAL_STORE_ID);
-    } catch (IOException e) {
-      printError("There was an error while initializing the credentialDataStore");
-    }
-
-    // Initialize the authorization code flow so we can authenticate the user
-    authFlow = new GoogleAuthorizationCodeFlow.Builder(
-      new NetHttpTransport(),
-      new JacksonFactory(),
-      clientSecret,
-      CalendarManager.getScopes()
-    ).setCredentialDataStore( // DataStore<StoredCredential> credentialDataStore
-      credentialDataStore
-    ).build();
-
-    if (authFlow == null) {
-      printError("Authentication flow was unable to be initialized. "
-                  + "User won't be able to be authenticated");
-    }
-
   }
 
   /**
