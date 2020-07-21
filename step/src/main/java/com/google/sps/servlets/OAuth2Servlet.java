@@ -31,14 +31,19 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow.
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
 import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
 import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.auth.oauth2.TokenResponse;
+import com.google.api.client.extensions.appengine.datastore.AppEngineDataStoreFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.store.DataStore;
+import com.google.sps.CalendarManager; // TODO delete when done with test event
 
 @WebServlet("/oauth2")
 public class OAuth2Servlet extends HttpServlet {
 
-  private GoogleAuthorizationCodeFlow authFlow;
+  public final static String CREDENTIAL_STORE_ID = "credential_datastore"; 
+  private GoogleAuthorizationCodeFlow authFlow; // TODO: temporary public
   private final static String CLIENT_SECRETS_JSON_PATH = "./WEB-INF/classes/client_secrets.json";
   private final static String AUTH_REDIRECT_URI = // TODO find a way to get rid of this constant
     "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
@@ -66,12 +71,21 @@ public class OAuth2Servlet extends HttpServlet {
                   + "User won't be able to be authenticated");
     }
 
+    DataStore<StoredCredential> credentialDataStore = null;
+    try {
+      credentialDataStore = new AppEngineDataStoreFactory().getDataStore(CREDENTIAL_STORE_ID);
+    } catch (IOException e) {
+      printError("There was an error while initializing the credentialDataStore");
+    }
+
     // Initialize the authorization code flow so we can authenticate the user
     authFlow = new GoogleAuthorizationCodeFlow.Builder(
       new NetHttpTransport(),
       new JacksonFactory(),
       clientSecret,
       CalendarManager.getScopes()
+    ).setCredentialDataStore( // DataStore<StoredCredential> credentialDataStore
+      credentialDataStore
     ).build();
 
     if (authFlow == null) {
@@ -114,6 +128,8 @@ public class OAuth2Servlet extends HttpServlet {
       System.out.println("Beginning authorization code flow...");
 
       if (authFlow.loadCredential(userId) != null) { // If the user's credentials were found,
+        System.out.println("User already has a credential.\nAuthorization code flow complete.");
+        response.sendRedirect("/profile.jsp");
         return; // we're done.
       }
 
@@ -137,6 +153,10 @@ public class OAuth2Servlet extends HttpServlet {
       // Use the access token to store and obtain a credential to auth our GCal API requests.
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
 
+      System.out.println("getCredentialDataStore: " + authFlow.getCredentialDataStore());
+      System.out.println("reloaded credential from credential datastore: "
+                         + authFlow.loadCredential(userId));
+      
       System.out.println("Authorization code flow complete.");
       response.sendRedirect("/profile.jsp");
 
