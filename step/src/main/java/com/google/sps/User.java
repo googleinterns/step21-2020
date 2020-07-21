@@ -66,6 +66,10 @@ public class User {
     return OAuth2Utilities.getUserCredential(userServiceUserId);
   }
 
+  public boolean isAuthenticated() {
+    return OAuth2Utilities.isUserAuthenticated(userServiceUserId);
+  }
+
   // Getter method for a user's matches
   public Collection<User> getMatches() {
     if (matches == null) {

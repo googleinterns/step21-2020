@@ -83,6 +83,10 @@ public class OAuth2Utilities {
     }
   }
 
+  public static boolean isUserAuthenticated(String userId) {
+    return getUserCredential(userId) != null;
+  }
+
   private static DataStore<StoredCredential> getCredentialDataStore() throws IOException {
     return new AppEngineDataStoreFactory().getDataStore(CREDENTIAL_DATASTORE_ID);
   }
