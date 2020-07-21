@@ -138,7 +138,6 @@ h3 a:hover {
 
 #log-out-button {
   border: none;
-  background-color: #F4B400;
   border-radius: 8px;
   width: 80px;
   height: 30px;
@@ -162,7 +161,7 @@ h3 a:hover {
   box-shadow: 0 8px 13px 0 rgba(0,0,0,0.2), 0 5px 15px 0 rgba(0,0,0,0.19)
 }
 
-#match-submit, log-out-button {
+#match-submit, #log-out-button {
   background-color: #F4B400;
 }
 

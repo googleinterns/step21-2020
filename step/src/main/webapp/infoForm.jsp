@@ -31,7 +31,9 @@ limitations under the License.
   <body>
     <nav>
         <img src="logo.png" alt="logo" id="logo">
-        <a href="<%= logoutURL %>"> Log Out </a>
+        <form>
+          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
+        </form>
     </nav>
     
     
