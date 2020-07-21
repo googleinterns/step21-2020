@@ -20,6 +20,7 @@ import java.io.IOException;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow.Builder;
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.auth.oauth2.StoredCredential;
 import com.google.api.client.extensions.appengine.datastore.AppEngineDataStoreFactory;
 import com.google.api.client.http.javanet.NetHttpTransport;
@@ -70,8 +71,23 @@ public class OAuth2Utilities {
     return authFlow;
   }
 
-  public static DataStore<StoredCredential> getCredentialDataStore() throws IOException {
+  public static Credential getUserCredential(String userId) {
+    GoogleAuthorizationCodeFlow authFlow = null;
+    try {
+      authFlow = getAuthFlow();
+      return authFlow.loadCredential(userId);
+    } catch (Exception e) {
+      printError(e.getMessage());
+      printError("Unable to get user credential");
+      return null; // TODO(adamsamuelson): should throw exception instead of return null?
+    }
+  }
+
+  private static DataStore<StoredCredential> getCredentialDataStore() throws IOException {
     return new AppEngineDataStoreFactory().getDataStore(CREDENTIAL_DATASTORE_ID);
   }
 
+  private static void printError(String errorMessage) {
+    System.err.println("ERROR: " + errorMessage);
+  }
 }
