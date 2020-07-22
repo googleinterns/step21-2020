@@ -41,8 +41,9 @@ public class HomepageServlet extends HttpServlet {
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
     String id = userService.getCurrentUser().getUserId();
+    User user = new User(id);
 
-    Collection<User> userMatches = DatabaseHandler.getUserMatches(id);
+    Collection<User> userMatches = user.getMatches();
     Collection<Notification> notifications = DatabaseHandler.getUserNotifications(id);
     JSONArray matchesArray = new JSONArray();
     JSONArray notificationsArray = new JSONArray();
@@ -63,7 +64,7 @@ public class HomepageServlet extends HttpServlet {
       notificationCounter += 1;
     }
 
-    boolean matchPending = DatabaseHandler.getMatchPendingStatus(id);
+    boolean matchPending = user.isMatchPending();
 
     JSONObject userData = new JSONObject();
     userData.put("matches", matchesArray);
