@@ -33,6 +33,7 @@ import javax.servlet.http.HttpServletResponse;
 public class HomepageServlet extends HttpServlet {
 
   private static final int NUM_NOTIFS_TO_DISPLAY = 10;
+  private static final String STATUS = "status";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -62,9 +63,17 @@ public class HomepageServlet extends HttpServlet {
       notificationCounter += 1;
     }
 
+    boolean matchPending = DatabaseHandler.getMatchPendingStatus(id);
+
     JSONObject userData = new JSONObject();
     userData.put("matches", matchesArray);
     userData.put("notifications", notificationsArray);
+
+    if (matchPending) {
+      userData.put(STATUS, "pending");
+    } else {
+      userData.put(STATUS, "not pending");
+    }
 
     out.println(userData);
   }
