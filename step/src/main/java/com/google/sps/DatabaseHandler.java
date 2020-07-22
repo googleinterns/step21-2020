@@ -41,7 +41,9 @@ public final class DatabaseHandler {
   private static DatastoreService datastore =
          DatastoreServiceFactory.getDatastoreService();
   public static final int MATCHING = 1;
-  public static final int MESSAGE = 2; 
+  public static final int MESSAGE = 2;
+
+  private static final String MATCHPENDING = "matchPending"; 
 
   private DatabaseHandler() {
       
@@ -58,7 +60,7 @@ public final class DatabaseHandler {
     entity.setProperty("yearBirth", yearBirth);
     entity.setProperty("email", email);
     entity.setProperty("id", id);
-    entity.setProperty("matchPending", false);
+    entity.setProperty(MATCHPENDING, false);
     datastore.put(entity);    
   }
  
@@ -81,7 +83,7 @@ public final class DatabaseHandler {
 
     // Querying all of the user's notifications from the Datastore.
     Query query = new Query("Notification").setFilter(idFilter)
-      .addSort("timestamp",SortDirection.DESCENDING);
+      .addSort("timestamp", SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
 
@@ -157,7 +159,7 @@ public final class DatabaseHandler {
   public static void updateMatchPendingStatus(String id, boolean status) {
     try {
       Entity user = datastore.get((new User(id)).getKey());
-      user.setProperty("matchPending", status);
+      user.setProperty(MATCHPENDING, status);
       datastore.put(user);
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
@@ -169,7 +171,7 @@ public final class DatabaseHandler {
   public static Boolean getMatchPendingStatus(String id) {
    try {
       Entity user = datastore.get((new User(id)).getKey());
-      Boolean matchPending = (Boolean) user.getProperty("matchPending");
+      Boolean matchPending = (Boolean) user.getProperty(MATCHPENDING);
       return matchPending;
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
