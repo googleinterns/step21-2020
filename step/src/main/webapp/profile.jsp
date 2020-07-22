@@ -57,11 +57,30 @@ limitations under the License.
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
 
-    String q1 = entity.getParameter("q1") == null ? "Unknown" : entity.getParameter("q1");
-    String q2 = entity.getParameter("q2") == null ? "Unknown" : entity.getParameter("q2");
-    String q3 = entity.getParameter("q3") == null ? "Unknown" : entity.getParameter("q3");
-    String q4 = entity.getParameter("q4") == null ? "Unknown" : entity.getParameter("q4");
-    String q5 = entity.getParameter("q5") == null ? "Unknown" : entity.getParameter("q5");
+    String q1 = (String) entity.getProperty("q1");
+    if (q1 == null) {
+      q1 = "Unknown";
+    }
+
+    String q2 = (String) entity.getProperty("q2");
+    if (q2 == null) {
+      q2 = "Unknown";
+    }
+
+    String q3 = (String) entity.getProperty("q3");
+    if (q3 == null) {
+      q3 = "Unknown";
+    }
+
+    String q4 = (String) entity.getProperty("q4");
+    if (q4 == null) {
+      q4 = "Unknown";
+    }
+
+    String q5 = (String) entity.getProperty("q5");
+    if (q5 == null) {
+      q5 = "Unknown";
+    }
 
     %>
 
