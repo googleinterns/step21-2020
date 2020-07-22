@@ -23,16 +23,17 @@ limitations under the License.
 <html>
   <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style_pref.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style_info.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
     <script src="script.js"></script>
     <title>My Information Form </title>
   </head>
   <body>
     <nav>
-        <a href="<%= logoutURL %>"> Home </a>
-        <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
+        <img src="logo.png" alt="logo" id="logo">
+        <form>
+          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
+        </form>
     </nav>
     
     

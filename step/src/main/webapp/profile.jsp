@@ -33,20 +33,21 @@ limitations under the License.
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_profile.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-    <title>My Profile</title>
+    <title>Friend Matching Plus</title>
+
   </head>
-  <body>
+  <body onload="getMatches()">
     <nav>
-        <a href="<%= logoutURL %>"> Log Out </a>
+        <form>
+          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
+        </form>
     </nav>
-    <h1>Friend Matching Plus </h1>
+    <img src="logo.png" alt="logo" id="logo">
 
     <% if (!userService.isUserLoggedIn()) {
         response.sendRedirect("index.jsp");   
-    } %>
-
+    } %> 
     <%
     String id = userService.getCurrentUser().getUserId();
 
@@ -84,9 +85,9 @@ limitations under the License.
 
     %>
 
-    <h2> Your Portfolio </h2>
     <div class="container">
         <div class="sub-container" id="list-selection">
+            <h2> Your Profile </h2>
             <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
             <div id="navbar-selection"> 
                 <a href="#personal-container">Personal Information</a>
@@ -95,8 +96,8 @@ limitations under the License.
                 <a href="#find-a-match-container">Find a match!</a>
             </div>
         </div>
-        <div class="sub-container" id="profile-info">
-            <h3> <a href="infoForm.jsp"> Personal Infomation </a> </h3>
+        <div class="sub-container" id="profile-info"> 
+            <h3> <a href="infoForm.jsp" style="#4B0082;"> Personal Infomation </a> </h3>
             <div class="personal-container" id="personal-container">
                 <div class="personal-item">
                     <div class="item-label"> First Name </div> 
@@ -115,7 +116,8 @@ limitations under the License.
                     <div class="item-info"><%= String.valueOf(entity.getProperty("monthBirth"))%>/<%= String.valueOf(entity.getProperty("dayBirth"))%>/<%= String.valueOf(entity.getProperty("yearBirth"))%> </div> 
                 </div>
             </div>
-            <h3> <a href="prefForm.jsp"> Questionaire </a> </h3>
+            <br><br>
+            <h3> <a href="prefForm.jsp" style="#4B0082;"> Questionaire </a> </h3>
             <div class="questionaire-container" id="questionaire-container"> 
                 <div class="questionaire-item"> 
                     <div class="item-label"> Are you staying in the US now? </div> 
@@ -138,18 +140,79 @@ limitations under the License.
                     <div class="item-info"> <%= q5%> </div>
                 </div> 
             </div>
-            <h3> Your Matches </h3>
+            <br><br>
+            <h3> Your matches </h3>
             <div class="matches-container" id="matches-container">
+              <div id="match-item"> </div>
             </div>
-            <h3> Find a Match! </h3>
-            <div class="find-a-match-container" id="find-a-match-container">
-              <form action="/matching" method="post">
-                <input type="hidden" id="request-type" name="request-type" value="request-type-match">
-                <button type="submit" value="Submit">Find a match!</button>
-              </form>
+        </div>
+            
+
+        <div class="sub-container" id="page-right">
+                
+            <div id="find-a-match-container">
+                <form class="match-button" action="/matching" method="post">
+                    <input type="hidden" id="request-type" name="request-type" value="request-type-match">
+                    <button id="match-submit" type="submit" value="Submit">Find a match!</button>
+                </form>
             </div>
-            <h3></h3> <!-- Padding at bottom of page -->
+            <h3> Notifications </h3>
+            <div class="find-a-match-container">
+                <div class="match-item" id="notification-container"></div>
+                <br>
+            </div>
         </div>
     </div>
+
+        <script>
+      function getMatches() {
+        fetch('/Homepage')
+          .then((response) => {
+            return response.json();
+          })
+          .then((json) => {
+            matches = json["matches"];
+            notifications = json["notifications"];
+            renderMatches(matches);
+            renderNotifications(notifications);
+          });
+      }
+      function renderMatches(matches) {
+        const matchContainer = document.getElementById('match-item');
+        matches.forEach(match => {
+          name = match["name"];
+          email = match["email"];
+          const matchDiv = document.createElement('div');
+          matchDiv.className = 'match-item';
+          const nameElement = document.createElement('div');
+          nameElement.innerText = name;
+          nameElement.className = 'match-name';
+          matchDiv.appendChild(nameElement);
+          const emailElement = document.createElement('div');
+          emailElement.innerText = email;
+          emailElement.className = 'match-email';
+          matchDiv.appendChild(emailElement);
+          matchContainer.appendChild(matchDiv);
+          const lineBreak = document.createElement('br');
+          matchContainer.appendChild(lineBreak);
+        });
+      }
+      function renderNotifications(notifications) {
+        const notificationContainer = 
+          document.getElementById('notification-container');
+          
+        notifications.forEach(notification => {
+          const notificationElement = document.createElement('p');
+          notificationElement.innerText = notification;
+          notificationContainer.appendChild(notificationElement);
+          const lineElement = document.createElement('hr');
+          lineElement.className = 'horizontal-line';
+          notificationContainer.appendChild(lineElement);
+        });
+      }
+    </script> 
   </body>
 </html>
+            
+
+

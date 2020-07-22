@@ -53,9 +53,9 @@ public final class MatchManagerTest {
 
   // helper method for adding a user to the database
   private void addUserToDatabase() {
-    DatabaseHandler.addUser("User", "A", 1, 1, 2000, "userA@email.com", "1");
-    DatabaseHandler.addUser("User", "B", 2, 2, 2002, "userB@email.com", "2");
-    DatabaseHandler.addUser("User", "C", 3, 3, 2003, "userC@email.com", "3");
+    DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
+    DatabaseHandler.addUser("User", "B", "2", "2", "2002", "userB@email.com", "2");
+    DatabaseHandler.addUser("User", "C", "3", "3", "2003", "userC@email.com", "3");
   }
 
   @Test
