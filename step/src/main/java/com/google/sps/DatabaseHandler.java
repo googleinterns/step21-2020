@@ -58,6 +58,7 @@ public final class DatabaseHandler {
     entity.setProperty("yearBirth", yearBirth);
     entity.setProperty("email", email);
     entity.setProperty("id", id);
+    entity.setProperty("matchPending", false);
     datastore.put(entity);    
   }
  
@@ -150,6 +151,31 @@ public final class DatabaseHandler {
       matches.add(new User(matchId));
     }
     return matches;
+  }
+
+    // Method for updating a user's match-pending status
+  public static void updateMatchPendingStatus(String id, boolean status) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      user.setProperty("matchPending", status);
+      datastore.put(user);
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  // Method for getting a user's match-pending status
+  public static Boolean getMatchPendingStatus(String id) {
+   try {
+      Entity user = datastore.get((new User(id)).getKey());
+      Boolean matchPending = (Boolean) user.getProperty("matchPending");
+      return matchPending;
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
   }
 
 }
