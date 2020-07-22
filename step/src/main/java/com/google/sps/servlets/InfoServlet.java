@@ -54,8 +54,8 @@ public class InfoServlet extends HttpServlet {
     String id = user.getUserId();
     
     // Ensuring that only users who have filled all of the info fields out are added to the database
-    if (firstName != null && lastName != null && dayBirth != 0 && monthBirth != 0 &&
-      yearBirth != 0 && email != null && id != null) {
+    if (firstName != null && lastName != null && dayBirth != null && monthBirth != null &&
+      yearBirth != null && email != null && id != null) {
       DatabaseHandler.addUser(firstName, lastName, dayBirth, monthBirth, yearBirth, email, id);
     }
 

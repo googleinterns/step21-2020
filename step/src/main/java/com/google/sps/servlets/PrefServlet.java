@@ -41,11 +41,11 @@ public class PrefServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
-    String q1 = request.getParameter("q1") == null ? UNKNOWN : request.getParameter("q1");
-    String q2 = request.getParameter("q2") == null ? UNKNOWN : request.getParameter("q2");
-    String q3 = request.getParameter("q3") == null ? UNKNOWN : request.getParameter("q3");
-    String q4 = request.getParameter("q4") == null ? UNKNOWN : request.getParameter("q4");
-    String q5 = request.getParameter("q5") == null ? UNKNOWN : request.getParameter("q5");
+    String q1 = (String) request.getParameter("q1") == null ? UNKNOWN : (String) request.getParameter("q1");
+    String q2 = (String) request.getParameter("q2") == null ? UNKNOWN : (String) request.getParameter("q2");
+    String q3 = (String) request.getParameter("q3") == null ? UNKNOWN : (String) request.getParameter("q3");
+    String q4 = (String) request.getParameter("q4") == null ? UNKNOWN : (String) request.getParameter("q4");
+    String q5 = (String) request.getParameter("q5") == null ? UNKNOWN : (String) request.getParameter("q5");
 
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
