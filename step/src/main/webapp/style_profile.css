@@ -1,55 +1,88 @@
 body {
-    background-color: rgb(241, 241, 241);
+    background-color: #FFFFFF;
 }
+
 #list-selection, #profile-info, #page-right {
     display: inline-block;
 }
+
 #list-selection {
+    margin-top: 8%;
     width: 30%;
     text-align: center;
 }
+
 #profile-info {
+    margin-top: 8%;
     width: 40%;
 }
 
 #page-right {
+    margin-top: 8%;
     width: 25%;
 }
 .container {
-    background-color: lightcoral;
+    background-color: #FFFFFF;
     font-family: 'Roboto', sans-serif;
 }
+
 #profile-pic {
     margin: 0 auto;
     text-align: center;
 }
+
 #profile-pic > img {
     border-radius: 50%;
     width: 200px;
 }
+
 .match-pic {
     display: inline;
     padding: 20px;
 }
+
 .match-pic > img {
     border-radius: 50%;
     width: 100px;
 }
+
+nav {
+  position: absolute;
+  margin-bottom: 5%;
+}
+
+h3, h2 {
+  color: #4B0082;
+}
+
+
+#logo {
+  position: absolute;
+  top: 8px;
+  left: 70px;
+  height: 8%;
+  width: auto;
+}
+
 #navbar-selection > a {
     text-decoration: none;
     display: block;
     padding-top: 25px;
     font-weight: bold;
 }
+
 #navbar-selection > a:hover {
     color: #F4B400;
 }
+
 .sub-container {
     float: left;
+    margin-bottom: 4%;
 }
+
 h3 a {
     text-decoration: none;
-    color: black;
+    color: #4B0082;
 }
 
 h3 a:hover {
@@ -60,9 +93,10 @@ h3 a:hover {
     border-radius: 10px;
     box-shadow: 3px 10px 20px #aaaaaa;
     position: relative;
-    background-color: #fff;
+    background-color: #FFFFFF;
     padding-bottom: 20px;
 }
+
 .personal-item {
     color: black;
     padding: 30px;
@@ -100,5 +134,40 @@ h3 a:hover {
 
 .item-info, .match-email {
     float: right;
+}
+
+#log-out-button {
+  border: none;
+  border-radius: 8px;
+  width: 80px;
+  height: 30px;
+  margin-left: 92%;
+  margin-top: 1.5%;
+  margin-bottom: 1.5%;
+  border-radius: 8px;
+  border: none;
+}
+
+#match-submit {
+  width: 100%;
+  padding: 6%;
+  margin-top: 12.3%;
+  border: none;
+  border-radius: 2px;
+  color: #4B0082;
+  font-weight: bold;
+  font-family: 'Roboto', sans-serif;
+  font-size: large;
+  box-shadow: 0 8px 13px 0 rgba(0,0,0,0.2), 0 5px 15px 0 rgba(0,0,0,0.19)
+}
+
+#match-submit, #log-out-button {
+  background-color: #F4B400;
+}
+
+#log-out-button:hover {
+  background-color: white;
+  color:#F4B400;
+  border: 2px solid #F4B400;
 }
 

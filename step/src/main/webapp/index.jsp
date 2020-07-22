@@ -28,19 +28,26 @@ limitations under the License.
   <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style_index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
     <title>Friend Matching Plus</title>
   </head>
   <body>
         <nav>
             <a href="<%= loginURL %>"> Log In </a>
-            <a class="active" href="index.jsp"> Home </a>
+            <a class="active" href="index.jsp"> About </a>
         </nav>
-        <ul>
+        <div id="main-title">
+          <ul>
             <li> Friend </li>
             <li> Matching </li>
             <li> Plus </li>
-        </ul>
+          </ul>
+          <br>
+          <t>Friending. Made easy.
+            <i class="fa fa-cloud" style="font-size:30px;color:white;text-shadow:2px 2px 4px #000000;"></i>
+          </t>
+        </div>  
         <% if (userService.isUserLoggedIn()) {
             String userEmail = userService.getCurrentUser().getEmail();
             response.sendRedirect("Login");   
