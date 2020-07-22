@@ -34,6 +34,8 @@ public class HomepageServlet extends HttpServlet {
 
   private static final int NUM_NOTIFS_TO_DISPLAY = 10;
   private static final String STATUS = "status";
+  private static final String PENDING = "pending";
+  private static final String NOT_PENDING = "not pending";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -71,9 +73,9 @@ public class HomepageServlet extends HttpServlet {
     userData.put("notifications", notificationsArray);
 
     if (matchPending) {
-      userData.put(STATUS, "pending");
+      userData.put(STATUS, PENDING);
     } else {
-      userData.put(STATUS, "not pending");
+      userData.put(STATUS, NOT_PENDING);
     }
 
     out.println(userData);
