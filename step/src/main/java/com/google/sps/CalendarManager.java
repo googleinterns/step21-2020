@@ -12,49 +12,85 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Generic imports
+package com.google.sps;
+
+import java.lang.IllegalStateException;
+import java.time.format.DateTimeFormatter;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
-
-// Google Calendar API imports
-import com.google.api.services.calendar.Calendar;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.DateTime;
+import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.CalendarScopes;
 
-// Authorization imports
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.auth.oauth2.Credential;
-
-/*
+/**
   Usage:
-    General:
-      CalendarManager calendar = new CalendarManager();
-      calendar.setUser(String userId);
-
     Creating a match event:
-      // CalendarManager calendar = new CalendarManager();
-      CalendarManager.createMatchEvent(String userId1, String userId2);
+      CalendarManager.createMatchEvent(MatchNotification match);
 
     Remove a match event (for later implementation):
-      CalendarManager calendar = new CalendarManager();
-      calendar.removeMatchEvent(String userId1, String userId2);
+      CalendarManager.removeMatchEvent(String userId1, String userId2);
 */
+
+// TODO: method to return true/false is user is authenticated (javascript support too)
+// TODO: add javascript support for checking if a user is validated
+// TODO: add test cases
+// TODO: conform to Google Java style
 
 public class CalendarManager {
   private CalendarManager() {}
 
-  // TODO: method to return required scope to OAuth2Servlet
-  // TODO: method to return true/false is user is authenticated (javascript support too)
-  // TODO: delete extra maven imports
+  public static void createMatchEvent(String hostUserId, String guestUserId) {
+    creatMatchEvent(new User(hostUserId), new User(guestUserId));
+  }
 
-  public static void createMatchEvent(String userId1, String userId2) {
-    // Check if user1 is authenticated
-    // Check if user2 is authenticated
+  public static void creatMatchEvent(User hostUser, User guestUser) {
+    if (!hostUser.isAuthenticated()) {
+      throw new IllegalStateException("The host user isn't authenticated. "
+                                      + "Unable to create match event.");
+    }
+
+    Event matchEvent = new MatchEventBuilder()
+      .setAttendees(hostUser, guestUser)
+      .setStartDateTime(2020, 7, 21, 9, 0)
+      .build();
+
+    pushMatchEvent(hostUser, guestUser, matchEvent); // TODO: implement
+  }
+
+  public static List<String> getScopes() {
+    List<String> scopes = new ArrayList<>();
+    scopes.add(CalendarScopes.CALENDAR_EVENTS); // "View and edit events on all your calendars"
+    return scopes;
+  }
+
+  // hostUser is the event owner and guestUser will receive an email invite
+  private static void pushMatchEvent(User hostUser, User guestUser, Event event) {
+
+    Calendar calendar = getCalendar(hostUser);
+    try {
+      String calendarId = "primary";
+      event = calendar.events().insert(calendarId, event).execute();
+      System.out.printf("Event created: %s\n", event.getHtmlLink());
+    } catch (Exception e) {
+      System.out.println("Unable to push match event.");
+      e.printStackTrace();
+    }
+  }
+
+  private static Calendar getCalendar(User user) {
+    return new Calendar.Builder(
+        new NetHttpTransport(),
+        new JacksonFactory(),
+        user.getCredential()
+      ).setApplicationName("Friend Matching Plus").build(); // TODO: not sure if app name matters
   }
 
   public static void createTestGCalEvent(Credential googleCalendarCredential) {
@@ -99,7 +135,7 @@ public class CalendarManager {
       new NetHttpTransport(),
       new JacksonFactory(),
       googleCalendarCredential
-    ).setApplicationName("Friend Matching Plus").build(); // TODO: not sure iff app name matters
+    ).setApplicationName("Friend Matching Plus").build(); // TODO: not sure if app name matters
 
     try {
       String calendarId = "primary";
@@ -110,10 +146,67 @@ public class CalendarManager {
       e.printStackTrace();
     }
   }
+}
 
-  public static List<String> getScopes() {
-    List<String> scopes = new ArrayList<>();
-    scopes.add(CalendarScopes.CALENDAR_EVENTS); // "View and edit events on all your calendars"
-    return scopes;
+class MatchEventBuilder {
+  private Event matchEvent;
+
+  public MatchEventBuilder() {
+    matchEvent = new Event();
+  }
+
+  public MatchEventBuilder setAttendees(User hostUser, User guestUser) {
+    matchEvent.setSummary("FMP: " + hostUser.getName() + " / " + guestUser.getName());
+
+    matchEvent.setDescription(hostUser.getName() + " and " + guestUser.getName()
+                              + " have matched on Friend Matching Plus!");
+
+    matchEvent.setAttendees(Arrays.asList(new EventAttendee[] {
+      new EventAttendee().setEmail(guestUser.getEmail())
+    }));
+
+    return this;
+  }
+
+  // ZonedDateTime guide: https://www.baeldung.com/java-8-date-time-intro
+  public MatchEventBuilder setStartDateTime(int year, int month, int day, int hour, int minute) {
+    String dateTimeString = dateTimeString(year, month, day, hour, minute);
+
+    EventDateTime start = new EventDateTime()
+      .setDateTime(new DateTime(dateTimeString))
+      .setTimeZone("America/Los_Angeles"); // TODO how to configure time zones?
+    matchEvent.setStart(start);
+
+    // Assume a 1 hour event. TODO(adamsamuelson): fix this calculation
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString, dateTimeFormatter);
+    zonedDateTime = zonedDateTime.plusHours(1);
+    dateTimeString = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
+    EventDateTime end = new EventDateTime()
+      .setDateTime(new DateTime(dateTimeString))
+      .setTimeZone("America/Los_Angeles"); // TODO how to configure time zones?
+    matchEvent.setEnd(end);
+
+    return this;
+  }
+
+  public Event build() {
+    return matchEvent;
+  }
+
+  // createDateTimeString(2020, 07, 21, 9, 0, 0) -> "2020-07-21T09:00:00-05:00"
+  // Public for testing purposes
+  private static String dateTimeString(int year, int month, int day, int hour, int minute) {
+    int timeZone = -5; // central time zone. TODO(adamsamuelson): eliminate timezones
+
+    if (timeZone < 0) {
+      timeZone *= -1;
+      return String.format("%04d-%02d-%02dT%02d:%02d:%02d-%02d:%02d",
+                      year, month, day, hour, minute, 0, timeZone, 0);
+    } else {
+      return String.format("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d",
+                      year, month, day, hour, minute, 0, timeZone, 0);
+    }
   }
 }
