@@ -43,6 +43,7 @@ public final class DatabaseHandler {
   public static final int MATCHING = 1;
   public static final int MESSAGE = 2;
 
+  private static final String UNKNOWN = "Unkown"; 
   private static final String FIRST_NAME =  "firstName";
   private static final String LAST_NAME = "lastName";
   private static final String MATCH_PENDING = "matchPending"; 
@@ -53,6 +54,7 @@ public final class DatabaseHandler {
   private static final String TYPE = "type";
   private static final String NOTIFICATION = "Notification";
 
+
   private DatabaseHandler() {
       
   }
@@ -61,6 +63,15 @@ public final class DatabaseHandler {
   public static void addUser(String firstName, String lastName, String dayBirth,
     String monthBirth, String yearBirth, String email, String id) {
     Entity entity = new Entity("User", id);
+
+    if (firstName == null) {
+      firstName = UNKNOWN;
+    } 
+    
+    if (lastName == null) {
+      lastName = UNKNOWN;
+    }
+
     entity.setProperty(FIRST_NAME, firstName);
     entity.setProperty(LAST_NAME, lastName);
     entity.setProperty("dayBirth", dayBirth);
@@ -75,6 +86,11 @@ public final class DatabaseHandler {
   // Adding a user's notificaton to the database
   public static void addNotification(String firstId, String secondId,
       long timestamp, int type) {
+    
+    if (firstId == null || secondId == null) {
+      throw new NullPointerException();
+    }
+
     Entity entity = new Entity(NOTIFICATION);
     entity.setProperty(USER_ID, firstId);
     entity.setProperty(OTHER_USER_ID, secondId);

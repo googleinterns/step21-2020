@@ -71,8 +71,6 @@ public class LogInServlet extends HttpServlet {
     Entity entity = new Entity("User", id);
     entity.setProperty("id", id);
     entity.setProperty("email", email);
-    // The put() function automatically inserts new data or updates existing data based on ID
-    datastore.put(entity);
     response.sendRedirect("infoForm.jsp");
   }
 
