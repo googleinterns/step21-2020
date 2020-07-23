@@ -109,7 +109,6 @@ public final class DatabaseHandler {
 
     // Querying all of the user's notifications from the Datastore.
     Query query = new Query(NOTIFICATION).setFilter(idFilter);
-     // .addSort(TIMESTAMP, SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
 

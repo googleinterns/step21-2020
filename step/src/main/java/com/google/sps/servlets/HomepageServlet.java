@@ -42,7 +42,6 @@ public class HomepageServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-   // response.setContentType("text/html");
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
     String id = userService.getCurrentUser().getUserId();

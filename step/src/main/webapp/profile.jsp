@@ -167,16 +167,11 @@ limitations under the License.
 
         <script>
       function getMatches() {
-        console.log('inside getMatches()');
         fetch('/Homepage')
           .then((response) => {
-            console.log('response');
-            console.log(response);
             return response.json();
           })
           .then((json) => {
-            console.log('json');
-            console.log(json);
             matches = json["matches"];
             notifications = json["notifications"];
             status = json["status"];
