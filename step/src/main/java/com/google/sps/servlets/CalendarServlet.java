@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.google.appengine.api.users.User;
+// import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
@@ -39,6 +39,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.DataStore;
 import com.google.sps.CalendarManager; // TODO delete when done with test event
 import com.google.sps.OAuth2Utilities;
+import com.google.sps.User;
 
 @WebServlet("/cal")
 public class CalendarServlet extends HttpServlet {
@@ -60,15 +61,15 @@ public class CalendarServlet extends HttpServlet {
     String yearString = request.getParameter("year");
     String hourString = request.getParameter("hour");
     String minuteString = request.getParameter("minute");
-    String guestUserId = request.getParameter("guestUserId");
+    String guestName = request.getParameter("guestName");
 
     if(monthString == null|| dayString == null || yearString == null 
-        || hourString == null || minuteString == null || guestUserId == null) {
+        || hourString == null || minuteString == null || guestName == null) {
       System.out.println("one or more values are null");
     } else {
 
       System.out.println(monthString + " / " + dayString + " / " + yearString 
-                          + " " + hourString + ":" + minuteString + ". " + guestUserId);
+                          + " " + hourString + ":" + minuteString + ". " + guestName);
 
       int monthInt = Integer.parseInt(monthString);
       int dayInt = Integer.parseInt(dayString);
@@ -76,9 +77,23 @@ public class CalendarServlet extends HttpServlet {
       int hourInt = Integer.parseInt(hourString);
       int minuteInt = Integer.parseInt(minuteString);
 
-      String userId = UserServiceFactory.getUserService().getCurrentUser().getUserId();
-      CalendarManager.createMatchEvent(userId, guestUserId, 
-                                        yearInt, monthInt, dayInt, hourInt, minuteInt);
+      User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
+      User guestUser = null;
+      System.out.println("hostUser matches: " + hostUser.getMatches().toString());
+      for(User user : hostUser.getMatches()) {
+        System.out.println("input: " + guestName);
+        System.out.println("found: " + user.getName());
+        if(user.getName().equals(guestName)) {
+          guestUser = user;
+        }
+      }
+
+      if(guestUser == null) {
+        System.out.println("Unable to find the guest user, unable to create Google Calendar event.");
+      } else {
+        CalendarManager.createMatchEvent(hostUser, guestUser, 
+                                          yearInt, monthInt, dayInt, hourInt, minuteInt);
+      }
     }
 
     response.sendRedirect("/profile.jsp");

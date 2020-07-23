@@ -83,7 +83,7 @@ limitations under the License.
                   <label>Minute:</label><br>
                   <input type="text" id="minute" name="minute"><br>
                   <label>Guest id:</label><br>
-                  <input type="text" id="minute" name="guestUserId"><br>
+                  <input type="text" id="minute" name="guestName"><br>
                   <button type="submit">Create a Google Calendar event</button>
                 </form>
             </div>
