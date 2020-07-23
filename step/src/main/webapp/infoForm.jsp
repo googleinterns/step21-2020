@@ -32,7 +32,7 @@ limitations under the License.
     <nav>
         <img src="logo.png" alt="logo" id="logo">
         <form>
-          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
+          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Home </button>
         </form>
     </nav>
     
