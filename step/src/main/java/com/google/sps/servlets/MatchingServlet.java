@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
-import org.json.simple.JSONObject;
+
 
 @WebServlet("/matching")
 public class MatchingServlet extends HttpServlet {
@@ -42,7 +42,7 @@ public class MatchingServlet extends HttpServlet {
       com.google.appengine.api.users.User userServiceUser = userService.getCurrentUser();
       com.google.sps.User currentUser = new com.google.sps.User(userServiceUser.getUserId());
       MatchManager.generateMatch(currentUser);
-    }
+    } 
 
     response.sendRedirect("/profile.jsp");
   }

@@ -42,7 +42,9 @@ public final class MatchManager {
   // with anyone else who is in the queue waiting to be matched or adds them to the
   // queue to wait to be matched if no on else is in there
   public static void generateMatch(User user) {
-    if (matchQueue.isEmpty()) { 
+    user.updateMatchPendingStatus(true);
+
+    if (matchQueue.isEmpty()) {
       matchQueue.add(user);  
     } else {
       User matchResult = matchQueue.peek();
@@ -68,6 +70,9 @@ public final class MatchManager {
       secondUser.getId(), currTime, DatabaseHandler.MATCHING);
     DatabaseHandler.addNotification(secondUser.getId(), 
       firstUser.getId(), currTime, DatabaseHandler.MATCHING);
+
+    firstUser.updateMatchPendingStatus(false);
+    secondUser.updateMatchPendingStatus(false);
 
     firstUser.updateMatches();
     secondUser.updateMatches();    

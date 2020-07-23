@@ -134,4 +134,13 @@ public final class DatabaseHandlerTest {
    Assert.assertEquals(actual, expected); 
   }
 
+  @Test
+  // Testing that the match-pending status is set and retrieved correctly
+  public void testGetAndUpdateMatchPending() {
+    addUserToDatabase();
+    Assert.assertFalse(DatabaseHandler.getMatchPendingStatus("1"));
+    DatabaseHandler.updateMatchPendingStatus("1", true);
+    Assert.assertTrue(DatabaseHandler.getMatchPendingStatus("1"));
+  }
+
 }

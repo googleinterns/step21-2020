@@ -42,7 +42,18 @@ public final class DatabaseHandler {
          DatastoreServiceFactory.getDatastoreService();
   public static final int MATCHING = 1;
   public static final int MESSAGE = 2;
+
   private static final String UNKNOWN = "Unkown"; 
+  private static final String FIRST_NAME =  "firstName";
+  private static final String LAST_NAME = "lastName";
+  private static final String MATCH_PENDING = "matchPending"; 
+  private static final String EMAIL = "email";
+  private static final String USER_ID = "userId";
+  private static final String OTHER_USER_ID = "otherUserId";
+  private static final String TIMESTAMP = "timestamp";
+  private static final String TYPE = "type";
+  private static final String NOTIFICATION = "Notification";
+
 
   private DatabaseHandler() {
       
@@ -61,13 +72,14 @@ public final class DatabaseHandler {
       lastName = UNKNOWN;
     }
 
-    entity.setProperty("firstName", firstName);
-    entity.setProperty("lastName", lastName);
+    entity.setProperty(FIRST_NAME, firstName);
+    entity.setProperty(LAST_NAME, lastName);
     entity.setProperty("dayBirth", dayBirth);
     entity.setProperty("monthBirth", monthBirth);
     entity.setProperty("yearBirth", yearBirth);
-    entity.setProperty("email", email);
+    entity.setProperty(EMAIL, email);
     entity.setProperty("id", id);
+    entity.setProperty(MATCH_PENDING, false);
     datastore.put(entity);    
   }
  
@@ -79,32 +91,32 @@ public final class DatabaseHandler {
       throw new NullPointerException();
     }
     
-    Entity entity = new Entity("Notification");
-    entity.setProperty("userId", firstId);
-    entity.setProperty("otherUserId", secondId);
-    entity.setProperty("timestamp", timestamp);
-    entity.setProperty("type", type);
-    datastore.put(entity);
+    Entity entity = new Entity(NOTIFICATION);
+    entity.setProperty(USER_ID, firstId);
+    entity.setProperty(OTHER_USER_ID, secondId);
+    entity.setProperty(TIMESTAMP, timestamp);
+    entity.setProperty(TYPE, type);
+    datastore.put(entity); 
   }
 
   // Getting a user's notifications using their id
   public static Collection<Notification> getUserNotifications(String id) {
     Collection<Notification> notifications = new ArrayList<>();
 
-    Filter idFilter = new FilterPredicate("userId", FilterOperator.EQUAL, id);
+    Filter idFilter = new FilterPredicate(USER_ID, FilterOperator.EQUAL, id);
 
     // Querying all of the user's notifications from the Datastore.
-    Query query = new Query("Notification").setFilter(idFilter)
-      .addSort("timestamp",SortDirection.DESCENDING);
+    Query query = new Query(NOTIFICATION).setFilter(idFilter)
+      .addSort(TIMESTAMP, SortDirection.DESCENDING);
 
     PreparedQuery results = datastore.prepare(query);
 
     // Populating the list
     for (Entity entity : results.asIterable()) {
-      String firstId = (String) entity.getProperty("userId");
-      String secondId = (String) entity.getProperty("otherUserId");
-      long timestamp = (long) entity.getProperty("timestamp");
-      long notificationType = (long) entity.getProperty("type");
+      String firstId = (String) entity.getProperty(USER_ID);
+      String secondId = (String) entity.getProperty(OTHER_USER_ID);
+      long timestamp = (long) entity.getProperty(TIMESTAMP);
+      long notificationType = (long) entity.getProperty(TYPE);
        
       Notification notification;
 
@@ -126,7 +138,7 @@ public final class DatabaseHandler {
   public static String getUserEmail(String id) {
     try {
       Entity user = datastore.get((new User(id)).getKey());
-      return (String) user.getProperty("email");
+      return (String) user.getProperty(EMAIL);
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
       e.printStackTrace();
@@ -138,8 +150,8 @@ public final class DatabaseHandler {
   public static String getUserName(String id) {
     try {
       Entity user = datastore.get((new User(id)).getKey());
-      String firstName = (String) user.getProperty("firstName");
-      String lastName = (String) user.getProperty("lastName");
+      String firstName = (String) user.getProperty(FIRST_NAME);
+      String lastName = (String) user.getProperty(LAST_NAME);
       return firstName + " " + lastName;
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
@@ -150,21 +162,46 @@ public final class DatabaseHandler {
 
   // Method for getting all of a user's matches
   public static Collection<User> getUserMatches(String id) {
-    Filter idFilter = new FilterPredicate("userId", FilterOperator.EQUAL, id);
-    Filter typeFilter = new FilterPredicate("type", FilterOperator.EQUAL, MATCHING);
+    Filter idFilter = new FilterPredicate(USER_ID, FilterOperator.EQUAL, id);
+    Filter typeFilter = new FilterPredicate(TYPE, FilterOperator.EQUAL, MATCHING);
 
     CompositeFilter compositeFilter = new CompositeFilter(CompositeFilterOperator.AND, 
       Arrays.asList(idFilter, typeFilter));
 
-    Query query = new Query("Notification").setFilter(compositeFilter);
+    Query query = new Query(NOTIFICATION).setFilter(compositeFilter);
     PreparedQuery results = datastore.prepare(query);
 
     Collection<User> matches = new ArrayList<>();
     for (Entity entity: results.asIterable()) {
-      String matchId = (String) entity.getProperty("otherUserId");
+      String matchId = (String) entity.getProperty(OTHER_USER_ID);
       matches.add(new User(matchId));
     }
     return matches;
+  }
+
+    // Method for updating a user's match-pending status
+  public static void updateMatchPendingStatus(String id, boolean status) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      user.setProperty(MATCH_PENDING, status);
+      datastore.put(user);
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  // Method for getting a user's match-pending status
+  public static Boolean getMatchPendingStatus(String id) {
+   try {
+      Entity user = datastore.get((new User(id)).getKey());
+      Boolean matchPending = (Boolean) user.getProperty(MATCH_PENDING);
+      return matchPending;
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
   }
 
 }

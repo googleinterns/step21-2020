@@ -100,4 +100,12 @@ public final class UserTest {
     Assert.assertEquals(USER_A.hashCode(), "1".hashCode());  
   }
 
+  @Test
+  // Testing match pending functionality
+  public void testMatchPending() {
+    Assert.assertFalse(USER_A.isMatchPending());
+    USER_A.updateMatchPendingStatus(true);
+    Assert.assertTrue(USER_A.isMatchPending());
+  }
+
 }
