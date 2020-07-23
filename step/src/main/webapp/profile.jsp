@@ -154,6 +154,7 @@ limitations under the License.
                 <form class="match-button" action="/matching" method="post">
                     <input type="hidden" id="request-type" name="request-type" value="request-type-match">
                     <button id="match-submit" type="submit" value="Submit">Find a match!</button>
+                    <p id="match-status"></p>
                 </form>
             </div>
             <h3> Notifications </h3>
@@ -173,10 +174,14 @@ limitations under the License.
           .then((json) => {
             matches = json["matches"];
             notifications = json["notifications"];
+            status = json["status"];
+            console.log(json["status"]);
             renderMatches(matches);
             renderNotifications(notifications);
+            getMatchStatus(status);
           });
       }
+
       function renderMatches(matches) {
         const matchContainer = document.getElementById('match-item');
         matches.forEach(match => {
@@ -197,6 +202,7 @@ limitations under the License.
           matchContainer.appendChild(lineBreak);
         });
       }
+
       function renderNotifications(notifications) {
         const notificationContainer = 
           document.getElementById('notification-container');
@@ -209,6 +215,17 @@ limitations under the License.
           lineElement.className = 'horizontal-line';
           notificationContainer.appendChild(lineElement);
         });
+      }
+
+      function getMatchStatus(status) {
+        console.log("inside getMatchstatus");
+        console.log('status');
+        console.log(status);
+        if (status === "pending") {
+          const statusContainer = 
+            document.getElementById('match-status');  
+          statusContainer.innerText = "Match pending... please check back later."
+        }
       }
     </script> 
   </body>
