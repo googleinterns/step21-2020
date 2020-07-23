@@ -135,7 +135,9 @@ limitations under the License.
         </div>
     </div>
 
-        <script>
+        <a href="index.html"> direct to chat page </a>
+
+    <script>
       function getMatches() {
         fetch('/Homepage')
           .then((response) => {

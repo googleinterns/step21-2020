@@ -1,0 +1,37 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/local/nvm/versions/node/v10.14.2/bin/node',
+1 verbose cli   '/usr/local/nvm/versions/node/v10.14.2/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'dev' ]
+2 info using npm@6.14.6
+3 info using node@v10.14.2
+4 verbose run-script [ 'predev', 'dev', 'postdev' ]
+5 info lifecycle step21-2020@1.0.0~predev: step21-2020@1.0.0
+6 info lifecycle step21-2020@1.0.0~dev: step21-2020@1.0.0
+7 verbose lifecycle step21-2020@1.0.0~dev: unsafe-perm in lifecycle true
+8 verbose lifecycle step21-2020@1.0.0~dev: PATH: /usr/local/nvm/versions/node/v10.14.2/lib/node_modules/npm/node_modules/npm-lifecycle/node-gyp-bin:/home/nganttran/step21-2020/step/node_modules/.bin:/home/nganttran/.gems/bin:/usr/local/rvm/bin:/usr/local/go/bin:/opt/gradle/bin:/opt/maven/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/nvm/versions/node/v10.14.2/bin:/usr/local/rvm/bin:/google/go_appengine:/google/google_appengine:/home/nganttran/gopath/bin:/google/gopath/bin:/google/migrate/anthos/
+9 verbose lifecycle step21-2020@1.0.0~dev: CWD: /home/nganttran/step21-2020/step
+10 silly lifecycle step21-2020@1.0.0~dev: Args: [ '-c', 'nodemon server' ]
+11 silly lifecycle step21-2020@1.0.0~dev: Returned: code: 130  signal: null
+12 info lifecycle step21-2020@1.0.0~dev: Failed to exec dev script
+13 verbose stack Error: step21-2020@1.0.0 dev: `nodemon server`
+13 verbose stack Exit status 130
+13 verbose stack     at EventEmitter.<anonymous> (/usr/local/nvm/versions/node/v10.14.2/lib/node_modules/npm/node_modules/npm-lifecycle/index.js:332:16)
+13 verbose stack     at EventEmitter.emit (events.js:182:13)
+13 verbose stack     at ChildProcess.<anonymous> (/usr/local/nvm/versions/node/v10.14.2/lib/node_modules/npm/node_modules/npm-lifecycle/lib/spawn.js:55:14)
+13 verbose stack     at ChildProcess.emit (events.js:182:13)
+13 verbose stack     at maybeClose (internal/child_process.js:962:16)
+13 verbose stack     at Process.ChildProcess._handle.onexit (internal/child_process.js:251:5)
+14 verbose pkgid step21-2020@1.0.0
+15 verbose cwd /home/nganttran/step21-2020/step
+16 verbose Linux 4.19.112+
+17 verbose argv "/usr/local/nvm/versions/node/v10.14.2/bin/node" "/usr/local/nvm/versions/node/v10.14.2/bin/npm" "run" "dev"
+18 verbose node v10.14.2
+19 verbose npm  v6.14.6
+20 error code ELIFECYCLE
+21 error errno 130
+22 error step21-2020@1.0.0 dev: `nodemon server`
+22 error Exit status 130
+23 error Failed at the step21-2020@1.0.0 dev script.
+23 error This is probably not a problem with npm. There is likely additional logging output above.
+24 verbose exit [ 130, true ]
