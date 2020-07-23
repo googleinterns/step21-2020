@@ -37,12 +37,13 @@ public class MatchingServlet extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String requestType = request.getParameter(REQUEST_TYPE);
+
     if (requestType.equals(REQUEST_TYPE_MATCH)) {
       UserService userService = UserServiceFactory.getUserService();
       com.google.appengine.api.users.User userServiceUser = userService.getCurrentUser();
       com.google.sps.User currentUser = new com.google.sps.User(userServiceUser.getUserId());
       MatchManager.generateMatch(currentUser);
-    } 
+    }
 
     response.sendRedirect("/profile.jsp");
   }

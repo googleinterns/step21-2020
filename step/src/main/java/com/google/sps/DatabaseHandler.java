@@ -90,7 +90,7 @@ public final class DatabaseHandler {
     if (firstId == null || secondId == null) {
       throw new NullPointerException();
     }
-    
+
     Entity entity = new Entity(NOTIFICATION);
     entity.setProperty(USER_ID, firstId);
     entity.setProperty(OTHER_USER_ID, secondId);
