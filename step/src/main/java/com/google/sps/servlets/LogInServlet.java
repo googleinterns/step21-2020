@@ -51,7 +51,7 @@ public class LogInServlet extends HttpServlet {
       out.println("<button style=\"color: #fff; background-color: #4285F4; border: none; font-size: 40px; padding: 20px 40px;\" > Next</button>");
       out.println("</form>");
     } else {
-        response.sendRedirect("profile.jsp");
+      response.sendRedirect("profile.jsp");
     }
   }
 
