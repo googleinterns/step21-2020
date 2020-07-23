@@ -110,4 +110,18 @@ public class User {
   public int hashCode() { 
     return userServiceUserId.hashCode(); 
   }
+
+  public void updateMatchPendingStatus(boolean status) {
+    DatabaseHandler.updateMatchPendingStatus(userServiceUserId, status);
+  }
+
+  public Boolean isMatchPending() {
+    Boolean status = DatabaseHandler.getMatchPendingStatus(userServiceUserId);
+    if (status == null) {
+      System.err.println("Match-pending status not found.");
+      throw new NullPointerException();
+    }
+    return status;
+  }
+
 }

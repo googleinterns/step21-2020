@@ -5,6 +5,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 ul {
     list-style-type: none;
     margin: 0;
@@ -13,11 +14,18 @@ ul {
 
 li {
     display: block;
-    font-size: 80px;
+    font-size: 95px;
     color: #f7f9f9;
     font-family: 'Roboto', sans-serif;
     text-decoration: none;
 }
+
+t {
+  font-size: 30px;
+  color: #f7f9f9;
+  font-family: 'Roboto', sans-serif;
+}
+
 nav {
   top: 0;
   width: 100%;
@@ -39,4 +47,9 @@ nav a {
 
 nav a:hover:not(.active) {
   color:#000;
+}
+
+#main-title {
+  margin-top: 5%;
+  margin-left: 10%;
 }

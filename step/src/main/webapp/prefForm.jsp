@@ -30,8 +30,10 @@ limitations under the License.
   </head>
   <body>
     <nav>
-        <a href="<%= logoutURL %>"> Log Out </a>
-        <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
+        <img src="logo.png" alt="logo" id="logo">
+        <form>
+          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
+        </form>
     </nav>
     
     
@@ -41,6 +43,7 @@ limitations under the License.
     <section class="prefform">
     <form id="regForm" action="Pref" method="POST"> 
         <div class="tab"> <div class="question"> Are you staying in the US now? </div>
+
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes">
                 <label for="q1yes"> Yes </label>
@@ -48,7 +51,7 @@ limitations under the License.
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="No" id="q1no">
                 <label for="q1no"> No </label>
-            </p>
+            </p>   
         </div>
         <br>  
         <div class="tab"> <div class="question"> Do you have any pets? </div>

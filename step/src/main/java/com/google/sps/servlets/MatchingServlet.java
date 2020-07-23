@@ -25,6 +25,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+
 
 @WebServlet("/matching")
 public class MatchingServlet extends HttpServlet {
@@ -33,14 +35,10 @@ public class MatchingServlet extends HttpServlet {
   public static String REQUEST_TYPE_MATCH = "request-type-match";
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    // TODO: implement
-  }
-
-  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     String requestType = request.getParameter(REQUEST_TYPE);
-    if(requestType.equals(REQUEST_TYPE_MATCH)) {
+
+    if (requestType.equals(REQUEST_TYPE_MATCH)) {
       UserService userService = UserServiceFactory.getUserService();
       com.google.appengine.api.users.User userServiceUser = userService.getCurrentUser();
       com.google.sps.User currentUser = new com.google.sps.User(userServiceUser.getUserId());

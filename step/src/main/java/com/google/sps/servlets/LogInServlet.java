@@ -51,7 +51,7 @@ public class LogInServlet extends HttpServlet {
       out.println("<button style=\"color: #fff; background-color: #4285F4; border: none; font-size: 40px; padding: 20px 40px;\" > Next</button>");
       out.println("</form>");
     } else {
-        response.sendRedirect("profile.jsp");
+      response.sendRedirect("profile.jsp");
     }
   }
 
@@ -71,8 +71,6 @@ public class LogInServlet extends HttpServlet {
     Entity entity = new Entity("User", id);
     entity.setProperty("id", id);
     entity.setProperty("email", email);
-    // The put() function automatically inserts new data or updates existing data based on ID
-    datastore.put(entity);
     response.sendRedirect("infoForm.jsp");
   }
 

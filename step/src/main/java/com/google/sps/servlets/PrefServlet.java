@@ -31,13 +31,21 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/Pref")
 public class PrefServlet extends HttpServlet {
   // The class stores the user' personal information data
+  private static final String UNKNOWN = "Unknown";
+
+  @Override
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    String q1 = request.getParameter("q1");
-    String q2 = request.getParameter("q2");
-    String q3 = request.getParameter("q3");
-    String q4 = request.getParameter("q4");
-    String q5 = request.getParameter("q5");
+    
+    String q1 = (String) request.getParameter("q1") == null ? UNKNOWN : (String) request.getParameter("q1");
+    String q2 = (String) request.getParameter("q2") == null ? UNKNOWN : (String) request.getParameter("q2");
+    String q3 = (String) request.getParameter("q3") == null ? UNKNOWN : (String) request.getParameter("q3");
+    String q4 = (String) request.getParameter("q4") == null ? UNKNOWN : (String) request.getParameter("q4");
+    String q5 = (String) request.getParameter("q5") == null ? UNKNOWN : (String) request.getParameter("q5");
 
     UserService userService = UserServiceFactory.getUserService();
     String email = userService.getCurrentUser().getEmail();
@@ -49,6 +57,11 @@ public class PrefServlet extends HttpServlet {
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
+
+    if (entity == null) {
+      response.sendRedirect("index.jsp");
+    }
+
     entity.setProperty("q1", q1);
     entity.setProperty("q2", q2);
     entity.setProperty("q3", q3);
