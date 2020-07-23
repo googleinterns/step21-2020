@@ -14,6 +14,9 @@
 
 package com.google.sps;
 
+import java.lang.IllegalStateException;
+import java.util.List;
+import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.Before;
@@ -23,51 +26,142 @@ import org.junit.runners.JUnit4;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalUserServiceTestConfig;
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.HttpRequestInitializer;
 import com.google.api.client.http.javanet.NetHttpTransport;
-
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.services.calendar.Calendar;
+import com.google.api.services.calendar.Calendar.Builder;
+import com.google.api.services.calendar.model.Event;
 import com.google.api.client.googleapis.testing.services.MockGoogleClient;
 import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential;
+import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.anyString;
+import org.mockito.ArgumentMatchers;
 
-@RunWith(JUnit4.class)
+
+@RunWith(MockitoJUnitRunner.class)
 public final class CalendarTest {
 
-  private final LocalServiceTestHelper helper =
-      new LocalServiceTestHelper(
-        new LocalDatastoreServiceTestConfig(),
-        new LocalUserServiceTestConfig());
+  // private final LocalServiceTestHelper helper =
+  //     new LocalServiceTestHelper(
+  //       new LocalDatastoreServiceTestConfig(),
+  //       new LocalUserServiceTestConfig());
+
+  @Mock
+  List<String> mockList;
 
   @Before
   public void setUp() {
-    helper.setUp();
+    // helper.setUp();
   }
 
   @After
   public void tearDown() {
-    helper.tearDown();
+    // helper.tearDown();
   }
 
   @Test
   public void tempCalTest() {
+    // when(new Calendar.Builder(
+    //     any(HttpTransport.class), // new NetHttpTransport(),
+    //     any(JsonFactory.class), // new JacksonFactory(),
+    //     any(Credential.class) // user.getCredential()
+    // ));
+    // .thenReturn();
+
+    // Calendar mockCalendar = mock(Calendar.class);
+    // when(
+    //   new Calendar.Builder(
+    //     new NetHttpTransport(),
+    //     new JacksonFactory(),
+    //     newMockCredential()
+    //   )
+    //   .build()
+    // ).thenReturn(mockCalendar);
+
+    // Calendar mockCalendar = mock(Calendar.class);
+    // Calendar.Builder mockCalendarBuilder = mock(Calendar.Builder.class);
+    // when(any(Calendar.Builder.class).build()).thenReturn(mockCalendar);
+
+    // when(CalendarManager.getCalendar(any(User.class)));
+
+    // User mockHostUser = mock(User.class);
+    // when(mockHostUser.isAuthenticated()).thenReturn(true);
+    // when(mockHostUser.getCredential()).thenReturn(newMockCredential());
+    // User mockGuestUser = mock(User.class);
+    // Calendar mockCalendar = mock(Calendar.class);
+    // Event mockEvent = mock(Event.class);
+    // try {
+    //   when(mockCalendar.events().insert(anyString(), mockEvent).execute())
+    //     .thenThrow(IllegalStateException.class);
+    //   CalendarManager.createMatchEvent(mockHostUser, mockGuestUser);
+    // } catch (Exception e) {
+    //   System.out.println("Caught exception during test");
+    //   Assert.assertEquals("a", "b");
+    // }
+
+    // MockGoogleCredential mockCredential = newMockCredential();
+    // when(mockUser.getCredential()).thenReturn("adam");
+
+  /* Brenda:
+    when(Calendar.Builder(
+      any(HttpTransport.class),
+      any(JsonFactory.class),
+      any(HttpRequestInitializer.class))
+    )).thenReturn (Your own calendar object);
+
+    Calendar.newBuilder.().build();
+  */
+
     Assert.assertEquals("hello", "hello");
   }
 
   // @Test
-  public void testDateTimeStringCreation() {
-    String actual = CalendarManager.dateTimeString(2020, 7, 16, 9, 0);
-    String expected = "2020-07-16T09:00:00-05:00";
-    
-    Assert.assertEquals(actual, expected);
+  public void tempMockitoTest() {
+    mockList.add("one");
+    Mockito.verify(mockList).add("one");
+    Assert.assertEquals(0, mockList.size());
+
+    Mockito.when(mockList.size()).thenReturn(100);
+    Assert.assertEquals(100, mockList.size());
+
+    ArrayList arrayList = mock(ArrayList.class);
+    when(arrayList.get(0)).thenReturn("first");
+    Assert.assertEquals(arrayList.get(0), "first");
   }
 
   @Test
-  public void testGoogleClient() {
-    MockGoogleClient client = newMockClient(newMockCredential());
+  public void testUserNotAuthenticated() {
+    User mockUser = mock(User.class);
+    Assert.assertFalse(mockUser.isAuthenticated());
   }
 
-  @Test
-  public void testGoogleCredential() {
-    MockGoogleCredential credential = newMockCredential();
+  // @Test
+  public void testUserIsAuthenticated() {
+    User mockUser = mock(User.class);
+    // when(OAuth2Utilities.isUserAuthenticated(anyString())).thenReturn(true);
+    // Assert.assertTrue(mockUser.isAuthenticated());
+    Assert.assertEquals("hello", "hello");
   }
+
+  // Test that createMatchEvent() throws IllegalStateException if the host user isn't authenticated
+  @Test(expected = IllegalStateException.class)
+  public void testCreateEventHostNotAuthenticated() {
+    User mockHostUser = mock(User.class);
+    User mockGuestUser = mock(User.class);
+    CalendarManager.createMatchEvent(mockHostUser, mockGuestUser, 0, 0, 0, 0, 0);
+  }
+
+
 
   // Side list of mocks: https://googleapis.dev/java/google-api-client/1.23.0/index.html?com/google/api/client/googleapis/auth/oauth2/GoogleAuthorizationCodeFlow.Builder.html
 
