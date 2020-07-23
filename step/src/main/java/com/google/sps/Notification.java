@@ -14,11 +14,11 @@
 
 package com.google.sps;
 
-public abstract class Notification {
+public abstract class Notification implements Comparable<Notification> {
 
   private String id;  
   protected String otherUserId;
-  private long timestamp;
+  private Long timestamp;
 
   public Notification(String id, String otherUserId, long timestamp) {
     if (id == null || otherUserId == null) {
@@ -46,7 +46,7 @@ public abstract class Notification {
   }
   
   // Getter method for the time at which the notification occured.
-  public long getTimestamp() {
+  public Long getTimestamp() {
     return timestamp;  
   }
 
@@ -76,4 +76,9 @@ public abstract class Notification {
   // Method for putting together and returning the text associated
   // with the notification.
   public abstract String getText();
+
+  @Override
+  public int compareTo(Notification n) {
+    return getTimestamp().compareTo(n.getTimestamp());
+  }
 }

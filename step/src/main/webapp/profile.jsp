@@ -167,15 +167,19 @@ limitations under the License.
 
         <script>
       function getMatches() {
+        console.log('inside getMatches()');
         fetch('/Homepage')
           .then((response) => {
+            console.log('response');
+            console.log(response);
             return response.json();
           })
           .then((json) => {
+            console.log('json');
+            console.log(json);
             matches = json["matches"];
             notifications = json["notifications"];
             status = json["status"];
-            console.log(json["status"]);
             renderMatches(matches);
             renderNotifications(notifications);
             getMatchStatus(status);
@@ -218,12 +222,9 @@ limitations under the License.
       }
 
       function getMatchStatus(status) {
-        console.log("inside getMatchstatus");
-        console.log('status');
-        console.log(status);
         if (status === "pending") {
           const statusContainer = 
-            document.getElementById('match-status');  
+          document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
         }
       }

@@ -28,6 +28,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.appengine.api.datastore.DatastoreNeedIndexException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 @WebServlet("/Homepage")
 public class HomepageServlet extends HttpServlet {
@@ -39,14 +42,26 @@ public class HomepageServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    response.setContentType("text/html");
+   // response.setContentType("text/html");
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
     String id = userService.getCurrentUser().getUserId();
     User user = new User(id);
 
-    Collection<User> userMatches = user.getMatches();
-    Collection<Notification> notifications = DatabaseHandler.getUserNotifications(id);
+    Collection<User> userMatches;
+    Collection<Notification> notifications;
+    try {
+      userMatches = user.getMatches();
+    } catch(DatastoreNeedIndexException e) {
+      userMatches = new ArrayList<>();
+    }
+
+    try {
+      notifications = DatabaseHandler.getUserNotifications(id);
+    } catch(DatastoreNeedIndexException e) {
+      notifications = new ArrayList<>();
+   }
+    
     JSONArray matchesArray = new JSONArray();
     JSONArray notificationsArray = new JSONArray();
 
