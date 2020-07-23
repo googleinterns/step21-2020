@@ -53,7 +53,6 @@ public class CalendarManager {
 
     Event matchEvent = new MatchEventBuilder()
       .setAttendees(hostUser, guestUser)
-      // .setStartDateTime(2020, 7, 21, 9, 0)
       .setStartDateTime(year, month, day, hour, minute)
       .build();
 
@@ -126,7 +125,6 @@ class MatchEventBuilder {
 
     EventDateTime end = new EventDateTime()
       .setDateTime(new DateTime(dateTimeString));
-      // .setTimeZone("America/Los_Angeles"); // TODO how to configure time zones?
     matchEvent.setEnd(end);
 
     return this;
@@ -150,62 +148,3 @@ class MatchEventBuilder {
     }
   }
 }
-
-
-/*
-
-  public static void createTestGCalEvent(Credential googleCalendarCredential) {
-    System.out.println("CalendarManager.createTestGCalEvent()");
-
-    Event event = new Event()
-        .setSummary("Google I/O 2015")
-        .setLocation("800 Howard St., San Francisco, CA 94103")
-        .setDescription("A chance to hear more about Google's developer products.");
-
-    DateTime startDateTime = new DateTime("2020-07-16T09:00:00-07:00");
-    EventDateTime start = new EventDateTime()
-        .setDateTime(startDateTime)
-        .setTimeZone("America/Los_Angeles");
-    event.setStart(start);
-
-    DateTime endDateTime = new DateTime("2020-07-16T17:00:00-07:00");
-    EventDateTime end = new EventDateTime()
-        .setDateTime(endDateTime)
-        .setTimeZone("America/Los_Angeles");
-    event.setEnd(end);
-
-    // String[] recurrence = new String[] {"RRULE:FREQ=DAILY;COUNT=2"};
-    // event.setRecurrence(Arrays.asList(recurrence));
-
-    EventAttendee[] attendees = new EventAttendee[] {
-        new EventAttendee().setEmail("lpage@example.com"),
-        new EventAttendee().setEmail("sbrin@example.com"),
-    };
-    event.setAttendees(Arrays.asList(attendees));
-
-    // EventReminder[] reminderOverrides = new EventReminder[] {
-    //     new EventReminder().setMethod("email").setMinutes(24 * 60),
-    //     new EventReminder().setMethod("popup").setMinutes(10),
-    // };
-    // Event.Reminders reminders = new Event.Reminders()
-    //     .setUseDefault(false)
-    //     .setOverrides(Arrays.asList(reminderOverrides));
-    // event.setReminders(reminders);
-
-    Calendar service = new Calendar.Builder(
-      new NetHttpTransport(),
-      new JacksonFactory(),
-      googleCalendarCredential
-    ).setApplicationName("Friend Matching Plus").build(); // TODO: not sure if app name matters
-
-    try {
-      String calendarId = "primary";
-      event = service.events().insert(calendarId, event).execute();
-      System.out.printf("Event created: %s\n", event.getHtmlLink());
-    } catch (Exception e) {
-      System.out.println("there was in error in CalendarManager.createTestGCalEvent()");
-      e.printStackTrace();
-    }
-  }
-
-*/

@@ -109,15 +109,9 @@ public class OAuth2Servlet extends HttpServlet {
           .setRedirectUri(AUTH_REDIRECT_URI)
           .execute();
 
-      // TODO(adamsamuelson): this might be a deprecated method, look at 
-      //    Builder.setDataStoreFactory() or maybe Credential.setAccessToken(String accessToken)
       // Use the access token to store and obtain a credential to auth our GCal API requests.
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
 
-      System.out.println("getCredentialDataStore: " + authFlow.getCredentialDataStore());
-      System.out.println("reloaded credential from credential datastore: "
-                         + authFlow.loadCredential(userId));
-      
       System.out.println("Authorization code flow complete.");
       response.sendRedirect("/profile.jsp");
     }

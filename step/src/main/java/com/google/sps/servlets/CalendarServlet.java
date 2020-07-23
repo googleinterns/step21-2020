@@ -12,33 +12,14 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import java.util.List;
 import java.util.Arrays;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.IllegalStateException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-// import com.google.appengine.api.users.User;
-import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow.Builder;
-import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeRequestUrl;
-import com.google.api.client.auth.oauth2.AuthorizationCodeTokenRequest;
-import com.google.api.client.auth.oauth2.Credential;
-import com.google.api.client.auth.oauth2.StoredCredential;
-import com.google.api.client.auth.oauth2.TokenResponse;
-import com.google.api.client.extensions.appengine.datastore.AppEngineDataStoreFactory;
-import com.google.api.client.http.javanet.NetHttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.util.store.DataStore;
-import com.google.sps.CalendarManager; // TODO delete when done with test event
-import com.google.sps.OAuth2Utilities;
+import com.google.sps.CalendarManager;
 import com.google.sps.User;
 
 @WebServlet("/cal")
@@ -97,10 +78,6 @@ public class CalendarServlet extends HttpServlet {
     }
 
     response.sendRedirect("/profile.jsp");
-  }
-
-  private static void printError(String errorMessage) {
-    System.err.println("ERROR: " + errorMessage);
   }
 
 }
