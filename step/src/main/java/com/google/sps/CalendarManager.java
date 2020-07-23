@@ -30,15 +30,6 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.CalendarScopes;
 
-/**
-  Usage:
-    Creating a match event:
-      CalendarManager.createMatchEvent(MatchNotification match);
-
-    Remove a match event (for later implementation):
-      CalendarManager.removeMatchEvent(String userId1, String userId2);
-*/
-
 // TODO: method to return true/false is user is authenticated (javascript support too)
 // TODO: add javascript support for checking if a user is validated
 // TODO: add test cases
@@ -47,11 +38,14 @@ import com.google.api.services.calendar.CalendarScopes;
 public class CalendarManager {
   private CalendarManager() {}
 
-  public static void createMatchEvent(String hostUserId, String guestUserId) {
-    creatMatchEvent(new User(hostUserId), new User(guestUserId));
+  public static void createMatchEvent(String hostUserId, String guestUserId,
+                                      int year, int month, int day, int hour, int minute) {
+    createMatchEvent(new User(hostUserId), new User(guestUserId),
+                      year, month, day, hour, minute);
   }
 
-  public static void creatMatchEvent(User hostUser, User guestUser) {
+  public static void createMatchEvent(User hostUser, User guestUser,
+                                      int year, int month, int day, int hour, int minute) {
     if (!hostUser.isAuthenticated()) {
       throw new IllegalStateException("The host user isn't authenticated. "
                                       + "Unable to create match event.");
@@ -59,10 +53,11 @@ public class CalendarManager {
 
     Event matchEvent = new MatchEventBuilder()
       .setAttendees(hostUser, guestUser)
-      .setStartDateTime(2020, 7, 21, 9, 0)
+      // .setStartDateTime(2020, 7, 21, 9, 0)
+      .setStartDateTime(year, month, day, hour, minute)
       .build();
 
-    pushMatchEvent(hostUser, guestUser, matchEvent); // TODO: implement
+    pushMatchEvent(hostUser, guestUser, matchEvent);
   }
 
   public static List<String> getScopes() {
@@ -73,7 +68,6 @@ public class CalendarManager {
 
   // hostUser is the event owner and guestUser will receive an email invite
   private static void pushMatchEvent(User hostUser, User guestUser, Event event) {
-
     Calendar calendar = getCalendar(hostUser);
     try {
       String calendarId = "primary";
@@ -92,6 +86,73 @@ public class CalendarManager {
         user.getCredential()
       ).setApplicationName("Friend Matching Plus").build(); // TODO: not sure if app name matters
   }
+
+}
+
+class MatchEventBuilder {
+  private Event matchEvent;
+
+  public MatchEventBuilder() {
+    matchEvent = new Event();
+  }
+
+  public MatchEventBuilder setAttendees(User hostUser, User guestUser) {
+    matchEvent.setSummary("FMP: " + hostUser.getName() + " / " + guestUser.getName());
+
+    matchEvent.setDescription(hostUser.getName() + " and " + guestUser.getName()
+                              + " have matched on Friend Matching Plus!");
+
+    matchEvent.setAttendees(Arrays.asList(new EventAttendee[] {
+      new EventAttendee().setEmail(guestUser.getEmail())
+    }));
+
+    return this;
+  }
+
+  // ZonedDateTime guide: https://www.baeldung.com/java-8-date-time-intro
+  public MatchEventBuilder setStartDateTime(int year, int month, int day, int hour, int minute) {
+    String dateTimeString = dateTimeString(year, month, day, hour, minute);
+
+    EventDateTime start = new EventDateTime()
+      .setDateTime(new DateTime(dateTimeString));
+      // .setTimeZone("America/Los_Angeles"); // TODO how to configure time zones?
+    matchEvent.setStart(start);
+
+    // Assume a 1 hour event.
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+    ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString, dateTimeFormatter);
+    zonedDateTime = zonedDateTime.plusHours(1);
+    dateTimeString = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+
+    EventDateTime end = new EventDateTime()
+      .setDateTime(new DateTime(dateTimeString));
+      // .setTimeZone("America/Los_Angeles"); // TODO how to configure time zones?
+    matchEvent.setEnd(end);
+
+    return this;
+  }
+
+  public Event build() {
+    return matchEvent;
+  }
+
+  // createDateTimeString(2020, 07, 21, 9, 0, 0) -> "2020-07-21T09:00:00-05:00"
+  private static String dateTimeString(int year, int month, int day, int hour, int minute) {
+    int timeZone = -5; // central time zone. TODO(adamsamuelson): eliminate timezones
+
+    if (timeZone < 0) {
+      timeZone *= -1;
+      return String.format("%04d-%02d-%02dT%02d:%02d:%02d-%02d:%02d",
+                      year, month, day, hour, minute, 0, timeZone, 0);
+    } else {
+      return String.format("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d",
+                      year, month, day, hour, minute, 0, timeZone, 0);
+    }
+  }
+}
+
+
+/*
 
   public static void createTestGCalEvent(Credential googleCalendarCredential) {
     System.out.println("CalendarManager.createTestGCalEvent()");
@@ -146,67 +207,5 @@ public class CalendarManager {
       e.printStackTrace();
     }
   }
-}
 
-class MatchEventBuilder {
-  private Event matchEvent;
-
-  public MatchEventBuilder() {
-    matchEvent = new Event();
-  }
-
-  public MatchEventBuilder setAttendees(User hostUser, User guestUser) {
-    matchEvent.setSummary("FMP: " + hostUser.getName() + " / " + guestUser.getName());
-
-    matchEvent.setDescription(hostUser.getName() + " and " + guestUser.getName()
-                              + " have matched on Friend Matching Plus!");
-
-    matchEvent.setAttendees(Arrays.asList(new EventAttendee[] {
-      new EventAttendee().setEmail(guestUser.getEmail())
-    }));
-
-    return this;
-  }
-
-  // ZonedDateTime guide: https://www.baeldung.com/java-8-date-time-intro
-  public MatchEventBuilder setStartDateTime(int year, int month, int day, int hour, int minute) {
-    String dateTimeString = dateTimeString(year, month, day, hour, minute);
-
-    EventDateTime start = new EventDateTime()
-      .setDateTime(new DateTime(dateTimeString))
-      .setTimeZone("America/Los_Angeles"); // TODO how to configure time zones?
-    matchEvent.setStart(start);
-
-    // Assume a 1 hour event. TODO(adamsamuelson): fix this calculation
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-    ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString, dateTimeFormatter);
-    zonedDateTime = zonedDateTime.plusHours(1);
-    dateTimeString = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-
-    EventDateTime end = new EventDateTime()
-      .setDateTime(new DateTime(dateTimeString))
-      .setTimeZone("America/Los_Angeles"); // TODO how to configure time zones?
-    matchEvent.setEnd(end);
-
-    return this;
-  }
-
-  public Event build() {
-    return matchEvent;
-  }
-
-  // createDateTimeString(2020, 07, 21, 9, 0, 0) -> "2020-07-21T09:00:00-05:00"
-  // Public for testing purposes
-  private static String dateTimeString(int year, int month, int day, int hour, int minute) {
-    int timeZone = -5; // central time zone. TODO(adamsamuelson): eliminate timezones
-
-    if (timeZone < 0) {
-      timeZone *= -1;
-      return String.format("%04d-%02d-%02dT%02d:%02d:%02d-%02d:%02d",
-                      year, month, day, hour, minute, 0, timeZone, 0);
-    } else {
-      return String.format("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d",
-                      year, month, day, hour, minute, 0, timeZone, 0);
-    }
-  }
-}
+*/

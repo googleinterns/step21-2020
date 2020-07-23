@@ -120,9 +120,6 @@ public class OAuth2Servlet extends HttpServlet {
       
       System.out.println("Authorization code flow complete.");
       response.sendRedirect("/profile.jsp");
-
-      // test the calendar event being created
-      CalendarManager.createTestGCalEvent(credential);
     }
     
   }
