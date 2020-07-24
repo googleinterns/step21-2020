@@ -37,7 +37,6 @@ import com.google.api.client.extensions.appengine.datastore.AppEngineDataStoreFa
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.client.util.store.DataStore;
-import com.google.sps.CalendarManager; // TODO delete when done with test event
 import com.google.sps.OAuth2Utilities;
 
 @WebServlet("/oauth2")
@@ -119,9 +118,7 @@ public class OAuth2Servlet extends HttpServlet {
   }
 
   @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-  }
+  public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {}
 
   private static void printError(String errorMessage) {
     System.err.println("ERROR: " + errorMessage);

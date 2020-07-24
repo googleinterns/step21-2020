@@ -43,7 +43,7 @@ public class OAuth2Utilities {
     try {
       credentialDataStore = getCredentialDataStore();
     } catch (IOException e) {
-      throw new IOException("Unalbe to get the credential datastore.");
+      throw new IOException("Unable to get the credential datastore.");
     }
 
     GoogleAuthorizationCodeFlow authFlow = null;
@@ -71,15 +71,19 @@ public class OAuth2Utilities {
     return authFlow;
   }
 
+  /**
+   * @param userId the userId of the user whose credential will be returned.
+   * @return if the given user has a credential, return the credential. Otherwise return null.
+   * @throws RuntimeException when this method is unable to get the user's credential.
+   */
   public static Credential getUserCredential(String userId) {
     GoogleAuthorizationCodeFlow authFlow = null;
     try {
       authFlow = getAuthFlow();
       return authFlow.loadCredential(userId);
-    } catch (Exception e) {
+    } catch (Exception e) { // thrown by getAuthFlow()
       printError(e.getMessage());
-      printError("Unable to get user credential");
-      return null; // TODO(adamsamuelson): should throw exception instead of return null?
+      throw new RuntimeException("There was an exception while loading the user's credential.");
     }
   }
 

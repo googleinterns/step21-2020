@@ -26,14 +26,10 @@ import com.google.sps.User;
 public class CalendarServlet extends HttpServlet {
 
   @Override
-  public void init() {
-
-  }
+  public void init() {}
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    
-  }
+  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {}
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -48,9 +44,6 @@ public class CalendarServlet extends HttpServlet {
         || hourString == null || minuteString == null || guestName == null) {
       System.out.println("one or more values are null");
     } else {
-
-      System.out.println(monthString + " / " + dayString + " / " + yearString 
-                          + " " + hourString + ":" + minuteString + ". " + guestName);
 
       int monthInt = Integer.parseInt(monthString);
       int dayInt = Integer.parseInt(dayString);

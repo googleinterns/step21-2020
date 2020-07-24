@@ -63,7 +63,11 @@ public class User {
   }
 
   public Credential getCredential() {
-    return OAuth2Utilities.getUserCredential(userServiceUserId);
+    try {
+      return OAuth2Utilities.getUserCredential(userServiceUserId);
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   public boolean isAuthenticated() {

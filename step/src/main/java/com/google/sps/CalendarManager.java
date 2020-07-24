@@ -14,6 +14,7 @@
 
 package com.google.sps;
 
+import java.io.IOException;
 import java.lang.IllegalStateException;
 import java.time.format.DateTimeFormatter;
 import java.time.ZonedDateTime;
@@ -30,10 +31,6 @@ import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.CalendarScopes;
 
-// TODO: method to return true/false is user is authenticated (javascript support too)
-// TODO: add javascript support for checking if a user is validated
-// TODO: add test cases
-// TODO: conform to Google Java style
 
 public class CalendarManager {
   private CalendarManager() {}
@@ -65,16 +62,23 @@ public class CalendarManager {
     return scopes;
   }
 
-  // hostUser is the event owner and guestUser will receive an email invite
+  /**
+   * Push the given event to the hostUser's Google Calendar and invite the guestUser to it.
+   *
+   * @param hostUser the owner of the Google Calendar event.
+   * @param guestUser the user to be invited to the Google Calendar event.
+   * @param event the event to be pushed to Google Calendar. This event can be conveniently
+   *              built using CalendarManager.MatchEventBuilder.
+   */
   private static void pushMatchEvent(User hostUser, User guestUser, Event event) {
     Calendar calendar = getCalendar(hostUser);
     try {
       String calendarId = "primary";
       event = calendar.events().insert(calendarId, event).execute();
       System.out.printf("Event created: %s\n", event.getHtmlLink());
-    } catch (Exception e) {
+    } catch (IOException e) {
+      System.out.println("ERROR: " + e.getMessage());
       System.out.println("Unable to push match event.");
-      e.printStackTrace();
     }
   }
 
@@ -83,23 +87,28 @@ public class CalendarManager {
         new NetHttpTransport(),
         new JacksonFactory(),
         user.getCredential()
-      ).setApplicationName("Friend Matching Plus").build(); // TODO: not sure if app name matters
+      ).setApplicationName("Friend Matching Plus").build();
   }
 
 }
 
 class MatchEventBuilder {
   private Event matchEvent;
+  private static final int DEFAULT_EVENT_LENGTH_MINUTES = 60;
 
   public MatchEventBuilder() {
     matchEvent = new Event();
   }
 
   public MatchEventBuilder setAttendees(User hostUser, User guestUser) {
-    matchEvent.setSummary("FMP: " + hostUser.getName() + " / " + guestUser.getName());
+    String eventSummary = String.format("FMP: %s / %s", hostUser.getName(), guestUser.getName());
+    matchEvent.setSummary(eventSummary);
 
-    matchEvent.setDescription(hostUser.getName() + " and " + guestUser.getName()
-                              + " have matched on Friend Matching Plus!");
+    String eventDescription = String.format("%s and %s have matched on Friend Matching Plus! ",
+                                              hostUser.getName(), guestUser.getName());
+    eventDescription += "You can join a video call with your match by clicking "
+                        + "\"Join with Google Meet\"";
+    matchEvent.setDescription(eventDescription);
 
     matchEvent.setAttendees(Arrays.asList(new EventAttendee[] {
       new EventAttendee().setEmail(guestUser.getEmail())
@@ -120,7 +129,7 @@ class MatchEventBuilder {
     // Assume a 1 hour event.
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
     ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString, dateTimeFormatter);
-    zonedDateTime = zonedDateTime.plusHours(1);
+    zonedDateTime = zonedDateTime.plusMinutes(DEFAULT_EVENT_LENGTH_MINUTES);
     dateTimeString = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
 
     EventDateTime end = new EventDateTime()
