@@ -67,7 +67,7 @@
             </div>
             <div class="message-row other-message">
                 <div class="message-content">
-                    <img src="avatar.png" alt="Daryl Duckmanton"/>
+                    <img src="avatar.png" alt="My Avatar"/>
                     <div class="message-text">
                         Hi, I am Person 1. Nice to meet you!
                     </div>
