@@ -1,2 +1,5 @@
 step/target/
 .idea
+
+# Exclude client secret json from git
+step/src/main/resources/
