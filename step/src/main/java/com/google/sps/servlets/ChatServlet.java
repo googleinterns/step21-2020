@@ -47,7 +47,7 @@ public class ChatServlet extends HttpServlet {
     List<Message> messages = new ArrayList<>();
     messages = MessageHandler.getMessages(senderID, recipientID);
     request.setAttribute("messages", messages);
-    request.getRequestDispatcher("chat.jsp").forward(request, response);
+    request.getRequestDispatcher("chat1.jsp").forward(request, response);
   }
 
   @Override

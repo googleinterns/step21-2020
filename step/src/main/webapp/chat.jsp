@@ -49,7 +49,6 @@ limitations under the License.
             <% String user = request.getParameter("user"); %>
             <input type="hidden" name="user" value="<%= user %>"> </input>
             <textarea placeholder="Type message.." name="text" required></textarea>
-
             <button type="submit" class="btn">Send</button>
             <button type="button" class="btn cancel" onclick="closeFrom()">Close</button>
           </form> 
