@@ -175,7 +175,6 @@ limitations under the License.
             matches = json["matches"];
             notifications = json["notifications"];
             status = json["status"];
-            console.log(json["status"]);
             renderMatches(matches);
             renderNotifications(notifications);
             getMatchStatus(status);
@@ -218,12 +217,9 @@ limitations under the License.
       }
 
       function getMatchStatus(status) {
-        console.log("inside getMatchstatus");
-        console.log('status');
-        console.log(status);
         if (status === "pending") {
           const statusContainer = 
-            document.getElementById('match-status');  
+          document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
         }
       }

@@ -15,8 +15,10 @@
 package com.google.sps;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.lang.IllegalArgumentException;
 import javax.servlet.http.HttpServletRequest;
@@ -101,13 +103,12 @@ public final class DatabaseHandler {
 
   // Getting a user's notifications using their id
   public static Collection<Notification> getUserNotifications(String id) {
-    Collection<Notification> notifications = new ArrayList<>();
+    List<Notification> notifications = new ArrayList<>();
 
     Filter idFilter = new FilterPredicate(USER_ID, FilterOperator.EQUAL, id);
 
     // Querying all of the user's notifications from the Datastore.
-    Query query = new Query(NOTIFICATION).setFilter(idFilter)
-      .addSort(TIMESTAMP, SortDirection.DESCENDING);
+    Query query = new Query(NOTIFICATION).setFilter(idFilter);
 
     PreparedQuery results = datastore.prepare(query);
 
@@ -130,6 +131,9 @@ public final class DatabaseHandler {
 
       notifications.add(notification);
     }
+
+    Collections.sort(notifications);
+    Collections.reverse(notifications);
 
     return notifications;    
   }
