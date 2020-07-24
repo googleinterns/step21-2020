@@ -55,6 +55,7 @@ public final class DatabaseHandler {
   private static final String TIMESTAMP = "timestamp";
   private static final String TYPE = "type";
   private static final String NOTIFICATION = "Notification";
+  private static final String IMAGE_URL = "imageUrl";
 
 
   private DatabaseHandler() {
@@ -206,6 +207,30 @@ public final class DatabaseHandler {
       e.printStackTrace();
       return null;
     }
+  }
+
+  // Method for adding an image link to a user's entity in datastore
+  public static void uploadUserImage(String id, String imageUrl) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      user.setProperty(IMAGE_URL, imageUrl);
+      datastore.put(user);
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  // Method for getting the image link for a user
+  public static String getUserImageUrl(String id) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      return (String) user.getProperty(IMAGE_URL);
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    } 
   }
 
 }
