@@ -88,7 +88,7 @@ limitations under the License.
     <div class="container">
         <div class="sub-container" id="list-selection">
             <h2> Your Profile </h2>
-            <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
+            <div id="profile-pic"> <img src=<%= (String) entity.getProperty("imageUrl")%> alt="Profile Picture"> </div>
             <div id="navbar-selection"> 
                 <a href="#personal-container">Personal Information</a>
                 <a href="#questionaire-container">Questionaire</a>

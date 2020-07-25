@@ -56,6 +56,7 @@ public final class DatabaseHandler {
   private static final String TYPE = "type";
   private static final String NOTIFICATION = "Notification";
   private static final String IMAGE_URL = "imageUrl";
+  private static final String PLACEHOLDER_IMAGE_PATH = "avatar.png";
 
 
   private DatabaseHandler() {
@@ -81,6 +82,7 @@ public final class DatabaseHandler {
     entity.setProperty("monthBirth", monthBirth);
     entity.setProperty("yearBirth", yearBirth);
     entity.setProperty(EMAIL, email);
+    entity.setProperty(IMAGE_URL, PLACEHOLDER_IMAGE_PATH);
     entity.setProperty("id", id);
     entity.setProperty(MATCH_PENDING, false);
     datastore.put(entity);    
@@ -225,7 +227,14 @@ public final class DatabaseHandler {
   public static String getUserImageUrl(String id) {
     try {
       Entity user = datastore.get((new User(id)).getKey());
-      return (String) user.getProperty(IMAGE_URL);
+      String imageUrl = (String) user.getProperty(IMAGE_URL);
+
+      // case for users who signed up before image uploading features were added
+      if (imageUrl == null || imageUrl.equals("")) {
+        imageUrl = PLACEHOLDER_IMAGE_PATH;
+      }
+      return imageUrl;
+
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
       e.printStackTrace();
