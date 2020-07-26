@@ -27,6 +27,7 @@ public class User {
   private String email;
   private String name;
   private Collection<User> matches;
+  private ArrayList<String> preferences;
   private Key key;
 
   public User(String userServiceUserId) {
@@ -60,6 +61,14 @@ public class User {
       name = DatabaseHandler.getUserName(userServiceUserId);
     }
     return name;  
+  }
+
+  //Getter method for a user's preference answers
+  public ArrayList<String> getPreferences() {
+      if (preferences == null) {
+          preferences = DatabaseHandler.getUserPreferences(userServiceUserId);
+      }
+      return preferences;
   }
 
   public Credential getCredential() {

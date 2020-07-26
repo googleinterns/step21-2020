@@ -17,25 +17,30 @@ package com.google.sps;
 import java.util.Collection;
 import java.util.Queue;
 import java.util.LinkedList;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.HashSet;
 
 public final class MatchManager {
 
   // Integrate datastore so that match requests aren't lost if the server restarts
-  private static Queue<User> matchQueue = new LinkedList<>();
+  private static HashSet<User> matchQueue = new HashSet<>();
 
   private MatchManager() {
 
   }
 
   // Getter method for the match queue (for testing purposes)
-  public static Queue<User> getMatchQueue() {
+  public static HashSet<User> getMatchQueue() {
     return matchQueue;
   }
 
   // Getter method to return a deep copy of the match queue (for testing purposes).
   // The returned queue can be modified without the changes effecting the actual match queue.
-  public static Queue<User> getDeepCopyMatchQueue() {
-    return new LinkedList<User>(matchQueue);
+  public static HashSet<User> getDeepCopyMatchQueue() {
+    return new HashSet <User>(matchQueue);
   }
 
   // FIFO matchmaker -- takes in the user who just requested a match and matches them
@@ -47,18 +52,54 @@ public final class MatchManager {
     if (matchQueue.isEmpty()) {
       matchQueue.add(user);  
     } else {
-      User matchResult = matchQueue.peek();
+      User matchResult = findCompatibleMatch(user); //TODO: If it returns null, then matchQueue.add(user)
 
       if (!matchResult.isMatchedWith(user) && !matchResult.equals(user)) {
         // actually removing the match result from the queue
-        matchResult = matchQueue.poll(); 
         createMatch(matchResult, user);
+        matchQueue.remove(matchResult); 
+        
       // adding the user to the queue in case there wasn't a successful match for them
       // this is so they can be matched later      
       } else if (!matchQueue.contains(user)) {
         matchQueue.add(user);  
       }  
     }    
+  }
+
+  // Match the user with the most compatible user in the database (the one who has the most number
+  // of similar interests). 
+  // Currently, the minimum percentage of mutual interests between 2 users required to get matched are 60%
+  public static User findCompatibleMatch(User firstUser) {
+    HashMap<User, Integer> mutualInterests = new HashMap<>();
+    for (User secondUser: matchQueue) {
+        mutualInterests.put(secondUser, 0);
+    } 
+    for (User secondUser: matchQueue) {
+        for (int i = 0; i < secondUser.getPreferences().size(); i++) {
+            // Compare the second user's each preference answer with the first user's
+            if (firstUser.getPreferences().get(i).equals(secondUser.getPreferences().get(i))) {
+                mutualInterests.replace(secondUser, mutualInterests.get(secondUser)+1);
+            }
+        }
+    }
+
+    //Traverse through the hashmap to find the user with the maximum number of mutual interests with the first user
+    Iterator iterator = mutualInterests.entrySet().iterator();
+    int max = 0; 
+    String compatibleUserId = "";
+
+    while (iterator.hasNext()) {
+        Map.Entry mapE = (Map.Entry)iterator.next();
+        // FIFO
+        if (max < (int)mapE.getValue()) {
+            max = (int) mapE.getValue();
+            compatibleUserId = ((User)mapE.getKey()).getId();
+        }
+    }
+
+    User compatibleUser = new User(compatibleUserId);
+    return compatibleUser;
   }
 
   // Helper method for actually adding to people into one another's matches and sending
@@ -81,6 +122,6 @@ public final class MatchManager {
   // Helper method for clearing out the match queue
   // this is primarily for testing purposes at the moment
   public static void clearQueue() {
-    matchQueue = new LinkedList<>();
+    matchQueue = new HashSet<>();
   }
 }
