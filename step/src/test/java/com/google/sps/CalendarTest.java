@@ -34,35 +34,35 @@ import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.Calendar.Builder;
-import com.google.api.services.calendar.model.Event;
-import com.google.api.client.googleapis.testing.services.MockGoogleClient;
-import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.anyString;
-import org.mockito.ArgumentMatchers;
+// import com.google.api.services.calendar.model.Event;
+// import com.google.api.client.googleapis.testing.services.MockGoogleClient;
+// import com.google.api.client.googleapis.testing.auth.oauth2.MockGoogleCredential;
+// import org.mockito.runners.MockitoJUnitRunner;
+// import org.mockito.Mock;
+// import org.mockito.Mockito;
+// import static org.mockito.Mockito.any;
+// import static org.mockito.Mockito.mock;
+// import static org.mockito.Mockito.verify;
+// import static org.mockito.Mockito.when;
+// import static org.mockito.Mockito.anyString;
+// import org.mockito.ArgumentMatchers;
 
 
-@RunWith(MockitoJUnitRunner.class)
-public final class CalendarTest {
+// @RunWith(MockitoJUnitRunner.class)
+// public final class CalendarTest {
 
-  @Test
-  public void testUserNotAuthenticated() {
-    User mockUser = mock(User.class);
-    Assert.assertFalse(mockUser.isAuthenticated());
-  }
+//   @Test
+//   public void testUserNotAuthenticated() {
+//     User mockUser = mock(User.class);
+//     Assert.assertFalse(mockUser.isAuthenticated());
+//   }
 
-  // Test that createMatchEvent() throws IllegalStateException if the host user isn't authenticated
-  @Test(expected = IllegalStateException.class)
-  public void testCreateEventHostNotAuthenticated() {
-    User mockHostUser = mock(User.class);
-    User mockGuestUser = mock(User.class);
-    CalendarManager.createMatchEvent(mockHostUser, mockGuestUser, 0, 0, 0, 0, 0);
-  }
+//   Test that createMatchEvent() throws IllegalStateException if the host user isn't authenticated
+//   @Test(expected = IllegalStateException.class)
+//   public void testCreateEventHostNotAuthenticated() {
+//     User mockHostUser = mock(User.class);
+//     User mockGuestUser = mock(User.class);
+//     CalendarManager.createMatchEvent(mockHostUser, mockGuestUser, 0, 0, 0, 0, 0);
+//   }
   
-}
+// }

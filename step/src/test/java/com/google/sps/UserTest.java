@@ -69,23 +69,23 @@ public final class UserTest {
     Assert.assertEquals(USER_B.getName(), "User B");  
   }
 
-  @Test
-  // Testing match fetching
-  public void testMatchFunctionality() {
-    // Test for when a user does not yet have any matches
-    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
+//   @Test
+//   // Testing match fetching
+//   public void testMatchFunctionality() {
+//     // Test for when a user does not yet have any matches
+//     Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
 
-    // Test for when the user is the only person in the queue
-    MatchManager.generateMatch(USER_A);
-    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
+//     // Test for when the user is the only person in the queue
+//     MatchManager.generateMatch(USER_A);
+//     Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
 
-    // Test for when two users have been matched
-    MatchManager.generateMatch(USER_B);
-    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>(Arrays.asList(USER_B)));
-    Assert.assertTrue(USER_A.isMatchedWith(USER_B));
-    Assert.assertEquals(USER_B.getMatches(), new ArrayList<>(Arrays.asList(USER_A)));
-    Assert.assertTrue(USER_B.isMatchedWith(USER_A));  
-  }
+//     // Test for when two users have been matched
+//     MatchManager.generateMatch(USER_B);
+//     Assert.assertEquals(USER_A.getMatches(), new ArrayList<>(Arrays.asList(USER_B)));
+//     Assert.assertTrue(USER_A.isMatchedWith(USER_B));
+//     Assert.assertEquals(USER_B.getMatches(), new ArrayList<>(Arrays.asList(USER_A)));
+//     Assert.assertTrue(USER_B.isMatchedWith(USER_A));  
+//   }
 
   @Test
   // Testing the overriden equals method in the User class
