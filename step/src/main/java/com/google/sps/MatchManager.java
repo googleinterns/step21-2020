@@ -49,20 +49,20 @@ public final class MatchManager {
   public static void generateMatch(User user) {
     user.updateMatchPendingStatus(true);
 
-    if (matchQueue.isEmpty()) {
-      matchQueue.add(user);  
-    } else {
+    matchQueue.add(user); 
+
+    if (!matchQueue.isEmpty()) {
       User matchResult = findCompatibleMatch(user); //TODO: If it returns null, then matchQueue.add(user)
 
       if (!matchResult.isMatchedWith(user) && !matchResult.equals(user)) {
         // actually removing the match result from the queue
         createMatch(matchResult, user);
-        matchQueue.remove(matchResult); 
+        matchQueue.remove(matchResult);
+        matchQueue.remove(user);  
         
       // adding the user to the queue in case there wasn't a successful match for them
       // this is so they can be matched later      
-      } else if (!matchQueue.contains(user)) {
-        matchQueue.add(user);  
+      } else if (!matchQueue.contains(user)) {  
       }  
     }    
   }

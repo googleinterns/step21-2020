@@ -70,68 +70,78 @@ public final class MatchManagerTest {
   public void testEmptyQueue() {
     // Test for when no one is in the matching queue. The user should be added to the
     // queue and their match list should be empty.
-    MatchManager.generateMatch(USER_A);
+    DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
+    DatabaseHandler.addUserPref("1", "Yes", "No", "Yes", "Gold", "Laurel");
 
+    MatchManager.generateMatch(USER_A);
     HashSet matchQueue = MatchManager.getMatchQueue();
 
     Assert.assertTrue(matchQueue.contains(USER_A));
     Assert.assertTrue(CollectionUtils.isEmpty(USER_A.getMatches()));  
   }
 
-//   @Test
-//   public void testSuccessfulMatch() {   
-//     //Test for a successful match
-//     MatchManager.generateMatch(USER_A);
-//     MatchManager.generateMatch(USER_B);
+  @Test
+  public void testSuccessfulMatch() {
+    User USER_A = new User("1");
+    User USER_B = new User("2");
+    DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
+    DatabaseHandler.addUserPref("1", "Yes", "No", "Yes", "Gold", "Laurel"); 
+    DatabaseHandler.addUser("User", "B", "2", "2", "2002", "userB@email.com", "2");
+    DatabaseHandler.addUserPref("2", "Yes", "No", "Yes", "Gold", "Laurel");
 
-//     HashSet matchQueue = MatchManager.getMatchQueue();
+    //Test for a successful match
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_B);
 
-//     Assert.assertTrue(matchQueue.isEmpty());
-//     Assert.assertTrue(USER_A.isMatchedWith(USER_B));
-//     Assert.assertTrue(USER_B.isMatchedWith(USER_A));  
-//   }
+    HashSet matchQueue = MatchManager.getMatchQueue();
 
-//   @Test
-//   public void testUserTryingToMatchTwice() {
-//     // Test for when a user tries to match twice consecutively but no one else is
-//     // in the match queue
-//     MatchManager.generateMatch(USER_A);
-//     MatchManager.generateMatch(USER_A);
+    Assert.assertTrue(matchQueue.isEmpty());
+    Assert.assertTrue(USER_A.isMatchedWith(USER_B));
+    Assert.assertTrue(USER_B.isMatchedWith(USER_A));  
+  }
 
-//     HashSet matchQueue = MatchManager.getMatchQueue();
+  @Test
+  public void testUserTryingToMatchTwice() {
+    User USER_A = new User("1");
+    DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
+    DatabaseHandler.addUserPref("1", "Yes", "No", "Yes", "Gold", "Laurel"); 
 
-//     Assert.assertTrue(matchQueue.contains(USER_A));   
-//   }
+    // Test for when a user tries to match twice consecutively but no one else is
+    // in the match queue
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_A);
 
-//   @Test
-//   public void testUsersAlreadyMatched() {
-//     // Test for when a user requests a match but the only other person in the match
-//     // queue is someone they are already matched with
-//     MatchManager.generateMatch(USER_A);
-//     MatchManager.generateMatch(USER_B);
+    HashSet matchQueue = MatchManager.getMatchQueue();
 
-//     MatchManager.generateMatch(USER_A);
-//     MatchManager.generateMatch(USER_B);
+    Assert.assertTrue(matchQueue.contains(USER_A));   
+    Assert.assertEquals(matchQueue.size(), 1);
+  }
 
-//     HashSet matchQueue = MatchManager.getMatchQueue();
+  @Test
+  public void testUsersAlreadyMatched() {
+    User USER_A = new User("1");
+    User USER_B = new User("2");
+    DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
+    DatabaseHandler.addUserPref("1", "Yes", "No", "Yes", "Gold", "Laurel"); 
+    DatabaseHandler.addUser("User", "B", "2", "2", "2002", "userB@email.com", "2");
+    DatabaseHandler.addUserPref("2", "Yes", "No", "Yes", "Gold", "Laurel");
 
-//     Assert.assertEquals(matchQueue.size(), 2);
-//     Assert.assertEquals(USER_A.getMatches().size(), 1);
-//     Assert.assertEquals(USER_B.getMatches().size(), 1);
+    // Test for when a user requests a match but the only other person in the match
+    // queue is someone they are already matched with
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_B);
 
-//     // Third user enters the queue
-//     MatchManager.generateMatch(USER_C);
+    MatchManager.generateMatch(USER_A);
+    MatchManager.generateMatch(USER_B);
 
-//     Assert.assertEquals(matchQueue.size(), 1);
-//     Assert.assertTrue(USER_A.isMatchedWith(USER_C));
-//     Assert.assertTrue(USER_C.isMatchedWith(USER_A));
+    HashSet matchQueue = MatchManager.getMatchQueue();
 
-//     MatchManager.generateMatch(USER_C);
+    Assert.assertEquals(matchQueue.size(), 2);
+    Assert.assertEquals(USER_A.getMatches().size(), 1);
+    Assert.assertEquals(USER_B.getMatches().size(), 1);
+  }
 
-//     Assert.assertTrue(matchQueue.isEmpty());
-//     Assert.assertTrue(USER_B.isMatchedWith(USER_C));
-//     Assert.assertTrue(USER_C.isMatchedWith(USER_B));  
-//   }
+
 
   // Return the user with the highest number of mutual interests with the first user
 
