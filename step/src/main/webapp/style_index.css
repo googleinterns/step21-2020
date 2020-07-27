@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 body {
     background-image: url("index_background.jpg");
     height: 100vh;
@@ -31,7 +30,7 @@ nav {
   top: 0;
   width: 100%;
   list-style-type: none;
-=======
+
 /* CORE STYLES */
 :root {
   --primary-color: rgba(255, 255, 255, 0.75);
@@ -41,7 +40,6 @@ nav {
 
 * {
   margin: 0;
->>>>>>> 1381463a8f29278aa14ba15a5357855f5f19f731
   padding: 0;
   box-sizing: border-box;
   color: #fff;
@@ -132,6 +130,7 @@ body {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 nav a:hover:not(.active) {
   color:#000;
 }
@@ -139,6 +138,10 @@ nav a:hover:not(.active) {
 #main-title {
   margin-top: 5%;
   margin-left: 10%;
+=======
+.btn:hover {
+  opacity: 0.7;
+>>>>>>> 1381463a8f29278aa14ba15a5357855f5f19f731
 =======
 .btn:hover {
   opacity: 0.7;
