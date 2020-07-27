@@ -72,6 +72,13 @@ public final class UserTest {
   }
 
   @Test
+  // Testing preferences fetching
+  public void testGetPreference() {
+    Assert.assertEquals(USER_A.getPreferences(), new ArrayList<>(Arrays.asList("Yes", "No", "Yes", "Gold", "Laurel")));
+    Assert.assertEquals(USER_B.getPreferences(), new ArrayList<>(Arrays.asList("Yes", "No", "Yes", "Gold", "Laurel")));
+  }
+
+  @Test
   // Testing match fetching
   public void testMatchFunctionality() {
     User USER_A = new User("1");

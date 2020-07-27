@@ -27,6 +27,8 @@ public final class MatchManager {
 
   // Integrate datastore so that match requests aren't lost if the server restarts
   private static HashSet<User> matchQueue = new HashSet<>();
+  private static double MINIMUM_INTERESTS_PERCENTAGE_REQUIRED = 0.6;
+  private static int QUESTIONS = 5;
 
   private MatchManager() {
 
@@ -43,26 +45,42 @@ public final class MatchManager {
     return new HashSet <User>(matchQueue);
   }
 
-  // FIFO matchmaker -- takes in the user who just requested a match and matches them
-  // with anyone else who is in the queue waiting to be matched or adds them to the
+  // Setter method to add users directly to the matchqueue (for testing purposes).
+  public static void addUserToMatchQueue(User u) {
+      matchQueue.add(u);
+  }
+
+  // Matchmaker -- takes in the user who just requested a match and matches them
+  // with the one who is in the queue having the highest number of mutual interests with the person
+  // or adds them to the
   // queue to wait to be matched if no on else is in there
   public static void generateMatch(User user) {
     user.updateMatchPendingStatus(true);
 
+    if (matchQueue.isEmpty()) {
+        matchQueue.add(user); 
+        return;
+    }
     matchQueue.add(user); 
 
     if (!matchQueue.isEmpty()) {
-      User matchResult = findCompatibleMatch(user); //TODO: If it returns null, then matchQueue.add(user)
+      matchQueue.remove(user);
+      User matchResult = findCompatibleMatch(user);
+      if (matchResult == null) {
+          matchQueue.add(user); 
+          user.updateMatchPendingStatus(true);
+          return;
+      }
 
       if (!matchResult.isMatchedWith(user) && !matchResult.equals(user)) {
         // actually removing the match result from the queue
         createMatch(matchResult, user);
-        matchQueue.remove(matchResult);
-        matchQueue.remove(user);  
+        matchQueue.remove(matchResult);  
         
       // adding the user to the queue in case there wasn't a successful match for them
       // this is so they can be matched later      
       } else if (!matchQueue.contains(user)) {  
+          matchQueue.add(user); 
       }  
     }    
   }
@@ -96,6 +114,10 @@ public final class MatchManager {
             max = (int) mapE.getValue();
             compatibleUserId = ((User)mapE.getKey()).getId();
         }
+    }
+
+    if (max < MINIMUM_INTERESTS_PERCENTAGE_REQUIRED * QUESTIONS) {
+        return null;
     }
 
     User compatibleUser = new User(compatibleUserId);

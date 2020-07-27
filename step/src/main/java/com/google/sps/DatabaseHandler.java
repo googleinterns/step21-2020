@@ -90,7 +90,7 @@ public final class DatabaseHandler {
     datastore.put(entity);    
   }
 
-  //TODO: Adding users' preferences info 
+  //Adding users' preferences info 
   public static void addUserPref(String id, String q1, String q2, String q3, String q4, String q5) {
     Query query =
         new Query("User")
