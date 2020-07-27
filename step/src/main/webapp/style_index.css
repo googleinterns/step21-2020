@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
     background-image: url("index_background.jpg");
     height: 100vh;
@@ -30,21 +31,107 @@ nav {
   top: 0;
   width: 100%;
   list-style-type: none;
+=======
+/* CORE STYLES */
+:root {
+  --primary-color: rgba(255, 255, 255, 0.75);
+  --overlay-color: rgba(24, 39, 51 , 0.85);
+    --menu-speed: 0.75s;
+}
+
+* {
+  margin: 0;
+>>>>>>> 1381463a8f29278aa14ba15a5357855f5f19f731
   padding: 0;
-  overflow: hidden;
+  box-sizing: border-box;
+  color: #fff;
+}
+
+nav {
+    float: right;
 }
 
 nav a {
-  float: right;
-  display: block;
-  color: #fff;
-  text-align: center;
-  padding: 25px 20px;
-  text-decoration: none;
-  font-size: 20px;
-  font-family: 'Roboto', sans-serif;
+    float: right;
+    color: #fff;
+    text-align: center;
+    padding: 20px 60px 20px 60px;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 600;
+    z-index: 0;
 }
 
+nav > div {
+    display: inline-block;
+}
+
+body {
+   font-family: 'Roboto', sans-serif;
+   line-height: 1.4;
+}
+
+.container {
+  max-width: 960px;
+  margin: auto;
+  padding: 0 3rem;
+}
+
+.showcase {
+  background: url("index_background.jpg") no-repeat center center/cover;
+  color: #fff;
+  height: 100vh;
+}
+
+.showcase:before {
+  content: '';
+  background: url("index_background.jpg") no-repeat center center/cover;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+.showcase > p {
+  font-size: 30px;
+  color: #f7f9f9;
+  font-family: 'Roboto', sans-serif;
+  position: absolute;
+}
+
+.showcase .showcase-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  height: 100%;
+}
+
+.showcase h1 {
+  font-size: 4rem;
+}
+
+.showcase p {
+  font-size: 1.3rem;
+}
+
+.btn {
+  display: inline-block;
+  border: none;
+  background: var(--primary-color);
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  margin-top: 1rem;
+  transition: opacity 1s ease-in-out;
+  text-decoration: none;
+}
+
+<<<<<<< HEAD
 nav a:hover:not(.active) {
   color:#000;
 }
@@ -52,4 +139,8 @@ nav a:hover:not(.active) {
 #main-title {
   margin-top: 5%;
   margin-left: 10%;
+=======
+.btn:hover {
+  opacity: 0.7;
+>>>>>>> 1381463a8f29278aa14ba15a5357855f5f19f731
 }

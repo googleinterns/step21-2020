@@ -34,12 +34,13 @@ limitations under the License.
         <form>
           <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Home </button>
         </form>
+        <a href="<%= logoutURL %>"> Log Out </a>
+        <% if (!userService.isUserLoggedIn()) {
+            response.sendRedirect("index.jsp");   
+        } %>
+        <h1 style="float: left; font-size: 25px"> Friend Matching Plus </h1>
     </nav>
     
-    
-    <% if (!userService.isUserLoggedIn()) {
-        response.sendRedirect("index.jsp");   
-    } %>
     <section class="infoform">
     <form id="regForm" action="Info" method="POST"> 
         <div class="tab"> Name: 

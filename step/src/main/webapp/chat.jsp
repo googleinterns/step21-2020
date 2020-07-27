@@ -24,7 +24,7 @@ limitations under the License.
     <meta charset="UTF-8">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="style_chat.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>Friend Matching Plus</title>
   </head>
   <body>
@@ -49,7 +49,6 @@ limitations under the License.
             <% String user = request.getParameter("user"); %>
             <input type="hidden" name="user" value="<%= user %>"> </input>
             <textarea placeholder="Type message.." name="text" required></textarea>
-
             <button type="submit" class="btn">Send</button>
             <button type="button" class="btn cancel" onclick="closeFrom()">Close</button>
           </form> 

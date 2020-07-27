@@ -42,23 +42,22 @@ public class ChatServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     UserService userService = UserServiceFactory.getUserService();
-    String id = userService.getCurrentUser().getUserId();
-    String otherUserID = request.getParameter("user");
+    String senderID = userService.getCurrentUser().getUserId();
+    String recipientID = request.getParameter("user");
     List<Message> messages = new ArrayList<>();
-    messages = MessageHandler.getMessages(id, otherUserID);
+    messages = MessageHandler.getMessages(senderID, recipientID);
     request.setAttribute("messages", messages);
-    request.getRequestDispatcher("chat.jsp").forward(request, response);
+    request.getRequestDispatcher("chat1.jsp").forward(request, response);
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     UserService userService = UserServiceFactory.getUserService();
-    String email = userService.getCurrentUser().getEmail();
-    String id = userService.getCurrentUser().getUserId();
-    String otherUserID = request.getParameter("user");
+    String senderID = userService.getCurrentUser().getUserId();
+    String recipientID = request.getParameter("user");
     String text = request.getParameter("text");
     long timestamp = System.currentTimeMillis();
-    Message m = new Message(id, otherUserID, text, timestamp);
+    Message m = new Message(senderID, recipientID, text, timestamp);
     MessageHandler.addMessage(m);
     doGet(request, response);
   }
