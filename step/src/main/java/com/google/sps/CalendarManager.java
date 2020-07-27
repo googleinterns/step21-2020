@@ -41,11 +41,23 @@ public class CalendarManager {
                       year, month, day, hour, minute);
   }
 
+  /**
+   * Given a hostUser, guestUser, and a date and time, create a Google Calendar event on the
+   * hostUser's primary calendar and send an invite to the guestUser. The guestUser will see an
+   * event invite on their Google Calendar and will also receive an email from Google Calendar.
+   *
+   * @param hostUser the owner of the Google Calendar Event
+   * @param guestUser the user to be invited to the Google Calendar Event
+   */
   public static void createMatchEvent(User hostUser, User guestUser,
                                       int year, int month, int day, int hour, int minute) {
     if (!hostUser.isAuthenticated()) {
       throw new IllegalStateException("The host user isn't authenticated. "
                                       + "Unable to create match event.");
+    } else if (guestUser == null) {
+      throw new IllegalStateException("guestUser cannot be null.");
+    } else if (!checkDateTimeConfiguration(year, month, day, hour, minute)) {
+      throw new IllegalStateException("Received an invalid date/time configuration");
     }
 
     Event matchEvent = new MatchEventBuilder()
@@ -56,6 +68,9 @@ public class CalendarManager {
     pushMatchEvent(hostUser, guestUser, matchEvent);
   }
 
+  /**
+   * @return the Google Calendar API scopes that we need access to.
+   */
   public static List<String> getScopes() {
     List<String> scopes = new ArrayList<>();
     scopes.add(CalendarScopes.CALENDAR_EVENTS); // "View and edit events on all your calendars"
@@ -64,6 +79,7 @@ public class CalendarManager {
 
   /**
    * Push the given event to the hostUser's Google Calendar and invite the guestUser to it.
+   * guestUser will receive an email invite as well as an event invite on their Google Calendar.
    *
    * @param hostUser the owner of the Google Calendar event.
    * @param guestUser the user to be invited to the Google Calendar event.
@@ -74,11 +90,11 @@ public class CalendarManager {
     Calendar calendar = getCalendar(hostUser);
     try {
       String calendarId = "primary";
-      event = calendar.events().insert(calendarId, event).execute();
+      event = calendar.events().insert(calendarId, event).setSendNotifications(true).execute();
       System.out.printf("Event created: %s\n", event.getHtmlLink());
     } catch (IOException e) {
-      System.out.println("ERROR: " + e.getMessage());
-      System.out.println("Unable to push match event.");
+      System.err.println("ERROR: " + e.getMessage());
+      System.err.println("Unable to push match event.");
     }
   }
 
@@ -88,6 +104,23 @@ public class CalendarManager {
         new JacksonFactory(),
         user.getCredential()
       ).setApplicationName("Friend Matching Plus").build();
+  }
+
+  // Return true when the date/time configuration is valid, false otherwise.
+  private static boolean checkDateTimeConfiguration(int year, int month, int day, int hour, int minute) {
+    if(year < 2020 || year > 3000) {
+      return false;
+    } else if (month < 1 || month > 12) {
+      return false;
+    } else if (day < 1 || day > 31) {
+      return false;
+    } else if (hour < 1 || hour > 23) { 
+      return false;
+    } else if (minute < 1 || minute > 59) {
+      return false;
+    }
+
+    return true;
   }
 
 }
@@ -101,7 +134,7 @@ class MatchEventBuilder {
   }
 
   public MatchEventBuilder setAttendees(User hostUser, User guestUser) {
-    String eventSummary = String.format("FMP: %s / %s", hostUser.getName(), guestUser.getName());
+    String eventSummary = String.format("FMP: %s : %s", hostUser.getName(), guestUser.getName());
     matchEvent.setSummary(eventSummary);
 
     String eventDescription = String.format("%s and %s have matched on Friend Matching Plus! ",

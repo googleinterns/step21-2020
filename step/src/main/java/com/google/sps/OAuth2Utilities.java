@@ -39,14 +39,14 @@ public class OAuth2Utilities {
   public static GoogleAuthorizationCodeFlow getAuthFlow()
       throws FileNotFoundException, IOException, RuntimeException {
 
-    DataStore<StoredCredential> credentialDataStore = null;
+    DataStore<StoredCredential> credentialDataStore;
     try {
       credentialDataStore = getCredentialDataStore();
     } catch (IOException e) {
       throw new IOException("Unable to get the credential datastore.");
     }
 
-    GoogleAuthorizationCodeFlow authFlow = null;
+    GoogleAuthorizationCodeFlow authFlow;
     try {
       authFlow = new GoogleAuthorizationCodeFlow.Builder(
         new NetHttpTransport(),
@@ -77,7 +77,7 @@ public class OAuth2Utilities {
    * @throws RuntimeException when this method is unable to get the user's credential.
    */
   public static Credential getUserCredential(String userId) {
-    GoogleAuthorizationCodeFlow authFlow = null;
+    GoogleAuthorizationCodeFlow authFlow;
     try {
       authFlow = getAuthFlow();
       return authFlow.loadCredential(userId);

@@ -53,10 +53,7 @@ public class CalendarServlet extends HttpServlet {
 
       User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
       User guestUser = null;
-      System.out.println("hostUser matches: " + hostUser.getMatches().toString());
       for(User user : hostUser.getMatches()) {
-        System.out.println("input: " + guestName);
-        System.out.println("found: " + user.getName());
         if(user.getName().equals(guestName)) {
           guestUser = user;
         }
