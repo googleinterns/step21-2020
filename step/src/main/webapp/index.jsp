@@ -37,7 +37,7 @@ limitations under the License.
   </head>
   <body>
         <nav>
-            <div> <a href="<%= loginURL %>"> Log In </a> <div>
+            <div> <a href="<%= loginURL %>" class="btn"> Log In </a> <div>
             <div class="menu-wrap" style="float: right">
                 <input type="checkbox" class="toggler">
                 <div class="hamburger"><div></div></div>

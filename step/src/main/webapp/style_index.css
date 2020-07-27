@@ -1,3 +1,10 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  color: #fff;
+}
+
 body {
     background-image: url("index_background.jpg");
     height: 100vh;
@@ -30,19 +37,6 @@ nav {
   top: 0;
   width: 100%;
   list-style-type: none;
-
-/* CORE STYLES */
-:root {
-  --primary-color: rgba(255, 255, 255, 0.75);
-  --overlay-color: rgba(24, 39, 51 , 0.85);
-    --menu-speed: 0.75s;
-}
-
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  color: #fff;
 }
 
 nav {
@@ -63,11 +57,14 @@ nav a {
 
 nav > div {
     display: inline-block;
+    margin: 10px;
 }
 
-body {
-   font-family: 'Roboto', sans-serif;
-   line-height: 1.4;
+nav > div > a {
+    float: right;
+    color: #f7f9f9;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
 }
 
 .container {
@@ -94,13 +91,6 @@ body {
   margin-left: 10%;
 }
 
-.showcase > p {
-  font-size: 30px;
-  color: #f7f9f9;
-  font-family: 'Roboto', sans-serif;
-  position: absolute;
-}
-
 .showcase .showcase-inner {
   display: flex;
   flex-direction: column;
@@ -114,23 +104,18 @@ body {
   font-size: 4rem;
 }
 
-.showcase p {
-  font-size: 1.3rem;
-}
-
 .btn {
   display: inline-block;
-  border: none;
-  background: var(--primary-color);
   color: #fff;
   padding: 0.75rem 1.5rem;
   margin-top: 1rem;
   transition: opacity 1s ease-in-out;
   text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+  border: 2px solid #e7e7e7;
 }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
 nav a:hover:not(.active) {
   color:#000;
 }
@@ -138,12 +123,8 @@ nav a:hover:not(.active) {
 #main-title {
   margin-top: 5%;
   margin-left: 10%;
-=======
+}
+
 .btn:hover {
   opacity: 0.7;
->>>>>>> 1381463a8f29278aa14ba15a5357855f5f19f731
-=======
-.btn:hover {
-  opacity: 0.7;
->>>>>>> 1381463a8f29278aa14ba15a5357855f5f19f731
 }

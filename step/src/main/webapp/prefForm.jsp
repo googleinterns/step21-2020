@@ -41,33 +41,30 @@ limitations under the License.
         response.sendRedirect("index.jsp");   
     } %>
     <section class="prefform">
-    <form id="regForm" action="Pref" method="POST"> 
+    <form id="regForm" action="Pref" class="inputGroup" method="POST"> 
         <div class="tab"> <div class="question"> Are you staying in the US now? </div>
-
             <p>
-                <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes">
+                <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes" required>
                 <label for="q1yes"> Yes </label>
             </p>
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="No" id="q1no">
                 <label for="q1no"> No </label>
             </p>   
-        </div>
-        <br>  
+        </div> 
         <div class="tab"> <div class="question"> Do you have any pets? </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q2" value="Yes" id="q2yes">
+                <input type="radio" oninput="this.className = ''" name="q2" value="Yes" id="q2yes" required>
                 <label for="q2yes"> Yes </label>
             </p>
             <p>
                 <input type="radio" oninput="this.className = ''" name="q2" value="No" id="q2no">
                 <label for="q2no"> No </label>
             </p>
-        </div>
-        <br>  
+        </div> 
         <div class="tab"> <div class="question"> Do you have any siblings? </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q3" value="Yes" id="q3yes">
+                <input type="radio" oninput="this.className = ''" name="q3" value="Yes" id="q3yes" required>
                 <label for="q3yes"> Yes </label>
             </p>
             <p>
@@ -75,10 +72,9 @@ limitations under the License.
                 <label for="q3no"> No </label>
             </p>
         </div>
-        <br>  
         <div class="tab"> <div class="question"> <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank"> Is the dress blue or gold? </a> </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q4" value="Blue" id="q4blue">
+                <input type="radio" oninput="this.className = ''" name="q4" value="Blue" id="q4blue" required>
                 <label for="q4blue"> Blue </label>
             </p>
             <p>
@@ -88,7 +84,7 @@ limitations under the License.
         </div>
         <div class="tab"> <div class="question"> <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel? </a> </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q5" value="Yanny" id="q5yanny">
+                <input type="radio" oninput="this.className = ''" name="q5" value="Yanny" id="q5yanny" required>
                 <label for="q5yanny"> Yanny </label>
             </p>
             <p>
