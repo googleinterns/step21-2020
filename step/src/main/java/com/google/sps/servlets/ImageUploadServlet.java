@@ -35,32 +35,11 @@ import org.json.simple.JSONObject;
 @WebServlet("/image-upload")
 public class ImageUploadServlet extends HttpServlet {
 
-  private static final String PLACEHOLDER_IMAGE_PATH = "step21-2020/step/src/main/webapp/avatar.png";
-  private static final String SRC = "SRC";
-
-  UserService userService = UserServiceFactory.getUserService();
-  String id = userService.getCurrentUser().getUserId();
-
-  // @Override
-  // public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-  //   PrintWriter out = response.getWriter();
-  //   String imageUrl = DatabaseHandler.getUserImageUrl(id);
-
-  //   JSONObject json = new JSONObject();
-
-  //   if (imageUrl == null || imageUrl.equals("")) {
-  //     json.put(SRC, PLACEHOLDER_IMAGE_PATH);
-  //   } else {
-  //     json.put(SRC, imageUrl);
-  //   }
-
-  //   out.println(json);
-  // }
-
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    UserService userService = UserServiceFactory.getUserService();
+    String id = userService.getCurrentUser().getUserId();
     String imageBlobKey = filterAndUploadImageBlobstore(request);
 
     if (imageBlobKey == null) {

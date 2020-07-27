@@ -94,6 +94,10 @@ limitations under the License.
                 <a href="#questionaire-container">Questionaire</a>
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
+                <form action="/image-upload" method="post" enctype="multipart/form-data">
+                  <input type="file" name="image">
+                  <button type="submit" value="Submit">Upload an Avatar</button>
+                </form>
             </div>
         </div>
         <div class="sub-container" id="profile-info"> 
