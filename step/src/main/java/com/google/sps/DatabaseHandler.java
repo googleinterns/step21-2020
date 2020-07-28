@@ -97,11 +97,11 @@ public final class DatabaseHandler {
             .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
     PreparedQuery results = datastore.prepare(query);
     Entity entity = results.asSingleEntity();
-    entity.setProperty("q1", q1);
-    entity.setProperty("q2", q2);
-    entity.setProperty("q3", q3);
-    entity.setProperty("q4", q4);
-    entity.setProperty("q5", q5);
+    entity.setProperty(QUESTION_1, q1);
+    entity.setProperty(QUESTION_2, q2);
+    entity.setProperty(QUESTION_3, q3);
+    entity.setProperty(QUESTION_4, q4);
+    entity.setProperty(QUESTION_5, q5);
     datastore.put(entity);
   }
  

@@ -27,7 +27,7 @@ public final class MatchManager {
 
   // Integrate datastore so that match requests aren't lost if the server restarts
   private static HashSet<User> matchQueue = new HashSet<>();
-  private static double MINIMUM_INTERESTS_PERCENTAGE_REQUIRED = 0.6;
+  private static double MINIMUM_INTERESTS_THRESHOLD = 0.6;
   private static int QUESTIONS = 5;
 
   private MatchManager() {
@@ -57,43 +57,38 @@ public final class MatchManager {
   public static void generateMatch(User user) {
     user.updateMatchPendingStatus(true);
 
+    
     if (matchQueue.isEmpty()) {
         matchQueue.add(user); 
         return;
     }
-    matchQueue.add(user); 
 
-    if (!matchQueue.isEmpty()) {
-      matchQueue.remove(user);
-      User matchResult = findCompatibleMatch(user);
-      if (matchResult == null) {
-          matchQueue.add(user); 
-          user.updateMatchPendingStatus(true);
-          return;
-      }
+    User matchResult = findCompatibleMatch(user);
+    if (matchResult == null) {
+        matchQueue.add(user); 
+        user.updateMatchPendingStatus(true);
+        return;
+    }
 
-      if (!matchResult.isMatchedWith(user) && !matchResult.equals(user)) {
+    if (!matchResult.isMatchedWith(user) && !matchResult.equals(user)) {
         // actually removing the match result from the queue
         createMatch(matchResult, user);
         matchQueue.remove(matchResult);  
         
-      // adding the user to the queue in case there wasn't a successful match for them
-      // this is so they can be matched later      
-      } else if (!matchQueue.contains(user)) {  
-          matchQueue.add(user); 
-      }  
-    }    
+        // adding the user to the queue in case there wasn't a successful match for them
+        // this is so they can be matched later      
+    } else if (!matchQueue.contains(user)) {  
+        matchQueue.add(user); 
+    }      
   }
 
   // Match the user with the most compatible user in the database (the one who has the most number
   // of similar interests). 
   // Currently, the minimum percentage of mutual interests between 2 users required to get matched are 60%
   public static User findCompatibleMatch(User firstUser) {
-    HashMap<User, Integer> mutualInterests = new HashMap<>();
+    HashMap<User, Integer> mutualInterests = new HashMap<>(); 
     for (User secondUser: matchQueue) {
         mutualInterests.put(secondUser, 0);
-    } 
-    for (User secondUser: matchQueue) {
         for (int i = 0; i < secondUser.getPreferences().size(); i++) {
             // Compare the second user's each preference answer with the first user's
             if (firstUser.getPreferences().get(i).equals(secondUser.getPreferences().get(i))) {
@@ -103,25 +98,22 @@ public final class MatchManager {
     }
 
     //Traverse through the hashmap to find the user with the maximum number of mutual interests with the first user
-    Iterator iterator = mutualInterests.entrySet().iterator();
-    int max = 0; 
-    String compatibleUserId = "";
+    int currHighestScore = 0; 
+    String currHighestUser = "";
 
-    while (iterator.hasNext()) {
-        Map.Entry mapE = (Map.Entry)iterator.next();
-        // FIFO
-        if (max < (int)mapE.getValue()) {
-            max = (int) mapE.getValue();
-            compatibleUserId = ((User)mapE.getKey()).getId();
+    for (Map.Entry<User, Integer> mapE: mutualInterests.entrySet()) {
+        if (currHighestScore < (int)mapE.getValue()) {
+            currHighestScore = (int) mapE.getValue();
+            currHighestUser = ((User)mapE.getKey()).getId();
         }
     }
 
-    if (max < MINIMUM_INTERESTS_PERCENTAGE_REQUIRED * QUESTIONS) {
+    if (currHighestScore < MINIMUM_INTERESTS_THRESHOLD * QUESTIONS) {
         return null;
     }
 
-    User compatibleUser = new User(compatibleUserId);
-    return compatibleUser;
+    User highestUser = new User(currHighestUser);
+    return highestUser;
   }
 
   // Helper method for actually adding to people into one another's matches and sending
