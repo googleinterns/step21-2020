@@ -35,7 +35,7 @@ limitations under the License.
           <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Home </button>
         </form>
         <% if (!userService.isUserLoggedIn()) {
-            response.sendRedirect("index.jsp");   
+            response.sendRedirect("/index.jsp");   
         } %>
     </nav>
     

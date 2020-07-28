@@ -70,7 +70,7 @@ public class User {
           preferences = DatabaseHandler.getUserPreferences(userServiceUserId);
       }
       return preferences;
-
+  }
   public Credential getCredential() {
     try {
       return OAuth2Utilities.getUserCredential(userServiceUserId);

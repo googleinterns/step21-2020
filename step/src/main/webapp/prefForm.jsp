@@ -38,7 +38,7 @@ limitations under the License.
     
     
     <% if (!userService.isUserLoggedIn()) {
-        response.sendRedirect("index.jsp");   
+        response.sendRedirect("/index.jsp");   
     } %>
     <section class="prefform">
     <form id="regForm" action="Pref" class="inputGroup" method="POST"> 

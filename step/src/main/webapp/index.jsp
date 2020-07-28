@@ -59,7 +59,6 @@ limitations under the License.
             <div class="container showcase-inner">
             <h1>Friend Matching Plus</h1>
             <t>Friending. Made easy.
-            <i class="fa fa-cloud" style="font-size:30px;color:white;text-shadow:2px 2px 4px #000000;"></i>
             </t>
             <a href="#" class="btn">Read More</a>
             </div>
