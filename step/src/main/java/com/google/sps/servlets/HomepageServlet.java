@@ -41,6 +41,7 @@ public class HomepageServlet extends HttpServlet {
   private static final String NOT_PENDING = "not pending";
 
   @Override
+  // TODO: refactor this doGet to make it more readable
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
@@ -91,6 +92,9 @@ public class HomepageServlet extends HttpServlet {
     } else {
       userData.put(STATUS, NOT_PENDING);
     }
+
+    String imgUrl = DatabaseHandler.getUserImageUrl(id);
+    userData.put("image", imgUrl);
 
     out.println(userData);
   }

@@ -37,14 +37,7 @@ import org.json.simple.JSONObject;
 public class ImageUploadServlet extends HttpServlet {
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-      System.out.println("inside get upload servlet");
-  }
-
-  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    System.out.println("inside doPost!!!!!!!!!!!!!!!!!!!!!!!!");
-
     UserService userService = UserServiceFactory.getUserService();
     String id = userService.getCurrentUser().getUserId();
     String imageBlobKey = filterAndUploadImageBlobstore(request);
@@ -54,10 +47,10 @@ public class ImageUploadServlet extends HttpServlet {
       // TODO: Display some message on the screen telling the user to check the file
       //       they uploaded and try again.
     } else {
+      System.out.println("not null");
       DatabaseHandler.uploadUserImage(id, imageBlobKey);
     }
-    /// line below this is causing an "error 405: HTTP method GET is not supported by this url"
-    response.sendRedirect("profile.jsp");
+    response.sendRedirect("/profile.jsp");
   }
 
   private String filterAndUploadImageBlobstore(HttpServletRequest request){

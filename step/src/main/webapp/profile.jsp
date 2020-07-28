@@ -88,7 +88,7 @@ limitations under the License.
     <div class="container">
         <div class="sub-container" id="list-selection">
             <h2> Your Profile </h2>
-            <div id="profile-pic"> <img src=<%="avatar.png"%> alt="Profile Picture"> </div>
+            <div id="profile-pic"> </div>
             <div id="navbar-selection"> 
                 <a href="#personal-container">Personal Information</a>
                 <a href="#questionaire-container">Questionaire</a>
@@ -185,9 +185,11 @@ limitations under the License.
             matches = json["matches"];
             notifications = json["notifications"];
             status = json["status"];
+            image = json["image"];
             renderMatches(matches);
             renderNotifications(notifications);
             getMatchStatus(status);
+            setImage(image);
           });
       }
 
@@ -232,6 +234,20 @@ limitations under the License.
           document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
         }
+      }
+
+      function setImage(image) {
+        const imageContainer = document.getElementById('profile-pic');
+        userIcon = document.createElement('IMG');
+        
+        if (image === "") {
+          userIcon.setAttribute('src', "avatar.png");
+        } else {
+          userIcon.setAttribute('src', "/serve?key=" + image);
+        }
+
+        userIcon.setAttribute('alt', "Profile picture.");
+        imageContainer.appendChild(userIcon);
       }
 
       async function grabBlobURL(){
