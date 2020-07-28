@@ -66,7 +66,7 @@ public class CalendarManager {
       .setStartDateTime(year, month, day, hour, minute)
       .build();
 
-    pushMatchEvent(hostUser, guestUser, matchEvent);
+    addToCalendar(hostUser, guestUser, matchEvent);
   }
 
   /**
@@ -107,7 +107,7 @@ public class CalendarManager {
   }
 
   /**
-   * Push the given event to the hostUser's Google Calendar and invite the guestUser to it.
+   * Add the given event to the hostUser's Google Calendar and invite the guestUser to it.
    * guestUser will receive an email invite as well as an event invite on their Google Calendar.
    *
    * @param hostUser the owner of the Google Calendar event.
@@ -115,7 +115,7 @@ public class CalendarManager {
    * @param event the event to be added to Google Calendar. This event can be conveniently
    *              built using the CalendarManager.MatchEventBuilder class.
    */
-  private static void pushMatchEvent(User hostUser, User guestUser, Event event) {
+  private static void addToCalendar(User hostUser, User guestUser, Event event) {
     Calendar calendar = getCalendar(hostUser);
     try {
       String calendarId = "primary";
@@ -123,7 +123,7 @@ public class CalendarManager {
       System.out.printf("Event created: %s\n", event.getHtmlLink());
     } catch (IOException e) {
       System.err.println("ERROR: " + e.getMessage());
-      System.err.println("Unable to push match event.");
+      System.err.println("Unable to add match event to Google Calendar.");
     }
   }
 
