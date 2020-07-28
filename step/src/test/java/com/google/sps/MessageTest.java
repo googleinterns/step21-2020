@@ -39,8 +39,11 @@ public final class MessageTest {
     private static final long TIMESTAMP_ONE = 1;
     private static final long TIMESTAMP_TWO = 2; 
 
-    private static final Message MESSAGE_1 = new Message("1", "2", "Good Morning", TIMESTAMP_ONE);
-    private static final Message MESSAGE_2 = new Message("2", "1", "Good Afternoon", TIMESTAMP_TWO);
+    private static final String CURRTIME_ONE = "1";
+    private static final String CURRTIME_TWO = "2";
+
+    private static final Message MESSAGE_1 = new Message("1", "2", "Good Morning", TIMESTAMP_ONE, CURRTIME_ONE);
+    private static final Message MESSAGE_2 = new Message("2", "1", "Good Afternoon", TIMESTAMP_TWO, CURRTIME_TWO);
 
     // local datastore service for testing
     private final LocalServiceTestHelper helper =

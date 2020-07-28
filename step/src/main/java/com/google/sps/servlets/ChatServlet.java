@@ -26,6 +26,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
+import java.text.SimpleDateFormat;  
 import javax.servlet.annotation.WebServlet;
 import com.google.sps.DatabaseHandler;
 import com.google.sps.MessageHandler;
@@ -57,8 +59,11 @@ public class ChatServlet extends HttpServlet {
     String senderID = userService.getCurrentUser().getUserId();
     String recipientID = request.getParameter("user");
     String text = request.getParameter("text");
+    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+    Date date = new Date(System.currentTimeMillis());
+    String currTime = date.toString();
     long timestamp = System.currentTimeMillis();
-    Message m = new Message(senderID, recipientID, text, timestamp);
+    Message m = new Message(senderID, recipientID, text, timestamp, currTime);
     MessageHandler.addMessage(m);
     doGet(request, response);
   }

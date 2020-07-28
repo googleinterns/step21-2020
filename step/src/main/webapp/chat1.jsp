@@ -91,7 +91,7 @@ limitations under the License.
                         <div class="message-content">
                         <tr>
                             <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                            <td><div class="message-time"><c:out value="${m.timestamp()}"/></div></td>
+                            <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
                         </tr>
                         </div>
                     </div>
@@ -101,7 +101,7 @@ limitations under the License.
                                 <div class="message-content">
                                     <tr>
                                         <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                                        <td><div class="message-time"><c:out value="${m.timestamp()}"/></div></td>
+                                        <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
                                     </tr>
                                 </div>
                             </div>
