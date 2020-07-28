@@ -16,6 +16,7 @@
     <failOnMissingWebXml>false</failOnMissingWebXml>
   </properties>
 
+  <!-- List of dependencies: https://repo.maven.apache.org/maven2/ -->
   <dependencies>
     <dependency>
       <groupId>com.googlecode.json-simple</groupId>
@@ -64,7 +65,6 @@
       <version>4.1</version>
     </dependency>    
 
-
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
@@ -74,7 +74,7 @@
     <dependency>
       <groupId>com.google.appengine</groupId>
       <artifactId>appengine-api-1.0-sdk</artifactId>
-      <version>1.9.59</version>
+      <version>1.9.80</version>
     </dependency>
 
     <dependency>
@@ -82,8 +82,25 @@
       <artifactId>json-simple</artifactId>
       <version>1.1</version>
     </dependency>
+
+    <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-calendar</artifactId>
+      <version>v3-rev20200610-1.30.9</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.google.api-client</groupId>
+      <artifactId>google-api-client-appengine</artifactId>
+      <version>1.30.10</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>2.7.16</version>
+    </dependency>
   </dependencies>
-  
   
 
   <build>
@@ -95,7 +112,6 @@
         <artifactId>appengine-maven-plugin</artifactId>
         <version>2.2.0</version>
         <configuration>
-          <!-- TODO: set project ID. -->
           <deploy.projectId>brenda-ding-pod-step-20</deploy.projectId>
           <deploy.version>1</deploy.version>
         </configuration>
