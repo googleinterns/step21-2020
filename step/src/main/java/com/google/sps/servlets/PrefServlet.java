@@ -27,6 +27,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import com.google.sps.DatabaseHandler;
 
 @WebServlet("/Pref")
 public class PrefServlet extends HttpServlet {
@@ -62,12 +63,11 @@ public class PrefServlet extends HttpServlet {
       response.sendRedirect("index.jsp");
     }
 
-    entity.setProperty("q1", q1);
-    entity.setProperty("q2", q2);
-    entity.setProperty("q3", q3);
-    entity.setProperty("q4", q4);
-    entity.setProperty("q5", q5);
-    datastore.put(entity);
+    // Ensuring that only users who have filled all of the info fields out are added to the database
+    if (q1 != null && q2 != null && q3 != null && q4 != null &&
+      q5 != null) {
+      DatabaseHandler.addUserPref(id, q1, q2, q3, q4, q5);
+    }
     response.sendRedirect("profile.jsp");
   }
 }
