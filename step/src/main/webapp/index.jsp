@@ -33,24 +33,24 @@ limitations under the License.
     <title>Friend Matching Plus</title>
   </head>
   <body>
-        <nav>
-            <a href="<%= loginURL %>"> Log In </a>
-            <a class="active" href="index.jsp"> About </a>
-        </nav>
-        <div id="main-title">
-          <ul>
-            <li> Friend </li>
-            <li> Matching </li>
-            <li> Plus </li>
-          </ul>
-          <br>
-          <t>Friending. Made easy.
-            <i class="fa fa-cloud" style="font-size:30px;color:white;text-shadow:2px 2px 4px #000000;"></i>
-          </t>
-        </div>  
-        <% if (userService.isUserLoggedIn()) {
-            String userEmail = userService.getCurrentUser().getEmail();
-            response.sendRedirect("Login");   
-        } %>
+    <nav>
+        <a href="<%= loginURL %>"> Log In </a>
+        <a class="active" href="index.jsp"> About </a>
+    </nav>
+    <div id="main-title">
+      <ul>
+        <li> Friend </li>
+        <li> Matching </li>
+        <li> Plus </li>
+      </ul>
+      <br>
+      <t>Friending. Made easy.
+        <i class="fa fa-cloud" style="font-size:30px;color:white;text-shadow:2px 2px 4px #000000;"></i>
+      </t>
+    </div>  
+    <% if (userService.isUserLoggedIn()) {
+        String userEmail = userService.getCurrentUser().getEmail();
+        response.sendRedirect("Login");   
+    } %>
   </body>
 </html>
