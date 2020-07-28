@@ -14,13 +14,21 @@
 
 package com.google.sps;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class MatchNotification extends Notification {
 
+  private List<String> userIds;
   private static final String NOTIFICATION_TEXT =
     "New match alert! You matched with ";
   
   public MatchNotification(String id, String otherUserId, long timestamp) {
     super(id, otherUserId, timestamp);
+
+    userIds = new ArrayList<>(2);
+    userIds.add(id);
+    userIds.add(otherUserId);
   }
 
   // Method for putting together and returning the text associated
@@ -28,5 +36,9 @@ public class MatchNotification extends Notification {
   public String getText() {
     User user = new User(otherUserId);
     return NOTIFICATION_TEXT + user.getName();      
-  }  
+  }
+
+  public List<String> getUserIds() {
+    return userIds;
+  }
 }

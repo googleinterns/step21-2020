@@ -17,6 +17,7 @@ package com.google.sps;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.ArrayList;
+import com.google.api.client.auth.oauth2.Credential;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -62,12 +63,24 @@ public class User {
     return name;  
   }
 
+
   //Getter method for a user's preference answers
   public ArrayList<String> getPreferences() {
       if (preferences == null) {
           preferences = DatabaseHandler.getUserPreferences(userServiceUserId);
       }
       return preferences;
+
+  public Credential getCredential() {
+    try {
+      return OAuth2Utilities.getUserCredential(userServiceUserId);
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+  public boolean isAuthenticated() {
+    return OAuth2Utilities.isUserAuthenticated(userServiceUserId);
   }
 
   // Getter method for a user's matches
