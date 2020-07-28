@@ -32,8 +32,19 @@ body {
 }
 
 #profile-pic > img {
-    border-radius: 50%;
     width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#match-picture {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    float: left;
+    border-left: 5%;
 }
 
 .match-pic {
@@ -123,11 +134,15 @@ h3 a:hover {
 }
 
 .match-name, .match-email {
-    display: inline;
+    float: right;
+}
+
+.match-name {
+  font-weight: bold;
 }
 
 
-.item-label, .match-name {
+.item-label {
     float:left;
     font-weight: bold;
 }

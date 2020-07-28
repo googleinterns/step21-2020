@@ -199,20 +199,34 @@ limitations under the License.
           name = match["name"];
           email = match["email"];
           image = match["image"];
-          console.log('image');
-          console.log(image);
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match-item';
+
+
+          matchIcon = document.createElement('IMG');
+        
+          if (image === "") {
+            matchIcon.setAttribute('src', "avatar.png");
+          } else {
+            matchIcon.setAttribute('src', "/serve?key=" + image);
+          }
+          matchIcon.setAttribute('id', 'match-picture');
+          matchIcon.setAttribute('alt', "match picture");
+          matchContainer.appendChild(matchIcon);
+
           const nameElement = document.createElement('div');
           nameElement.innerText = name;
           nameElement.className = 'match-name';
           matchDiv.appendChild(nameElement);
+          const lineBreak = document.createElement('br');
+          matchContainer.appendChild(lineBreak);
+
           const emailElement = document.createElement('div');
           emailElement.innerText = email;
           emailElement.className = 'match-email';
           matchDiv.appendChild(emailElement);
+
           matchContainer.appendChild(matchDiv);
-          const lineBreak = document.createElement('br');
           matchContainer.appendChild(lineBreak);
         });
       }
