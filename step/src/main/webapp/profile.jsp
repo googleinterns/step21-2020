@@ -198,6 +198,9 @@ limitations under the License.
         matches.forEach(match => {
           name = match["name"];
           email = match["email"];
+          image = match["image"];
+          console.log('image');
+          console.log(image);
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match-item';
           const nameElement = document.createElement('div');

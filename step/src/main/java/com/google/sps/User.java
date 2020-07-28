@@ -28,6 +28,7 @@ public class User {
   private String name;
   private Collection<User> matches;
   private Key key;
+  private String imageUrl;
 
   public User(String userServiceUserId) {
     this.userServiceUserId = userServiceUserId;
@@ -114,6 +115,13 @@ public class User {
       throw new NullPointerException();
     }
     return status;
+  }
+
+  public String getImageUrl() {
+    if (imageUrl == null) {
+      imageUrl = DatabaseHandler.getUserImageUrl(userServiceUserId);
+    }
+    return imageUrl;
   }
 
 }
