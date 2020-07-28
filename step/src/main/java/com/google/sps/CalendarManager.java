@@ -17,14 +17,12 @@ package com.google.sps;
 import java.io.IOException;
 import java.lang.IllegalStateException;
 import java.time.format.DateTimeFormatter;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.time.ZoneId;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.TimeZone;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.TimeZone;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
@@ -34,7 +32,6 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.CalendarScopes;
-
 
 public class CalendarManager {
   private CalendarManager() {}
@@ -50,7 +47,7 @@ public class CalendarManager {
    * hostUser's primary calendar and send an invite to the guestUser. The guestUser will see an
    * event invite on their Google Calendar and will also receive an email from Google Calendar.
    *
-   * @param hostUser the owner of the Google Calendar Event
+   * @param hostUser the owner of the Google Calendar Event. This user must be authenticated.
    * @param guestUser the user to be invited to the Google Calendar Event
    */
   public static void createMatchEvent(User hostUser, User guestUser,
@@ -75,9 +72,9 @@ public class CalendarManager {
   /**
    * @return the Google Calendar API scopes that we need access to.
    */
-  public static List<String> getScopes() {
-    List<String> scopes = new ArrayList<>();
-    scopes.add(CalendarScopes.CALENDAR_EVENTS); // "View and edit events on all your calendars"
+  public static Collection<String> getScopes() {
+    Collection<String> scopes = new ArrayList<>();
+    scopes.add(CalendarScopes.CALENDAR_EVENTS); // "View and edit events on all your calendars."
     scopes.add(CalendarScopes.CALENDAR_SETTINGS_READONLY); // "View your Calendar settings."
     return scopes;
   }
@@ -115,8 +112,8 @@ public class CalendarManager {
    *
    * @param hostUser the owner of the Google Calendar event.
    * @param guestUser the user to be invited to the Google Calendar event.
-   * @param event the event to be pushed to Google Calendar. This event can be conveniently
-   *              built using CalendarManager.MatchEventBuilder.
+   * @param event the event to be added to Google Calendar. This event can be conveniently
+   *              built using the CalendarManager.MatchEventBuilder class.
    */
   private static void pushMatchEvent(User hostUser, User guestUser, Event event) {
     Calendar calendar = getCalendar(hostUser);
