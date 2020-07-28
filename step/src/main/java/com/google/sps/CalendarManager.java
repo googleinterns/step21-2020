@@ -79,7 +79,6 @@ public class CalendarManager {
     List<String> scopes = new ArrayList<>();
     scopes.add(CalendarScopes.CALENDAR_EVENTS); // "View and edit events on all your calendars"
     scopes.add(CalendarScopes.CALENDAR_SETTINGS_READONLY); // "View your Calendar settings."
-    scopes.add(CalendarScopes.CALENDAR); // "See, edit, share, and permanently delete all the calendars you can access using Google Calendar."
     return scopes;
   }
 
@@ -89,6 +88,25 @@ public class CalendarManager {
         new JacksonFactory(),
         user.getCredential()
       ).setApplicationName("Friend Matching Plus").build();
+  }
+
+  /**
+   * @param user the user whose timezone is being returned. Requires this user to be authenticated.
+   * @return a String of the user's timezone in IANA time zone format (ex: "America/Los_Angeles").
+   *         Return null if unable to get the user's timezone.
+   */
+  public static String getUserTimezone(User user) {
+    if (!user.isAuthenticated()) {
+      throw new IllegalStateException("User isn't authenticated. Unable to get the user's timezone.");
+    }
+
+    try {
+      return CalendarManager.getCalendar(user).settings().get("timezone").execute().getValue();
+    } catch (IOException e) {
+      System.err.println("ERROR: " + e.getMessage());
+      System.err.println("Unable to get the user's timezone.");
+      return null;
+    }
   }
 
   /**
@@ -131,15 +149,26 @@ public class CalendarManager {
 
 }
 
+/* A builder class to create a match event.
+ * Example:
+ * Event matchEvent = new MatchEventBuilder()
+ *    .setAttendees(hostUser, guestUser)
+ *    .setStartDateTime(year, month, day, hour, minute)
+ *    .build();
+ */
 class MatchEventBuilder {
-  private Event matchEvent;
   private static final int DEFAULT_EVENT_LENGTH_MINUTES = 60;
-  private String timeZone;
+  private Event matchEvent;
+  private String hostTimezone;
 
   public MatchEventBuilder() {
     matchEvent = new Event();
   }
 
+  /**
+   * @param hostUser the owner of the Google Calendar event.
+   * @param guestUser the invitee of the Google Calendar event.
+   */
   public MatchEventBuilder setAttendees(User hostUser, User guestUser) {
     String eventSummary = String.format("FMP: %s : %s", hostUser.getName(), guestUser.getName());
     matchEvent.setSummary(eventSummary);
@@ -154,61 +183,31 @@ class MatchEventBuilder {
       new EventAttendee().setEmail(guestUser.getEmail())
     }));
 
-    // timeZone = getCalendar(hostUser).getTimeZone();
-    timeZone = getUserTimezone(hostUser);
-    System.out.println("hostUser's timezone: " + timeZone);
+    hostTimezone = CalendarManager.getUserTimezone(hostUser);
 
     return this;
   }
 
-  // ZonedDateTime guide: https://www.baeldung.com/java-8-date-time-intro
+  /**
+   * Set the start date/time of the match event. Assume a 1 hour event.
+   */
   public MatchEventBuilder setStartDateTime(int year, int month, int day, int hour, int minute) {
     String dateTimeString = dateTimeString(year, month, day, hour, minute);
-    // String dateTimeString = dateTimeString(year, month, day, hour, minute, timeZone);
-
-    // DateTime dateTime = new DateTime(
-    //   new Date(year - 1900, month - 1, day, hour, minute),
-    //   TimeZone.getTimeZone(timeZone));
-
-    // EventDateTime start = new EventDateTime()
-    //   .setDateTime(new DateTime(dateTimeString))
-    //   // .setDateTime(dateTime)
-    //   .setTimeZone(timeZone); // TODO how to configure time zones?
-    // matchEvent.setStart(start);
-    // System.out.println("dateTimeString: " + dateTimeString);
-    // System.out.println("start.toString: " + start.toString());
-    // System.out.println("start.getTimeZone(): " + start.getTimeZone());
-
-
-
-    // Assume a 1 hour event.
     DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-    dateTimeFormatter = dateTimeFormatter.withZone(ZoneId.of(timeZone));
+    dateTimeFormatter = dateTimeFormatter.withZone(ZoneId.of(hostTimezone)); // apply host's timezone
     ZonedDateTime zonedDateTime = ZonedDateTime.parse(dateTimeString, dateTimeFormatter);
-    System.out.println("start string: " + zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
 
-    EventDateTime start = new EventDateTime()
-      .setDateTime(new DateTime(zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)));
+    // Set start date/time.
+    dateTimeString = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+    EventDateTime start = new EventDateTime().setDateTime(new DateTime(dateTimeString));
     matchEvent.setStart(start);
 
+    // Assume a 1 hour event.
     zonedDateTime = zonedDateTime.plusMinutes(DEFAULT_EVENT_LENGTH_MINUTES);
-    dateTimeString = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
-    System.out.println("end string: " + dateTimeString);
     
-    // DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-    // LocalDateTime localDateTime = LocalDateTime.parse(dateTimeString, dateTimeFormatter);
-    // localDateTime = localDateTime.plusMinutes(DEFAULT_EVENT_LENGTH_MINUTES);
-    // dateTimeString = localDateTime.format(dateTimeFormatter);
-
-    // dateTime = new DateTime(
-    //   new Date(localDateTime.getYear() - 1900, localDateTime.getMonthValue() - 1, localDateTime.getDayOfMonth(), localDateTime.getHour(), localDateTime.getMinute()),
-    //   // new Date(2020, 7, 27, 13, 0),
-    //   TimeZone.getTimeZone(timeZone));
-
-    EventDateTime end = new EventDateTime()
-      // .setDateTime(dateTime)
-      .setDateTime(new DateTime(dateTimeString));
-      // .setTimeZone(timeZone);
+    // Set end date/time.
+    dateTimeString = zonedDateTime.format(DateTimeFormatter.ISO_OFFSET_DATE_TIME);
+    EventDateTime end = new EventDateTime().setDateTime(new DateTime(dateTimeString));
     matchEvent.setEnd(end);
 
     return this;
@@ -218,41 +217,14 @@ class MatchEventBuilder {
     return matchEvent;
   }
 
-  public static String getUserTimezone(User user) {
-    String timezone = "";
-    try {
-      Calendar calendar = CalendarManager.getCalendar(user);
-      Calendar.Settings.Get settings = calendar.settings().get("timezone");
-      com.google.api.services.calendar.model.Setting modelSetting = settings.execute();
-      System.out.println("modelSetting.getValue(): " + modelSetting.getValue());
-      timezone = modelSetting.getValue();
-    } catch (Exception e) {
-      System.out.println(e.getMessage());
-    }
-
-    return timezone;
-  } 
-
-  // createDateTimeString(2020, 07, 21, 9, 0, 0) -> "2020-07-21T09:00:00-05:00"
+  /**
+   * Create a date/time string following the RFC3339 format (example: "2020-07-21T09:00:00-05:00").
+   *
+   * @return a date/time string with it's timezone offset set to a dummy value. The caller is
+   *         expected to overwrite the timezone offset.
+   */
   private static String dateTimeString(int year, int month, int day, int hour, int minute) {
-    // return String.format("%04d-%02d-%02dT%02d:%02d:%02d",
-    //                   year, month, day, hour, minute, 0);
     return String.format("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d",
-                      year, month, day, hour, minute, 0, 0, 0);
-  }
-
-  private static String dateTimeString(int year, int month, int day, int hour, int minute, String timezone) {
-    TimeZone timeZone = TimeZone.getTimeZone(timezone);
-    System.out.println("timeZone.getOffset(0): " + timeZone.getOffset(0));
-    int timeZoneOffset = -5; // central time zone. TODO(adamsamuelson): eliminate timezones
-
-    if (timeZoneOffset < 0) {
-      timeZoneOffset *= -1;
-      return String.format("%04d-%02d-%02dT%02d:%02d:%02d-%02d:%02d",
-                      year, month, day, hour, minute, 0, timeZoneOffset, 0);
-    } else {
-      return String.format("%04d-%02d-%02dT%02d:%02d:%02d+%02d:%02d",
-                      year, month, day, hour, minute, 0, timeZoneOffset, 0);
-    }
+                          year, month, day, hour, minute, 0, 0, 0);
   }
 }
