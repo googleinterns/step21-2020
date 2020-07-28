@@ -82,7 +82,6 @@ limitations under the License.
     if (q5 == null) {
       q5 = "Unknown";
     }
-
     %>
 
     <div class="container">
@@ -218,8 +217,7 @@ limitations under the License.
 
       function getMatchStatus(status) {
         if (status === "pending") {
-          const statusContainer = 
-          document.getElementById('match-status');  
+          const statusContainer = document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
         }
       }
