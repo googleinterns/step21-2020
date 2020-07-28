@@ -47,7 +47,6 @@ public class ImageUploadServlet extends HttpServlet {
       // TODO: Display some message on the screen telling the user to check the file
       //       they uploaded and try again.
     } else {
-      System.out.println("not null");
       DatabaseHandler.uploadUserImage(id, imageBlobKey);
     }
     response.sendRedirect("/profile.jsp");
