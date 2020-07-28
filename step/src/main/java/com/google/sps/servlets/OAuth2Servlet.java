@@ -87,11 +87,11 @@ public class OAuth2Servlet extends HttpServlet {
     if (authCode == null) {
       System.out.println("Beginning authorization code flow...");
 
-      if (authFlow.loadCredential(userId) != null) { // If the user's credentials were found,
-        System.out.println("User already has a credential.\nAuthorization code flow complete.");
-        response.sendRedirect("/profile.jsp");
-        return; // we're done.
-      }
+      // if (authFlow.loadCredential(userId) != null) { // If the user's credentials were found,
+      //   System.out.println("User already has a credential.\nAuthorization code flow complete.");
+      //   response.sendRedirect("/profile.jsp");
+      //   return; // we're done.
+      // }
 
       // Redirect the user to Google's OAuth consent screen for our application.
       GoogleAuthorizationCodeRequestUrl authCodeRequestUrl = authFlow.newAuthorizationUrl();

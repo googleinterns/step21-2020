@@ -32,8 +32,8 @@ public class OAuth2Utilities {
   public final static String CREDENTIAL_DATASTORE_ID = "credential_datastore";
   private final static String CLIENT_SECRETS_JSON_PATH = "./WEB-INF/classes/client_secrets.json";
   public final static String AUTH_REDIRECT_URI = // TODO find a way to get rid of this constant
-    "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
-    // "https://brenda-ding-pod-step-20.ue.r.appspot.com/oauth2";
+    // "https://8080-7dc48ed0-1a8b-4df6-ba73-e55ccd2fb9ed.us-central1.cloudshell.dev/oauth2";
+    "https://brenda-ding-pod-step-20.ue.r.appspot.com/oauth2";
 
 
   public static GoogleAuthorizationCodeFlow getAuthFlow()
