@@ -241,7 +241,8 @@ limitations under the License.
           const nameElement = document.createElement('div');
           nameElement.innerText = name;
           nameElement.className = 'match-name';
-          matchDiv.appendChild(nameElement);
+
+          const newLine = document.createElement('p');
 
           const emailElement = document.createElement('div');
           emailElement.innerText = email;
@@ -249,10 +250,11 @@ limitations under the License.
 
           const userInfoDiv = document.createElement('div');
           userInfoDiv.appendChild(nameElement);
+          userInfoDiv.appendChild(newLine);
           userInfoDiv.appendChild(emailElement);
           userInfoDiv.className = 'user-info';
-          matchContainer.appendChild(userInfoDiv);
 
+          matchContainer.appendChild(userInfoDiv);
           matchContainer.appendChild(matchDiv);
 
           const lineBreak = document.createElement('br');
