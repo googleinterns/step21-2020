@@ -60,7 +60,7 @@ public final class DatabaseHandler {
   private static final String TIMESTAMP = "timestamp";
   private static final String TYPE = "type";
   private static final String NOTIFICATION = "Notification";
-
+  private static final String IMAGE_URL = "imageUrl";
 
   private DatabaseHandler() {
       
@@ -85,6 +85,7 @@ public final class DatabaseHandler {
     entity.setProperty("monthBirth", monthBirth);
     entity.setProperty("yearBirth", yearBirth);
     entity.setProperty(EMAIL, email);
+    entity.setProperty(IMAGE_URL, "");
     entity.setProperty("id", id);
     entity.setProperty(MATCH_PENDING, false);
     datastore.put(entity);    
@@ -250,6 +251,37 @@ public final class DatabaseHandler {
       e.printStackTrace();
       return null;
     }
+  }
+
+  // Method for adding an image link to a user's entity in datastore
+  public static void uploadUserImage(String id, String imageUrl) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      user.setProperty(IMAGE_URL, imageUrl);
+      datastore.put(user);
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+    }
+  }
+
+  // Method for getting the image link for a user
+  public static String getUserImageUrl(String id) {
+    try {
+      Entity user = datastore.get((new User(id)).getKey());
+      String imageUrl = (String) user.getProperty(IMAGE_URL);
+
+      // case for users who signed up before image uploading features were added
+      if (imageUrl == null) {
+        imageUrl = "";
+      }
+      return imageUrl;
+
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    } 
   }
 
 }
