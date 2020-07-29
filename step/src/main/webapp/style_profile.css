@@ -32,8 +32,17 @@ body {
 }
 
 #profile-pic > img {
-    border-radius: 50%;
     width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+#match-picture {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
 }
 
 .match-pic {
@@ -97,6 +106,11 @@ h3 a:hover {
     padding-bottom: 20px;
 }
 
+.matches-container {
+    padding: 30px;
+    border: 30px;
+}
+
 .personal-item {
     color: black;
     padding: 30px;
@@ -109,9 +123,10 @@ h3 a:hover {
 }
 
 .match-item {
-    padding: 30px;
+    padding: 10px;
     color: black;
-    border: 2px;
+    border: 10px;
+    margin-left: 10%;
 }
 
 .match-button {
@@ -122,17 +137,16 @@ h3 a:hover {
     display: inline;
 }
 
-.match-name, .match-email {
-    display: inline;
+.match-name {
+  font-weight: bold;
 }
 
-
-.item-label, .match-name {
+.item-label {
     float:left;
     font-weight: bold;
 }
 
-.item-info, .match-email {
+.item-info {
     float: right;
 }
 
@@ -169,5 +183,9 @@ h3 a:hover {
   background-color: white;
   color:#F4B400;
   border: 2px solid #F4B400;
+}
+
+.user-info {
+  float: right;
 }
 

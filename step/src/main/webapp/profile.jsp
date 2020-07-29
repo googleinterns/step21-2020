@@ -98,12 +98,13 @@ limitations under the License.
                 <br>
 
                 <form id="image-form" method="POST" enctype="multipart/form-data">
+                  Upload a new profile picture:
                   <input type="file" name="image" placeholder="Upload Icon">
                   <input type="submit" value="Submit"/> 
 
                 <br>
                 <br>
-
+                  
                 <form action="/oauth2" method="GET">
                   <button type="submit">Authorize access to Google Calendar</button>
                 </form>
@@ -224,17 +225,38 @@ limitations under the License.
         matches.forEach(match => {
           name = match["name"];
           email = match["email"];
+          image = match["image"];
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match-item';
+
+          matchIcon = document.createElement('IMG');
+        
+          if (image === "") {
+            matchIcon.setAttribute('src', "avatar.png");
+          } else {
+            matchIcon.setAttribute('src', "/serve?key=" + image);
+          }
+          matchIcon.setAttribute('id', 'match-picture');
+          matchIcon.setAttribute('alt', "match picture");
+          matchContainer.appendChild(matchIcon);
+
           const nameElement = document.createElement('div');
           nameElement.innerText = name;
           nameElement.className = 'match-name';
           matchDiv.appendChild(nameElement);
+
           const emailElement = document.createElement('div');
           emailElement.innerText = email;
           emailElement.className = 'match-email';
-          matchDiv.appendChild(emailElement);
+
+          const userInfoDiv = document.createElement('div');
+          userInfoDiv.appendChild(nameElement);
+          userInfoDiv.appendChild(emailElement);
+          userInfoDiv.className = 'user-info';
+          matchContainer.appendChild(userInfoDiv);
+
           matchContainer.appendChild(matchDiv);
+
           const lineBreak = document.createElement('br');
           matchContainer.appendChild(lineBreak);
         });
