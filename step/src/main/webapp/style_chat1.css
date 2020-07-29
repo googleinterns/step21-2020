@@ -254,6 +254,10 @@ body {
     font-size: 1.4rem;
 }
 
+.tabcontent {
+    display: none;
+}
+
 .fa-paperclip {
     height: 60px;
 }
