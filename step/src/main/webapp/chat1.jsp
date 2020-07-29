@@ -113,9 +113,32 @@ limitations under the License.
                     <i class="fa fa-paperclip"></i>
                     <input type="hidden" name="user" value="125422113912816716819"></input>
                     <input type="text" placeholder="type a message" name="text" required/>
-                    <button type="submit" class="btn">Send</button>
                 </div>
             </form>
         </div>
+        
+        <script>
+            showTab(currentTab); //Display the chosen user's chatbox
+            function showTab(n) {
+                var tabs = document.getElementsByClassName("tab");
+                tabs[n].style.display = "block";
+                /** Fix the button 
+                    If it is the first question, then only button "Next" displayed
+                    If it is the last question, then display "Previous" and "Submit" buttons
+                    Otherwise, display "Previous" and "Next" buttons
+                */
+                if (n == 0) {
+                    document.getElementById("prevBtn").style.display = "none";
+                } else {
+                    document.getElementById("prevBtn").style.display = "inline";
+                }
+                if (n == (tabs.length - 1)) {
+                    document.getElementById("nextBtn").innerHTML = "Submit";
+                } else {
+                    document.getElementById("nextBtn").innerHTML = "Next";
+                }
+                fixStepIndicator(n);
+            }
+        </script>
     </body>
 </html>
