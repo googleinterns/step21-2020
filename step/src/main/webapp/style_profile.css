@@ -67,6 +67,13 @@ nav a:hover:not(.active) {
     padding: 20px;
 }
 
+#match-picture {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
 .match-pic > img {
     border-radius: 50%;
     width: 100px;
@@ -127,6 +134,11 @@ h3 a:hover {
     padding: 30px;
 }
 
+.matches-container {
+    padding: 30px;
+    border: 30px;
+}
+
 .questionaire-item {
     color: black;
     padding: 30px;
@@ -134,9 +146,10 @@ h3 a:hover {
 }
 
 .match-item {
-    padding: 30px;
+    padding: 10px;
     color: black;
-    border: 2px;
+    border: 10px;
+    margin-left: 10%;
 }
 
 .match-button {
@@ -157,8 +170,12 @@ h3 a:hover {
     font-weight: bold;
 }
 
-.item-info, .match-email {
+.item-info {
     float: right;
+}
+
+.user-info {
+  float: right;
 }
 
 #log-out-button {
