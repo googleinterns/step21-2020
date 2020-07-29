@@ -28,6 +28,7 @@ nav a {
   padding: 25px 20px;
   font-size: 20px;
   text-decoration: none;
+  margin: 20px;
 }
 
 nav a:hover:not(.active) {
@@ -63,18 +64,6 @@ nav a:hover:not(.active) {
 h1 {
   text-align: center;  
 }
-
-/* input {
-  padding: 10px;
-  width: 100%;
-  font-size: 17px;
-  font-family: Raleway;
-  border: 1px solid #aaaaaa;
-}
-
-input.invalid {
-  background-color: #ffdddd;
-} */
 
 .tab {
   display: none;
@@ -125,18 +114,26 @@ button:hover {
 }
 
 #log-out-button {
-  border: none;
   background-color: #F4B400;
-  border-radius: 8px;
-  width: 100px;
-  height: 30px;
-  margin-left: 91%;
-  margin-top: 1.5%;
-  margin-bottom: 1.5%;
-  font-size: 16px;
+  border-radius: 5px;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+#log-out-button {
+  background-color: #F4B400;
 }
 
-.inputGroup > div > p {
+#log-out-button:hover {
+  background-color: white;
+  color:#F4B400;
+  border: 2px solid #F4B400;
+}
+
+/* .inputGroup > div > p {
     background-color: #e7e7e7;
     display: block;
     margin: 10px 0;
@@ -174,7 +171,7 @@ button:hover {
     width: 32px;
     height: 32px;
     content: '';
-    border: 2px solid #D1D7DC;
+    border: 2px solid #D1D7DC; 
     background-color: #fff;
     background-image: url("data:image/svg+xml,%3Csvg width='32' height='32' viewBox='0 0 32 32' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.414 11L4 12.414l5.414 5.414L20.828 6.414 19.414 5l-10 10z' fill='%23fff' fill-rule='nonzero'/%3E%3C/svg%3E ");
     background-repeat: no-repeat;
@@ -214,4 +211,4 @@ button:hover {
     transform: translateY(-50%);
     cursor: pointer;
     visibility: hidden;
-}
+} */

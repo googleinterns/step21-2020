@@ -16,7 +16,7 @@ limitations under the License.
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <% UserService userService = UserServiceFactory.getUserService();
-   String urlToRedirectToAfterUserLogsOut = "/";
+   String urlToRedirectToAfterUserLogsOut = "/index.jsp";
    String logoutURL = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut); %> 
 
 <!DOCTYPE html>
@@ -30,14 +30,13 @@ limitations under the License.
   </head>
   <body>
     <nav>
+        <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
         <img src="logo.png" alt="logo" id="logo">
-        <form>
-          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Home </button>
-        </form>
-        <% if (!userService.isUserLoggedIn()) {
-            response.sendRedirect("/index.jsp");   
-        } %>
     </nav>
+
+    <% if (!userService.isUserLoggedIn()) {
+            response.sendRedirect("/index.jsp");   
+    } %>
     
     <section class="infoform">
     <form id="regForm" action="Info" method="POST"> 
