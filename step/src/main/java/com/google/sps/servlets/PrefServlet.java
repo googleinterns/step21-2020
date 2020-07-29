@@ -35,11 +35,6 @@ public class PrefServlet extends HttpServlet {
   private static final String UNKNOWN = "Unknown";
 
   @Override
-  public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
-  }
-
-  @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     
     String q1 = (String) request.getParameter("q1") == null ? UNKNOWN : (String) request.getParameter("q1");

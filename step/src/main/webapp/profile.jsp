@@ -37,7 +37,7 @@ limitations under the License.
     <title>Friend Matching Plus</title>
 
   </head>
-  <body onload="getMatches()">
+  <body onload="setPage()">
     <nav>
         <form>
           <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
@@ -87,12 +87,21 @@ limitations under the License.
     <div class="container">
         <div class="sub-container" id="list-selection">
             <h2> Your Profile </h2>
-            <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
+            <div id="profile-pic"> </div>
             <div id="navbar-selection"> 
                 <a href="#personal-container">Personal Information</a>
                 <a href="#questionaire-container">Questionaire</a>
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
+
+                <br>
+
+                <form id="image-form" method="POST" enctype="multipart/form-data">
+                  <input type="file" name="image" placeholder="Upload Icon">
+                  <input type="submit" value="Submit"/> 
+
+                <br>
+                <br>
 
                 <form action="/oauth2" method="GET">
                   <button type="submit">Authorize access to Google Calendar</button>
@@ -112,6 +121,7 @@ limitations under the License.
                   <label>Match's name:</label><br>
                   <input type="text" id="minute" name="guestName"><br>
                   <button type="submit">Create a Google Calendar event</button>
+
                 </form>
             </div>
         </div>
@@ -184,7 +194,13 @@ limitations under the License.
         </div>
     </div>
 
-    <script>
+      <script>
+
+      function setPage() {
+        getMatches();
+        grabBlobURL();
+      }
+
       function getMatches() {
         fetch('/Homepage')
           .then((response) => {
@@ -194,9 +210,11 @@ limitations under the License.
             matches = json["matches"];
             notifications = json["notifications"];
             status = json["status"];
+            image = json["image"];
             renderMatches(matches);
             renderNotifications(notifications);
             getMatchStatus(status);
+            setImage(image);
           });
       }
 
@@ -240,6 +258,26 @@ limitations under the License.
           const statusContainer = document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
         }
+      }
+
+      function setImage(image) {
+        const imageContainer = document.getElementById('profile-pic');
+        userIcon = document.createElement('IMG');
+        
+        if (image === "") {
+          userIcon.setAttribute('src', "avatar.png");
+        } else {
+          userIcon.setAttribute('src', "/serve?key=" + image);
+        }
+
+        userIcon.setAttribute('alt', "Profile picture.");
+        imageContainer.appendChild(userIcon);
+      }
+
+      async function grabBlobURL(){
+        const blobURL = await fetch("/image-upload").then((response) => {return response.text();});
+        const myForm = document.getElementById("image-form");
+        myForm.action = blobURL;
       }
     </script> 
   </body>
