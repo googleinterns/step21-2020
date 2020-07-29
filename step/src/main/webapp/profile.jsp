@@ -99,6 +99,15 @@ limitations under the License.
                   <input type="file" name="image" placeholder="Upload Icon">
                   <input type="submit" value="Submit"/> 
 
+                <br>
+
+                <form id="image-form" method="POST" enctype="multipart/form-data">
+                  <input type="file" name="image" placeholder="Upload Icon">
+                  <input type="submit" value="Submit"/> 
+
+                <br>
+                <br>
+
                 <form action="/oauth2" method="GET">
                   <button type="submit">Authorize access to Google Calendar</button>
                 </form>
@@ -117,6 +126,7 @@ limitations under the License.
                   <label>Match's name:</label><br>
                   <input type="text" id="minute" name="guestName"><br>
                   <button type="submit">Create a Google Calendar event</button>
+
                 </form>
             </div>
         </div>
@@ -190,10 +200,12 @@ limitations under the License.
     </div>
 
       <script>
+
       function setPage() {
         getMatches();
         grabBlobURL();
       }
+
       function getMatches() {
         fetch('/Homepage')
           .then((response) => {

@@ -73,6 +73,7 @@ public class User {
       return preferences;
   }
 
+
   public Credential getCredential() {
     try {
       return OAuth2Utilities.getUserCredential(userServiceUserId);
