@@ -99,6 +99,7 @@ limitations under the License.
                   Upload a new profile picture:
                   <input type="file" name="image" placeholder="Upload Icon">
                   <input type="submit" value="Submit"/> 
+                </form>
 
                 <br>
                 <br>
