@@ -189,17 +189,11 @@ limitations under the License.
         </div>
     </div>
 
-<<<<<<< HEAD
-        <script>
-
+      <script>
       function setPage() {
         getMatches();
         grabBlobURL();
       }
-
-=======
-    <script>
->>>>>>> master
       function getMatches() {
         fetch('/Homepage')
           .then((response) => {
