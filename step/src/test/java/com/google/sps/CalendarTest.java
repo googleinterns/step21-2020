@@ -63,6 +63,6 @@ public final class CalendarTest {
     User mockHostUser = mock(User.class);
     User mockGuestUser = mock(User.class);
     CalendarManager.createMatchEvent(mockHostUser, mockGuestUser, 0, 0, 0, 0, 0);
-}
+  }
   
 }
