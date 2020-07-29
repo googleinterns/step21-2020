@@ -95,10 +95,15 @@ limitations under the License.
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
 
+                <br>
+
                 <form id="image-form" method="POST" enctype="multipart/form-data">
                   <input type="file" name="image" placeholder="Upload Icon">
                   <input type="submit" value="Submit"/> 
 
+                <br>
+                <br>
+                  
                 <form action="/oauth2" method="GET">
                   <button type="submit">Authorize access to Google Calendar</button>
                 </form>
@@ -190,6 +195,7 @@ limitations under the License.
     </div>
 
       <script>
+
       function setPage() {
         getMatches();
         grabBlobURL();
