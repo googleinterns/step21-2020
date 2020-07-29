@@ -102,6 +102,7 @@ limitations under the License.
                   <input type="submit" value="Submit"/> 
 
                 <br>
+                <br>
 
                 <form action="/oauth2" method="GET">
                   <button type="submit">Authorize access to Google Calendar</button>
