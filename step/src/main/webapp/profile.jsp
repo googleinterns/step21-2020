@@ -98,6 +98,7 @@ limitations under the License.
                 <br>
 
                 <form id="image-form" method="POST" enctype="multipart/form-data">
+                  Upload a new profile picture:
                   <input type="file" name="image" placeholder="Upload Icon">
                   <input type="submit" value="Submit"/> 
 
