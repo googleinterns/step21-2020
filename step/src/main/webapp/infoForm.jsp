@@ -47,9 +47,9 @@ limitations under the License.
             <p><input placeholder="Last Name" oninput="this.className = ''"  name="lastName" required></p>
         </div>
         <div class="tab"> Birthday
-            <p>Day<input placeholder="dd" oninput="this.className = ''" name="dayBirth" required></p>
-            <p>Month<input placeholder="mm" oninput="this.className = ''" name="monthBirth" required></p>
-            <p>Year<input placeholder="yyyy" oninput="this.className = ''" name="yearBirth" required></p>
+            <p>Day<input placeholder="dd" oninput="this.className = ''" name="dayBirth" type="number" min="1" max="31" required></p>
+            <p>Month<input placeholder="mm" oninput="this.className = ''" name="monthBirth" type="number" min="1" max="12" required></p>
+            <p>Year<input placeholder="yyyy" oninput="this.className = ''" name="yearBirth" type="number" min="1920" max="2007" required></p>
         </div>
         <div style="overflow:auto;">
             <div style="float:right;">
