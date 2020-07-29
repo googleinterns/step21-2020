@@ -232,7 +232,7 @@ limitations under the License.
           if (image === "") {
             matchIcon.setAttribute('src', "avatar.png");
           } else {
-            matchIcon.setAttribute('src', "/serve?key=" + image);
+            matchIcon.setAttribute('src', "/servematch?key=" + image);
           }
           matchIcon.setAttribute('id', 'match-picture');
           matchIcon.setAttribute('alt', "match picture");

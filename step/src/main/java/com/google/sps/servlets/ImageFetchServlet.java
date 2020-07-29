@@ -32,9 +32,18 @@ public class ImageFetchServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
       BlobstoreService myBlobService = BlobstoreServiceFactory.getBlobstoreService();
-      String uploadURL = myBlobService.createUploadUrl("/blobstore-upload-url");
+      String uploadUrl = "";
+
+      if (myBlobService != null) {
+        uploadUrl = myBlobService.createUploadUrl("/blobstore-upload-url");
+      } 
+
+      if (uploadUrl == null) {
+        uploadUrl = "";
+      }
+
 
       response.setContentType("text/html");
-      response.getWriter().println(uploadURL);
+      response.getWriter().println(uploadUrl);
   }
 }
