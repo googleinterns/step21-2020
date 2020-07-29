@@ -46,8 +46,8 @@ limitations under the License.
     <img src="logo.png" alt="logo" id="logo">
 
     <% if (!userService.isUserLoggedIn()) {
-        response.sendRedirect("index.jsp");   
-    } %> 
+        response.sendRedirect("index.jsp");
+    } %>
     <%
     String id = userService.getCurrentUser().getUserId();
 
@@ -94,9 +94,29 @@ limitations under the License.
                 <a href="#questionaire-container">Questionaire</a>
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
+
                 <form id="image-form" method="POST" enctype="multipart/form-data">
                   <input type="file" name="image" placeholder="Upload Icon">
                   <input type="submit" value="Submit"/> 
+
+                <form action="/oauth2" method="GET">
+                  <button type="submit">Authorize access to Google Calendar</button>
+                </form>
+
+                <form action="/cal" method="POST">
+                  <label>Month:</label><br>
+                  <input type="text" id="month" name="month"><br>
+                  <label>Day:</label><br>
+                  <input type="text" id="day" name="day"><br>
+                  <label>Year:</label><br>
+                  <input type="text" id="year" name="year"><br>
+                  <label>Hour:</label><br>
+                  <input type="text" id="hour" name="hour"><br>
+                  <label>Minute:</label><br>
+                  <input type="text" id="minute" name="minute"><br>
+                  <label>Match's name:</label><br>
+                  <input type="text" id="minute" name="guestName"><br>
+                  <button type="submit">Create a Google Calendar event</button>
                 </form>
             </div>
         </div>
@@ -169,6 +189,7 @@ limitations under the License.
         </div>
     </div>
 
+<<<<<<< HEAD
         <script>
 
       function setPage() {
@@ -176,6 +197,9 @@ limitations under the License.
         grabBlobURL();
       }
 
+=======
+    <script>
+>>>>>>> master
       function getMatches() {
         fetch('/Homepage')
           .then((response) => {

@@ -53,6 +53,8 @@ public final class UserTest {
   private void addUsersToDatabase() {
     DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
     DatabaseHandler.addUser("User", "B", "2", "2", "2002", "userB@email.com", "2");
+    DatabaseHandler.addUserPref("1", "Yes", "No", "Yes", "Gold", "Laurel");
+    DatabaseHandler.addUserPref("2", "Yes", "No", "Yes", "Gold", "Laurel");
   }
 
   @Test
@@ -70,8 +72,18 @@ public final class UserTest {
   }
 
   @Test
+  // Testing preferences fetching
+  public void testGetPreference() {
+    Assert.assertEquals(USER_A.getPreferences(), new ArrayList<>(Arrays.asList("Yes", "No", "Yes", "Gold", "Laurel")));
+    Assert.assertEquals(USER_B.getPreferences(), new ArrayList<>(Arrays.asList("Yes", "No", "Yes", "Gold", "Laurel")));
+  }
+
+  @Test
   // Testing match fetching
   public void testMatchFunctionality() {
+    User USER_A = new User("1");
+    User USER_B = new User("2");
+    addUsersToDatabase();
     // Test for when a user does not yet have any matches
     Assert.assertEquals(USER_A.getMatches(), new ArrayList<>());
 
@@ -81,9 +93,9 @@ public final class UserTest {
 
     // Test for when two users have been matched
     MatchManager.generateMatch(USER_B);
-    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>(Arrays.asList(USER_B)));
     Assert.assertTrue(USER_A.isMatchedWith(USER_B));
     Assert.assertEquals(USER_B.getMatches(), new ArrayList<>(Arrays.asList(USER_A)));
+    Assert.assertEquals(USER_A.getMatches(), new ArrayList<>(Arrays.asList(USER_B)));
     Assert.assertTrue(USER_B.isMatchedWith(USER_A));  
   }
 
