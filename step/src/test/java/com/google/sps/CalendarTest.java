@@ -1,5 +1,5 @@
 // Copyright 2019 Google LLC
-//
+
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
@@ -57,7 +57,7 @@ public final class CalendarTest {
     Assert.assertFalse(mockUser.isAuthenticated());
   }
 
-  // Test that createMatchEvent() throws IllegalStateException if the host user isn't authenticated
+  //Test that createMatchEvent() throws IllegalStateException if the host user isn't authenticated
   @Test(expected = IllegalStateException.class)
   public void testCreateEventHostNotAuthenticated() {
     User mockHostUser = mock(User.class);
