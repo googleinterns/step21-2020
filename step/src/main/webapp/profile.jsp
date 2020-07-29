@@ -202,7 +202,6 @@ limitations under the License.
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match-item';
 
-
           matchIcon = document.createElement('IMG');
         
           if (image === "") {
@@ -218,15 +217,20 @@ limitations under the License.
           nameElement.innerText = name;
           nameElement.className = 'match-name';
           matchDiv.appendChild(nameElement);
-          const lineBreak = document.createElement('br');
-          matchContainer.appendChild(lineBreak);
 
           const emailElement = document.createElement('div');
           emailElement.innerText = email;
           emailElement.className = 'match-email';
-          matchDiv.appendChild(emailElement);
+
+          const userInfoDiv = document.createElement('div');
+          userInfoDiv.appendChild(nameElement);
+          userInfoDiv.appendChild(emailElement);
+          userInfoDiv.className = 'user-info';
+          matchContainer.appendChild(userInfoDiv);
 
           matchContainer.appendChild(matchDiv);
+
+          const lineBreak = document.createElement('br');
           matchContainer.appendChild(lineBreak);
         });
       }
