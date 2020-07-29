@@ -71,6 +71,7 @@ public class User {
           preferences = DatabaseHandler.getUserPreferences(userServiceUserId);
       }
       return preferences;
+  }
 
   public Credential getCredential() {
     try {
