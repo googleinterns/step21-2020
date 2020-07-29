@@ -95,10 +95,6 @@ limitations under the License.
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
 
-                <form id="image-form" method="POST" enctype="multipart/form-data">
-                  <input type="file" name="image" placeholder="Upload Icon">
-                  <input type="submit" value="Submit"/> 
-
                 <br>
 
                 <form id="image-form" method="POST" enctype="multipart/form-data">
@@ -107,7 +103,7 @@ limitations under the License.
 
                 <br>
                 <br>
-
+                  
                 <form action="/oauth2" method="GET">
                   <button type="submit">Authorize access to Google Calendar</button>
                 </form>
