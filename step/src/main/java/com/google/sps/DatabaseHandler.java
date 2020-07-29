@@ -49,6 +49,11 @@ public final class DatabaseHandler {
   private static final String FIRST_NAME =  "firstName";
   private static final String LAST_NAME = "lastName";
   private static final String MATCH_PENDING = "matchPending"; 
+  private static final String QUESTION_1 = "q1";
+  private static final String QUESTION_2 = "q2";
+  private static final String QUESTION_3 = "q3";
+  private static final String QUESTION_4 = "q4";
+  private static final String QUESTION_5 = "q5";
   private static final String EMAIL = "email";
   private static final String USER_ID = "userId";
   private static final String OTHER_USER_ID = "otherUserId";
@@ -84,6 +89,21 @@ public final class DatabaseHandler {
     entity.setProperty("id", id);
     entity.setProperty(MATCH_PENDING, false);
     datastore.put(entity);    
+  }
+
+  //Adding users' preferences info 
+  public static void addUserPref(String id, String q1, String q2, String q3, String q4, String q5) {
+    Query query =
+        new Query("User")
+            .setFilter(new Query.FilterPredicate("id", Query.FilterOperator.EQUAL, id));
+    PreparedQuery results = datastore.prepare(query);
+    Entity entity = results.asSingleEntity();
+    entity.setProperty(QUESTION_1, q1);
+    entity.setProperty(QUESTION_2, q2);
+    entity.setProperty(QUESTION_3, q3);
+    entity.setProperty(QUESTION_4, q4);
+    entity.setProperty(QUESTION_5, q5);
+    datastore.put(entity);
   }
  
   // Adding a user's notificaton to the database
@@ -158,6 +178,30 @@ public final class DatabaseHandler {
       String firstName = (String) user.getProperty(FIRST_NAME);
       String lastName = (String) user.getProperty(LAST_NAME);
       return firstName + " " + lastName;
+    } catch (EntityNotFoundException e) {
+      System.err.println("Element not found: " + e.getMessage());
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  //Method for getting a user's preferences using their id
+  public static ArrayList<String> getUserPreferences(String id) {
+    try {
+        Entity user = datastore.get((new User(id)).getKey());
+        String q1 = (String) user.getProperty(QUESTION_1);
+        String q2 = (String) user.getProperty(QUESTION_2);
+        String q3 = (String) user.getProperty(QUESTION_3);
+        String q4 = (String) user.getProperty(QUESTION_4);
+        String q5 = (String) user.getProperty(QUESTION_5);
+
+        ArrayList<String> preferences = new ArrayList<>();
+        preferences.add(q1);
+        preferences.add(q2);
+        preferences.add(q3);
+        preferences.add(q4);
+        preferences.add(q5);
+        return preferences;
     } catch (EntityNotFoundException e) {
       System.err.println("Element not found: " + e.getMessage());
       e.printStackTrace();
