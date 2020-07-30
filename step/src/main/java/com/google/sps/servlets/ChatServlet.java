@@ -57,7 +57,7 @@ public class ChatServlet extends HttpServlet {
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     UserService userService = UserServiceFactory.getUserService();
     String senderID = userService.getCurrentUser().getUserId();
-    String recipientID = request.getParameter("user");
+    String recipientID = request.getParameter("user"); 
     String text = request.getParameter("text");
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     Date date = new Date(System.currentTimeMillis());

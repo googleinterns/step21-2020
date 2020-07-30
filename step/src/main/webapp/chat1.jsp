@@ -47,19 +47,24 @@ limitations under the License.
                         This is a message 
                     </div>
                 </div>
-
-                <div class="conversation">
-                    <img src="avatar.png" alt="Person 2" />
-                    <div class="title-text">
-                        <button class="tablinks" onclick="openChatBox(event, 'Person_2')">Person 2</button>
+                <c:forEach items="${matches}" var="match">
+                    <tr>
+                        <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
+                        <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
+                    </tr>
+                    <div class="conversation">
+                        <img src="avatar.png" alt="Person 2" />
+                        <div class="title-text">
+                            <button class="tablinks" onclick="openChatBox(event, 'Person_2')"><c:out value="${match.getName()}"/></button>
+                        </div>
+                        <div class="created-date">
+                            Apr 16
+                        </div>
+                        <div class="conversation-message"> 
+                            This is a message 
+                        </div>
                     </div>
-                    <div class="created-date">
-                        Apr 16
-                    </div>
-                    <div class="conversation-message"> 
-                        This is a message 
-                    </div>
-                </div>
+                </c:forEach>
 
                 <div class="conversation">
                     <img src="avatar.png" alt="Person 3" />
@@ -76,9 +81,6 @@ limitations under the License.
             </div>
             <!-- Person 1 chatbox --> 
             <div id="Person_1" class="tabcontent active">
-                <div id="new-message-container"> 
-                    <a href="#"> </a>
-                </div>
                 <div id="chat-title">
                     <span> Person 1 </span>
                     <img src="avatar.png" alt="Your match's avatar" />
@@ -120,9 +122,6 @@ limitations under the License.
 
             <!-- Person 2 chatbox-->
             <div id="Person_2" class="tabcontent">
-                <div id="new-message-container"> 
-                    <a href="#"> </a>
-                </div>
                 <div id="chat-title">
                     <span> Person 2 </span>
                     <img src="avatar.png" alt="Your match's avatar" />
@@ -162,11 +161,8 @@ limitations under the License.
                 </form>
             </div>
 
-            <!-- Person 2 chatbox-->
+            <!-- Person 3 chatbox-->
             <div id="Person_3" class="tabcontent">
-                <div id="new-message-container"> 
-                    <a href="#"> </a>
-                </div>
                 <div id="chat-title">
                     <span> Person 3 </span>
                     <img src="avatar.png" alt="Your match's avatar" />
