@@ -253,8 +253,11 @@ body {
     border-radius: 6px;
     font-size: 1.4rem;
 }
+.tabcontent.active {
+    display: block;
+}
 
-.tabcontent {
+.tabcontent:not(active) {
     display: none;
 }
 
