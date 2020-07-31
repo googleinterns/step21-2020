@@ -88,12 +88,7 @@ public class User {
 
   // Getter method for a user's matches
   public Collection<User> getMatches() {
-    if (matches == null) {
-      matches = DatabaseHandler.getUserMatches(userServiceUserId);
-    } else {
-      updateMatches();
-    }
-    return matches;   
+    return DatabaseHandler.getUserMatches(userServiceUserId); 
   }
 
   // Method for updating a user's matches -- called after the user gets a new match
