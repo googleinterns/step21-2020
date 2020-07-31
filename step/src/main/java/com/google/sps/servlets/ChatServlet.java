@@ -48,7 +48,7 @@ public class ChatServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    //Collect all the matches and display them in the left container in chat1.jsp
+    //Collect all the matches and display them in the left container in chat.jsp
     //Display name, user_id, timestamp getting matched
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
@@ -72,7 +72,7 @@ public class ChatServlet extends HttpServlet {
     request.setAttribute("messages", messages);
     request.setAttribute("currUser", senderID);
     request.setAttribute("recipient", recipientID);
-    request.getRequestDispatcher("chat1.jsp").forward(request, response);
+    request.getRequestDispatcher("chat.jsp").forward(request, response);
   }
 
   @Override

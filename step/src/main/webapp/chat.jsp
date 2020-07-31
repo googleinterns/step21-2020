@@ -17,52 +17,113 @@ limitations under the License.
 <!-- <%-- The Java code in this JSP file runs on the server when the user navigates
      to the homepage. This allows us to insert the Blobstore upload URL into the
      form without building the HTML using print statements in a servlet. --%> -->
+<%@ page import="com.google.appengine.api.users.UserService" %>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style_chat.css">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <title>Friend Matching Plus</title>
-  </head>
-  <body>
-      <!-- In the future, it would be other's user profile pictures/ names -->
-      <h1> Hello </h1>
-      <!-- !Set the condition so the Form won't close after the user types -->
-      <button class="open-button" onclick="openForm()">Person 1</button>
-
-      <div class="chat-popup" id="myForm"> 
-          <form action="Chat" class="form-container" method="POST">
-            <h1> Chat </h1>
-            <label for="text"><b>Message</b></label>
-            <br>
-            <c:forEach items="${messages}" var="m">
-                <tr>
-                    <td><c:out value="${m.getSenderID()}"/> to </td>
-                    <td><c:out value="${m.getRecipientID()}"/>: </td>
-                    <td><c:out value="${m.getText()}"/></td>
-                    <td><c:out value="${m.timestamp()}"/></td>
-                </tr>
-            </c:forEach>
-            <% String user = request.getParameter("user"); %>
-            <input type="hidden" name="user" value="<%= user %>"> </input>
-            <textarea placeholder="Type message.." name="text" required></textarea>
-            <button type="submit" class="btn">Send</button>
-            <button type="button" class="btn cancel" onclick="closeFrom()">Close</button>
-          </form> 
-      </div>
-
-      <script>
-            function openForm() {
-                document.getElementById("myForm").style.display = "block";
+    <head> 
+        <meta charset="UTF-8">
+        <title> Friend Matching Plus </title>
+        <link rel="stylesheet" href="style_chat1.css"> 
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <body>
+        <div id="chat-container">
+            <div id="search-container">
+                <input type="text" placeholder="Search" />
+            </div>
+            <div id="conversation-list" class="tab"> 
+                <c:forEach items="${matches}" var="match">
+                    <tr>
+                        <td><div class="message-text"></div></td>
+                        <td><div class="message-time"></div></td>
+                    </tr>
+                    <form action="Chat" method="POST">
+                        <button class="conversation" name="user" type="submit" value="${match.getId()}" onclick="openChatBox()">
+                            <img src="avatar.png" alt="Person 2" />
+                            <div class="title-text">
+                                <c:out value="${match.getName()}"/>
+                            </div>
+                            <div class="created-date">
+                                April 16
+                            </div>
+                            <div class="conversation-message"> 
+                                This is a message 
+                            </div>
+                        </button>
+                    </form>
+                </c:forEach>
+            </div>
+            <!-- Person 1 chatbox --> 
+            <div id="${recipient}" class="tabcontent active">
+                <div id="chat-title" class="chat-title">
+                    <span> ${recipient} </span>
+                    <img src="avatar.png" alt="Your match's avatar" />
+                </div>
+                <form action="Chat" class="chat-input" method="POST">
+                    <div id="chat-message-list">
+                        <c:forEach items="${messages}" var="m">
+                            <c:choose>
+                                <c:when test="${currUser == m.getSenderID() && recipient == m.getRecipientID()}">
+                                    <div class="message-row your-message">
+                                        <div class="message-content">
+                                        <tr>
+                                            <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
+                                            <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
+                                        </tr>
+                                        </div>
+                                    </div>
+                                </c:when>
+                                <c:otherwise>
+                                    <div class="message-row other-message">
+                                        <div class="message-content">
+                                            <tr>
+                                                <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
+                                                <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
+                                            </tr>
+                                        </div>
+                                    </div>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach> 
+                    </div>
+                    <div id="chat-form"> 
+                        <i class="fa fa-paperclip"></i>
+                        <input type="hidden" name="user" value="${recipient}"></input>
+                        <input type="text" placeholder="type a message" name="text" required/>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <script>
+            function openChatBox() {
+                var i, tabcontent, tablinks, conversation, title;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                document.getElementsByClassName("tabcontent").style.display = "block";
             }
+            
+            function openChatBox(event, userID) {
+                var i, tabcontent, tablinks, conversation, title;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                tabcontent[0].id = userID;
+                tablinks = document.getElementsByClassName("tablinks");
+                for (i = 0; i < tablinks.length; i++) {
+                    tablinks[i].className = tablinks[i].className.replace(" active", "");
+                }
 
-            function closeForm() {
-                document.getElementById("myForm").style.display = "none";
+                conversation = document.getElementsByClassName("conversation");
+                for (i = 0; i < conversation.length; i++) {
+                    conversation[i].className = conversation[i].className.replace(" active", "");
+                }
+                title = document.getElementById("chat-title").getElementsByTagName("span");
+                title.innerHTML = userID;
+                document.getElementById(userID).style.display = "block";
+                event.currentTarget.className += " active";
             }
-      </script>
-  </body>
+        </script>
+    </body>
 </html>
-
