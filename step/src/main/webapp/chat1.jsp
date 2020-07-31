@@ -35,61 +35,36 @@ limitations under the License.
                 <input type="text" placeholder="Search" />
             </div>
             <div id="conversation-list" class="tab"> 
-                <div class="conversation active">
-                    <img src="avatar.png" alt="Person 1" />
-                    <div class="title-text">
-                        <button class="tablinks" onclick="openChatBox(event, 'Person_1')">Person 1</button>
-                    </div>
-                    <div class="created-date">
-                        Apr 16
-                    </div>
-                    <div class="conversation-message"> 
-                        This is a message 
-                    </div>
-                </div>
                 <c:forEach items="${matches}" var="match">
                     <tr>
-                        <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                        <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
+                        <td><div class="message-text"></div></td>
+                        <td><div class="message-time"></div></td>
                     </tr>
                     <div class="conversation">
                         <img src="avatar.png" alt="Person 2" />
                         <div class="title-text">
-                            <button class="tablinks" onclick="openChatBox(event, 'Person_2')"><c:out value="${match.getName()}"/></button>
+                            <form action="Chat" method="POST"> <button class="tablinks" name="user" type="submit" value="${match.getId()}" onclick="openChatBox()"><c:out value="${match.getName()}"/></button> </form>
                         </div>
                         <div class="created-date">
-                            Apr 16
+                            April 16
                         </div>
                         <div class="conversation-message"> 
                             This is a message 
                         </div>
                     </div>
                 </c:forEach>
-
-                <div class="conversation">
-                    <img src="avatar.png" alt="Person 3" />
-                    <div class="title-text">
-                        <button class="tablinks" onclick="openChatBox(event, 'Person_3')">Person 3</button>
-                    </div>
-                    <div class="created-date">
-                        Apr 16
-                    </div>
-                    <div class="conversation-message"> 
-                        This is a message 
-                    </div>
-                </div>
             </div>
             <!-- Person 1 chatbox --> 
-            <div id="Person_1" class="tabcontent active">
-                <div id="chat-title">
-                    <span> Person 1 </span>
+            <div id="${recipient}" class="tabcontent active">
+                <div id="chat-title" class="chat-title">
+                    <span> ${recipient} </span>
                     <img src="avatar.png" alt="Your match's avatar" />
                 </div>
                 <form action="Chat" class="chat-input" method="POST">
                     <div id="chat-message-list">
                         <c:forEach items="${messages}" var="m">
                             <c:choose>
-                                <c:when test="${currUser == m.getSenderID()}">
+                                <c:when test="${currUser == m.getSenderID() && recipient == m.getRecipientID()}">
                                     <div class="message-row your-message">
                                         <div class="message-content">
                                         <tr>
@@ -114,89 +89,7 @@ limitations under the License.
                     </div>
                     <div id="chat-form"> 
                         <i class="fa fa-paperclip"></i>
-                        <input type="hidden" name="user" value="125422113912816716819"></input>
-                        <input type="text" placeholder="type a message" name="text" required/>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Person 2 chatbox-->
-            <div id="Person_2" class="tabcontent">
-                <div id="chat-title">
-                    <span> Person 2 </span>
-                    <img src="avatar.png" alt="Your match's avatar" />
-                </div>
-                <form action="Chat" class="chat-input" method="POST">
-                    <div id="chat-message-list">
-                        <c:forEach items="${messages}" var="m">
-                            <c:choose>
-                                <c:when test="${currUser == m.getSenderID()}">
-                                    <div class="message-row your-message">
-                                        <div class="message-content">
-                                        <tr>
-                                            <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                                            <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
-                                        </tr>
-                                        </div>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="message-row other-message">
-                                        <div class="message-content">
-                                            <tr>
-                                                <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                                                <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
-                                            </tr>
-                                        </div>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach> 
-                    </div>
-                    <div id="chat-form"> 
-                        <i class="fa fa-paperclip"></i>
-                        <input type="hidden" name="user" value="125422113912816716819"></input>
-                        <input type="text" placeholder="type a message" name="text" required/>
-                    </div>
-                </form>
-            </div>
-
-            <!-- Person 3 chatbox-->
-            <div id="Person_3" class="tabcontent">
-                <div id="chat-title">
-                    <span> Person 3 </span>
-                    <img src="avatar.png" alt="Your match's avatar" />
-                </div>
-                <form action="Chat" class="chat-input" method="POST">
-                    <div id="chat-message-list">
-                        <c:forEach items="${messages}" var="m">
-                            <c:choose>
-                                <c:when test="${currUser == m.getSenderID()}">
-                                    <div class="message-row your-message">
-                                        <div class="message-content">
-                                        <tr>
-                                            <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                                            <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
-                                        </tr>
-                                        </div>
-                                    </div>
-                                </c:when>
-                                <c:otherwise>
-                                    <div class="message-row other-message">
-                                        <div class="message-content">
-                                            <tr>
-                                                <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                                                <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
-                                            </tr>
-                                        </div>
-                                    </div>
-                                </c:otherwise>
-                            </c:choose>
-                        </c:forEach> 
-                    </div>
-                    <div id="chat-form"> 
-                        <i class="fa fa-paperclip"></i>
-                        <input type="hidden" name="user" value="125422113912816716819"></input>
+                        <input type="hidden" name="user" value="${recipient}"></input>
                         <input type="text" placeholder="type a message" name="text" required/>
                     </div>
                 </form>
@@ -204,12 +97,16 @@ limitations under the License.
         </div>
         
         <script>
-            function openChatBox(event, userID) {
-                var i, tabcontent, tablinks, conversation;
+            function openChatBox() {
+                var i, tabcontent, tablinks, conversation, title;
                 tabcontent = document.getElementsByClassName("tabcontent");
-                for (i = 0; i < tabcontent.length; i++) {
-                    tabcontent[i].style.display = "none";
-                }
+                document.getElementsByClassName("tabcontent").style.display = "block";
+            }
+            
+            function openChatBox(event, userID) {
+                var i, tabcontent, tablinks, conversation, title;
+                tabcontent = document.getElementsByClassName("tabcontent");
+                tabcontent[0].id = userID;
                 tablinks = document.getElementsByClassName("tablinks");
                 for (i = 0; i < tablinks.length; i++) {
                     tablinks[i].className = tablinks[i].className.replace(" active", "");
@@ -219,11 +116,11 @@ limitations under the License.
                 for (i = 0; i < conversation.length; i++) {
                     conversation[i].className = conversation[i].className.replace(" active", "");
                 }
+                title = document.getElementById("chat-title").getElementsByTagName("span");
+                title.innerHTML = userID;
                 document.getElementById(userID).style.display = "block";
                 event.currentTarget.className += " active";
             }
         </script>
-
-
     </body>
 </html>

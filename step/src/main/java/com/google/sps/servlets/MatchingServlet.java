@@ -48,7 +48,6 @@ public class MatchingServlet extends HttpServlet {
       MatchManager.generateMatch(currentUser);
     }
     doGet(request, response);
-    //response.sendRedirect("/profile.jsp");
   }
 
   @Override
