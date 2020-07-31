@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Date;
 import java.text.SimpleDateFormat;  
@@ -67,6 +68,7 @@ public class ChatServlet extends HttpServlet {
     String recipientID = request.getParameter("user");
     List<Message> messages = new ArrayList<>();
     messages = MessageHandler.getMessages(senderID, recipientID);
+    Collections.reverse(messages); 
     request.setAttribute("messages", messages);
     request.setAttribute("currUser", senderID);
     request.setAttribute("recipient", recipientID);
