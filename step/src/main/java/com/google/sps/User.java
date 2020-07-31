@@ -90,6 +90,8 @@ public class User {
   public Collection<User> getMatches() {
     if (matches == null) {
       matches = DatabaseHandler.getUserMatches(userServiceUserId);
+    } else {
+      updateMatches();
     }
     return matches;   
   }
