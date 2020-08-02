@@ -89,7 +89,7 @@ public class OAuth2Servlet extends HttpServlet {
 
       if (authFlow.loadCredential(userId) != null) { // If the user's credentials were found,
         System.out.println("User already has a credential.\nAuthorization code flow complete.");
-        response.sendRedirect("/profile.jsp");
+        response.sendRedirect("/chat.jsp");
         return; // we're done.
       }
 
@@ -112,7 +112,7 @@ public class OAuth2Servlet extends HttpServlet {
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
 
       System.out.println("Authorization code flow complete.");
-      response.sendRedirect("/profile.jsp");
+      response.sendRedirect("/chat.jsp");
     }
     
   }

@@ -26,7 +26,7 @@ limitations under the License.
     <head> 
         <meta charset="UTF-8">
         <title> Friend Matching Plus </title>
-        <link rel="stylesheet" href="style_chat1.css"> 
+        <link rel="stylesheet" href="style_chat.css"> 
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
@@ -58,22 +58,23 @@ limitations under the License.
                 </c:forEach>
             </div>
             <!-- Person 1 chatbox --> 
-            <div id="${recipient}" class="tabcontent active">
+            <div id="${recipientID}" class="tabcontent active">
                 <div id="chat-title" class="chat-title">
                     <span> ${recipient} </span>
-                    <img src="avatar.png" alt="Your match's avatar" />
+                    <img src="avatar.png" alt="Your match's avatar"/>
+                    <button id="calendar"> <img src="google_calendar_logo.png" alt="Google Calendar"/> </button>
                 </div>
                 <form action="Chat" class="chat-input" method="POST">
                     <div id="chat-message-list">
                         <c:forEach items="${messages}" var="m">
                             <c:choose>
-                                <c:when test="${currUser == m.getSenderID() && recipient == m.getRecipientID()}">
+                                <c:when test="${currUser == m.getSenderID() && recipientID == m.getRecipientID()}">
                                     <div class="message-row your-message">
                                         <div class="message-content">
-                                        <tr>
-                                            <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
-                                            <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
-                                        </tr>
+                                            <tr>
+                                                <td><div class="message-text"><c:out value="${m.getText()}"/></div></td>
+                                                <td><div class="message-time"><c:out value="${m.getCurrTime()}"/></div></td>
+                                            </tr>
                                         </div>
                                     </div>
                                 </c:when>
@@ -92,10 +93,39 @@ limitations under the License.
                     </div>
                     <div id="chat-form"> 
                         <i class="fa fa-paperclip"></i>
-                        <input type="hidden" name="user" value="${recipient}"></input>
+                        <input type="hidden" name="user" value="${recipientID}"></input>
                         <input type="text" placeholder="type a message" name="text" required/>
                     </div>
                 </form>
+                <div id="modal" class="modal"> 
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="close">&times;</div>
+                            <img src="google_calendar_logo.png" alt="Google Calendar"/>
+                            <span class="modal-header-text"> Book a meeting with ${recipient} </span>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/oauth2" method="GET">
+                                <button type="submit">Authorize access to Google Calendar</button>
+                            </form>
+
+                            <form action="/cal" method="POST">
+                                <label>Month:</label><br>
+                                <input type="number" id="month" name="month" min="1" max="12" required><br>
+                                <label>Day:</label><br>
+                                <input type="number" id="day" name="day" min="1" max="31" required><br>
+                                <label>Year:</label><br>
+                                <input type="number" id="year" name="year" min="2020" max="2021" required><br>
+                                <label>Hour:</label><br>
+                                <input type="number" id="hour" name="hour" min="0" max="23" required><br>
+                                <label>Minute:</label><br>
+                                <input type="number" id="minute" name="minute" min="0" max="59" required><br>
+                                <input type="hidden" id="minute" name="guestName" value="${recipient}"><br>
+                                <button type="submit">Create a Google Calendar event</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -123,6 +153,31 @@ limitations under the License.
                 title.innerHTML = userID;
                 document.getElementById(userID).style.display = "block";
                 event.currentTarget.className += " active";
+            }
+
+            //Get the modal
+            var modal = document.getElementById("modal");
+
+            //Get the button that opens the modal
+            var btn = document.getElementById("calendar");
+
+            var span = document.getElementsByClassName("close")[0];
+
+            // When the user clicks the button, open the modal 
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            // When the user clicks on <span> (x), close the modal
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            // When the user clicks anywhere outside of the modal, close it
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
             }
         </script>
     </body>
