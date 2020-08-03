@@ -22,6 +22,11 @@ limitations under the License.
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>  
 <!DOCTYPE html>
+<%@ page import="com.google.appengine.api.users.UserService" %>
+<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
+<% UserService userService = UserServiceFactory.getUserService();
+   String urlToRedirectToAfterUserLogsOut = "/index.jsp";
+   String logoutURL = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut); %> 
 <html>
     <head> 
         <meta charset="UTF-8">
@@ -31,6 +36,10 @@ limitations under the License.
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
     <body>
+        <nav>
+            <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
+        </nav>
+        <img src="logo.png" alt="logo" id="logo">
         <div id="chat-container">
             <div id="find-a-match-container">
                 <form class="match-button" action="/matching" method="post">
@@ -51,11 +60,11 @@ limitations under the License.
                                 <c:out value="${match.getName()}"/>
                             </div>
                             <div class="created-date">
-                                April 16
+                                
                             </div>
-                            <div class="conversation-message"> 
-                                This is a message 
-                            </div>
+                            <!-- <div class="conversation-message">  
+
+                            </div> -->
                         </button>
                     </form>
                     </div>
@@ -156,6 +165,26 @@ limitations under the License.
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
+            }
+
+            function setImage(image) {
+                const imageContainer = document.getElementById('profile-pic');
+                userIcon = document.createElement('IMG');
+                
+                if (image === "") {
+                userIcon.setAttribute('src', "avatar.png");
+                } else {
+                userIcon.setAttribute('src', "/serve?key=" + image);
+                }
+
+                userIcon.setAttribute('alt', "Profile picture.");
+                imageContainer.appendChild(userIcon);
+            }
+
+            async function grabBlobURL(){
+                const blobURL = await fetch("/image-upload").then((response) => {return response.text();});
+                const myForm = document.getElementById("image-form");
+                myForm.action = blobURL;
             }
         </script>
     </body>

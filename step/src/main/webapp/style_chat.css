@@ -1,7 +1,57 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+nav {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  list-style-type: none;
+  padding: 0;
+  overflow: hidden;
+  box-shadow: 0 2px 2px -2px rgba(0,0,0,.2);
+  height: 10vh;
+}
+
+nav a {
+  float: right;
+  display: block;
+  color: #000;
+  text-align: center;
+  padding: 25px 20px;
+  font-size: 20px;
+  text-decoration: none;
+  margin: 20px;
+}
+
+nav a:hover:not(.active) {
+  background-color: #fff;
+  color:#F4B400;
+}
+
+#logo {
+  position: absolute;
+  top: 8px;
+  left: 70px;
+  height: 8%;
+  width: auto;
+}
+
+#log-out-button {
+  background-color: #F4B400;
+  border-radius: 5px;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-family: Raleway;
+  cursor: pointer;
+}
+
+#log-out-button:hover {
+  background-color: white;
+  color:#F4B400;
+  border: 2px solid #F4B400;
+}
+
+img {
+    height: 10vh;
 }
 
 html, body {
@@ -31,7 +81,7 @@ body {
     max-width: 1000px;
     max-height: 800px;
     width: 100%;
-    height: 95vh; 
+    height: 80vh; 
     background: #FFF;
     border-radius: 10px;
 }
@@ -380,7 +430,7 @@ body {
 }
 
 .fa-paperclip {
-    height: 60px;
+    height: 100px;
 }
 ::-webkit-scrollbar {
     display: none;

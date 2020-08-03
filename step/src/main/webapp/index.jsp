@@ -39,6 +39,10 @@ limitations under the License.
         <nav>
             <div> <a href="<%= loginURL %>" class="btn"> Log In </a> <div>
         </nav>
+        <% if (userService.isUserLoggedIn()) {	
+            String userEmail = userService.getCurrentUser().getEmail();	
+            response.sendRedirect("Login");   	
+        } %>
         
         <header class="showcase">
             <div class="container showcase-inner">
