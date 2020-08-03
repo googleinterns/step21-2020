@@ -40,7 +40,7 @@ limitations under the License.
     } %>
     <section class="prefform">
     <form id="regForm" action="Pref" method="POST"> 
-        <div class="tab"> <div class="question"> Are you staying in the US now? </div>
+        <div class="tab"> <div class="question"> Do you have any pets? </div>
 
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes">
@@ -52,46 +52,46 @@ limitations under the License.
             </p>   
         </div>
         <br>  
-        <div class="tab"> <div class="question"> Do you have any pets? </div>
-            <p>
-                <input type="radio" oninput="this.className = ''" name="q2" value="Yes" id="q2yes">
-                <label for="q2yes"> Yes </label>
-            </p>
-            <p>
-                <input type="radio" oninput="this.className = ''" name="q2" value="No" id="q2no">
-                <label for="q2no"> No </label>
-            </p>
-        </div>
-        <br>  
-        <div class="tab"> <div class="question"> Do you have any siblings? </div>
-            <p>
-                <input type="radio" oninput="this.className = ''" name="q3" value="Yes" id="q3yes">
-                <label for="q3yes"> Yes </label>
-            </p>
-            <p>
-                <input type="radio" oninput="this.className = ''" name="q3" value="No" id="q3no">
-                <label for="q3no"> No </label>
-            </p>
-        </div>
-        <br>  
         <div class="tab"> <div class="question"> <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank"> Is the dress blue or gold? </a> </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q4" value="Blue" id="q4blue">
-                <label for="q4blue"> Blue </label>
+                <input type="radio" oninput="this.className = ''" name="q2" value="Blue" id="q2blue">
+                <label for="q2blue"> Blue </label>
             </p>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q4" value="Gold" id="q4gold">
-                <label for="q4gold"> Gold </label>
+                <input type="radio" oninput="this.className = ''" name="q2" value="Gold" id="q2gold">
+                <label for="q2gold"> Gold </label>
             </p>
         </div>
-        <div class="tab"> <div class="question"> <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel? </a> </div>
+        <br>  
+        <div class="tab"> <div class="question"> Would you rather win the lottery or work at the perfect job? </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q5" value="Yanny" id="q5yanny">
-                <label for="q5yanny"> Yanny </label>
+                <input type="radio" oninput="this.className = ''" name="q3" value="Win the lottery" id="q3loterry">
+                <label for="q3loterry"> Win the lottery </label>
             </p>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q5" value="Laurel" id="q5laurel">
-                <label for="q5laurel"> Laurel </label>
+                <input type="radio" oninput="this.className = ''" name="q3" value="Work the perfect job" id="q3work">
+                <label for="q3work"> Work the perfect job </label>
+            </p>
+        </div>
+        <br>  
+        <div class="tab"> <div class="question"> Would you rather trade intelligence for looks or looks for intelligence? </div>
+            <p>
+                <input type="radio" oninput="this.className = ''" name="q4" value="Trade intelligence for looks" id="q4intelligence">
+                <label for="q4intelligence"> Trade intelligence for looks </label>
+            </p>
+            <p>
+                <input type="radio" oninput="this.className = ''" name="q4" value="Trade looks for intelligence" id="q4looks">
+                <label for="q4looks"> Trade looks for intelligence </label>
+            </p>
+        </div>
+        <div class="tab"> <div class="question"> Is your glass half full or half empty? </div>
+            <p>
+                <input type="radio" oninput="this.className = ''" name="q5" value="Half full" id="q5full">
+                <label for="q5full"> Half full </label>
+            </p>
+            <p>
+                <input type="radio" oninput="this.className = ''" name="q5" value="Half empty" id="q5empty">
+                <label for="q5empty"> Half empty </label>
             </p>
         </div>
         <br>  
