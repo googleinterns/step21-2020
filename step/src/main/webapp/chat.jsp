@@ -32,15 +32,18 @@ limitations under the License.
     </head>
     <body>
         <div id="chat-container">
-            <div id="search-container">
-                <input type="text" placeholder="Search" />
+            <div id="find-a-match-container">
+                <form class="match-button" action="/matching" method="post">
+                    <input type="hidden" id="request-type" name="request-type" value="request-type-match">
+                    <button id="match-submit" type="submit" value="Submit">Find a match!</button>
+                    <p id="match-status"></p>
+                </form>
             </div>
             <div id="conversation-list" class="tab"> 
                 <c:forEach items="${matches}" var="match">
-                    <tr>
-                        <td><div class="message-text"></div></td>
-                        <td><div class="message-time"></div></td>
-                    </tr>
+                    <div id="conversation-box">
+                        <div class="message-text"></div>
+                        <div class="message-time"></div>
                     <form action="Chat" method="POST">
                         <button class="conversation" name="user" type="submit" value="${match.getId()}" onclick="openChatBox()">
                             <img src="avatar.png" alt="Person 2" />
@@ -55,6 +58,7 @@ limitations under the License.
                             </div>
                         </button>
                     </form>
+                    </div>
                 </c:forEach>
             </div>
             <!-- Person 1 chatbox --> 

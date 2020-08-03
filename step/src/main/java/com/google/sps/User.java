@@ -29,6 +29,7 @@ public class User {
   private Collection<User> matches;
   private ArrayList<String> preferences;
   private Key key;
+  private String imageUrl;
 
   public User(String userServiceUserId) {
     this.userServiceUserId = userServiceUserId;
@@ -71,6 +72,7 @@ public class User {
       }
       return preferences;
   }
+
   public Credential getCredential() {
     try {
       return OAuth2Utilities.getUserCredential(userServiceUserId);
@@ -135,6 +137,13 @@ public class User {
       throw new NullPointerException();
     }
     return status;
+  }
+
+  public String getImageUrl() {
+    if (imageUrl == null) {
+      imageUrl = DatabaseHandler.getUserImageUrl(userServiceUserId);
+    }
+    return imageUrl;
   }
 
 }

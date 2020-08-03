@@ -16,7 +16,7 @@ limitations under the License.
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <% UserService userService = UserServiceFactory.getUserService();
-   String urlToRedirectToAfterUserLogsOut = "/";
+   String urlToRedirectToAfterUserLogsOut = "/index.jsp";
    String logoutURL = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut); %> 
 
 <!DOCTYPE html>
@@ -31,9 +31,7 @@ limitations under the License.
   <body>
     <nav>
         <img src="logo.png" alt="logo" id="logo">
-        <form>
-          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Home </button>
-        </form>
+        <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
         <% if (!userService.isUserLoggedIn()) {
             response.sendRedirect("/index.jsp");   
         } %>
@@ -46,9 +44,9 @@ limitations under the License.
             <p><input placeholder="Last Name" oninput="this.className = ''"  name="lastName" required></p>
         </div>
         <div class="tab"> Birthday
-            <p>Day<input placeholder="dd" oninput="this.className = ''" name="dayBirth" required></p>
-            <p>Month<input placeholder="mm" oninput="this.className = ''" name="monthBirth" required></p>
-            <p>Year<input placeholder="yyyy" oninput="this.className = ''" name="yearBirth" required></p>
+            <p>Day<input placeholder="dd" oninput="this.className = ''" name="dayBirth" type="number" min="1" max="31" required></p>
+            <p>Month<input placeholder="mm" oninput="this.className = ''" name="monthBirth" type="number" min="1" max="12" required></p>
+            <p>Year<input placeholder="yyyy" oninput="this.className = ''" name="yearBirth" type="number" min="1920" max="2007" required></p>
         </div>
         <div style="overflow:auto;">
             <div style="float:right;">

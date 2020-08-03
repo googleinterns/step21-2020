@@ -24,7 +24,7 @@ limitations under the License.
 <%@ page import="com.google.appengine.api.users.UserService" %>
 <%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <% UserService userService = UserServiceFactory.getUserService();
-   String urlToRedirectToAfterUserLogsOut = "/";
+   String urlToRedirectToAfterUserLogsOut = "/index.jsp";
    String logoutURL = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut); %> 
 
 <!DOCTYPE html>
@@ -37,11 +37,9 @@ limitations under the License.
     <title>Friend Matching Plus</title>
 
   </head>
-  <body onload="getMatches()">
+  <body onload="setPage()">
     <nav>
-        <form>
-          <button id="log-out-button" formaction="<%= logoutURL %>" type="submit"> Log Out </button>
-        </form>
+        <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
     </nav>
     <img src="logo.png" alt="logo" id="logo">
 
@@ -87,12 +85,20 @@ limitations under the License.
     <div class="container">
         <div class="sub-container" id="list-selection">
             <h2> Your Profile </h2>
-            <div id="profile-pic"> <img src="avatar.png" alt="Profile Picture"> </div>
+            <div id="profile-pic"> </div>
             <div id="navbar-selection"> 
                 <a href="#personal-container">Personal Information</a>
                 <a href="#questionaire-container">Questionaire</a>
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
+
+                <br>
+
+                <form id="image-form" method="POST" enctype="multipart/form-data">
+                  Upload a new profile picture:
+                  <input type="file" name="image" placeholder="Upload Icon">
+                  <input type="submit" value="Submit"/> 
+                </form>
             </div>
         </div>
         <div class="sub-container" id="profile-info"> 
@@ -164,7 +170,13 @@ limitations under the License.
         </div>
     </div>
 
-    <script>
+      <script>
+
+      function setPage() {
+        getMatches();
+        grabBlobURL();
+      }
+
       function getMatches() {
         fetch('/Homepage')
           .then((response) => {
@@ -174,9 +186,11 @@ limitations under the License.
             matches = json["matches"];
             notifications = json["notifications"];
             status = json["status"];
+            image = json["image"];
             renderMatches(matches);
             renderNotifications(notifications);
             getMatchStatus(status);
+            setImage(image);
           });
       }
 
@@ -185,17 +199,40 @@ limitations under the License.
         matches.forEach(match => {
           name = match["name"];
           email = match["email"];
+          image = match["image"];
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match-item';
+
+          matchIcon = document.createElement('IMG');
+        
+          if (image === "") {
+            matchIcon.setAttribute('src', "avatar.png");
+          } else {
+            matchIcon.setAttribute('src', "/serve?key=" + image);
+          }
+          matchIcon.setAttribute('id', 'match-picture');
+          matchIcon.setAttribute('alt', "match picture");
+          matchContainer.appendChild(matchIcon);
+
           const nameElement = document.createElement('div');
           nameElement.innerText = name;
           nameElement.className = 'match-name';
-          matchDiv.appendChild(nameElement);
+
+          const newLine = document.createElement('p');
+
           const emailElement = document.createElement('div');
           emailElement.innerText = email;
           emailElement.className = 'match-email';
-          matchDiv.appendChild(emailElement);
+
+          const userInfoDiv = document.createElement('div');
+          userInfoDiv.appendChild(nameElement);
+          userInfoDiv.appendChild(newLine);
+          userInfoDiv.appendChild(emailElement);
+          userInfoDiv.className = 'user-info';
+
+          matchContainer.appendChild(userInfoDiv);
           matchContainer.appendChild(matchDiv);
+
           const lineBreak = document.createElement('br');
           matchContainer.appendChild(lineBreak);
         });
@@ -220,6 +257,26 @@ limitations under the License.
           const statusContainer = document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
         }
+      }
+
+      function setImage(image) {
+        const imageContainer = document.getElementById('profile-pic');
+        userIcon = document.createElement('IMG');
+        
+        if (image === "") {
+          userIcon.setAttribute('src', "avatar.png");
+        } else {
+          userIcon.setAttribute('src', "/serve?key=" + image);
+        }
+
+        userIcon.setAttribute('alt', "Profile picture.");
+        imageContainer.appendChild(userIcon);
+      }
+
+      async function grabBlobURL(){
+        const blobURL = await fetch("/image-upload").then((response) => {return response.text();});
+        const myForm = document.getElementById("image-form");
+        myForm.action = blobURL;
       }
     </script> 
   </body>

@@ -22,7 +22,7 @@ body {
 #chat-container {
     display: grid;
     grid: 
-        'search-container chat-title' 71px
+        'find-a-match-container chat-title' 71px
         'conversation-list chat-message-list' 1fr
         'new-message-container chat-form' 78px
         / 275px 1fr;
@@ -36,44 +36,45 @@ body {
     border-radius: 10px;
 }
 
-#search-container, #conversation-list, #new-message-container {
+#find-a-match-container, #conversation-list, #new-message-container {
     background: #0048AA;
 }
 
-#search-container {
+#find-a-match-container {
     display: grid;
     align-items: center;
     padding: 0 20px;
-    grid-area: search-container;
+    grid-area: find-a-match-container;
     border-radius: 10px 0 0 0;
     box-shadow: 0 1px 3px -1px rgba(0, 0, 0, 0.75);
     z-index: 1;
 }
 
-#search-container input {
+#find-a-match-container > form > button{
     color: #eee;
     outline: none;
     font-weight: bold;
     border-radius: 2px;
     height: 30px;
+    width: 230px;
     border: 0;
-    padding-left: 48px;
+    text-align: left;
+    padding-left: 20px;
     padding-right: 20px;
     font-size: 1.4rem;
-    background: url('../images/search/search.svg') no-repeat rgba(255, 255 ,255, 0.3);
+    background: no-repeat rgba(255, 255 ,255, 0.3);
     background-position: 15px center;
     background-size: 20px 20px;
-}
-
-#search-container input::placeholder {
-    color: #ddd;
-    font-weight: bold;
 }
 
 #conversation-list {
     grid-area: conversation-list;
     height: 600px;
     overflow: auto;
+}
+
+#conversation-box {
+    margin: 0;
 }
 
 .conversation {
@@ -303,11 +304,6 @@ body {
 }
 
 .modal-header {
-    /* display: grid;
-    grid: 36px / 1fr 36px;
-    align-content: center;
-    align-items: center;
-    grid-area: chat-title; */
     height: 72px;
     color: #0048AA;
     font-weight: bold;
