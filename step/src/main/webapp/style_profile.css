@@ -178,6 +178,25 @@ h3 a:hover {
   float: right;
 }
 
+.button {
+    display: block;
+    width: 360px;
+    height: 25px;
+    background: #F4B400;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    font-weight: bold;
+    line-height: 25px;
+    margin-top: 12.3%;
+    border: none;
+    border-radius: 5px;
+    font-family: 'Roboto', sans-serif;
+    font-size: large;
+    box-shadow: 0 8px 13px 0 rgba(0,0,0,0.2), 0 5px 15px 0 rgba(0,0,0,0.19);
+    text-decoration: none;
+}
+
 #log-out-button {
   background-color: #F4B400;
   border-radius: 5px;
@@ -194,7 +213,7 @@ h3 a:hover {
   padding: 6%;
   margin-top: 12.3%;
   border: none;
-  border-radius: 2px;
+  border-radius: 5px;
   color: #4B0082;
   font-weight: bold;
   font-family: 'Roboto', sans-serif;

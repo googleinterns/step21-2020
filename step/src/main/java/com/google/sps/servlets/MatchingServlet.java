@@ -52,7 +52,7 @@ public class MatchingServlet extends HttpServlet {
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    // Collect all the matches and display them in the left container in chat1.jsp
+    //Collect all the matches and display them in the left container in chat.jsp
     //Collect name, user_id, timestamp getting matched
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();

@@ -165,6 +165,7 @@ limitations under the License.
                 <div class="match-item" id="notification-container"></div>
                 <br>
             </div>
+            <a class="button" href="/chat.jsp"> Chat</a>
         </div>
     </div>
 
