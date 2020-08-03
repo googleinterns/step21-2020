@@ -156,14 +156,12 @@ body {
 
 #chat-title > img {
     cursor: pointer;
-    /* grid-row: span 2; */
     height: 40px;
     border-radius: 100%;
     float: right;
 }
 #chat-title > button {
     cursor: pointer;
-    /* grid-row: span 2; */
     height: 40px;
     width: 40px;
     border-radius: 100%;

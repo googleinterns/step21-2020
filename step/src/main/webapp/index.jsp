@@ -48,9 +48,5 @@ limitations under the License.
             <a href="#" class="btn">Read More</a>
             </div>
         </header>
-        <% if (userService.isUserLoggedIn()) {
-            String userEmail = userService.getCurrentUser().getEmail();
-            response.sendRedirect("Login");   
-        } %>
   </body>
 </html>

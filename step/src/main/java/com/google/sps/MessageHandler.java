@@ -47,7 +47,7 @@ public final class MessageHandler {
     messageEntity.setProperty("Recipient", m.getRecipientID());
     messageEntity.setProperty("Text", m.getText());
     messageEntity.setProperty("timestamp", m.timestamp());
-    messageEntity.setProperty("currTime", m.getCurrTime());
+    messageEntity.setProperty("timeStamp", m.gettimeStamp());
     datastore.put(messageEntity);
   }
 
@@ -73,8 +73,8 @@ public final class MessageHandler {
         String recipient = (String) entity.getProperty("Recipient");
         String text = (String) entity.getProperty("Text");
         long timestamp = (long) entity.getProperty("timestamp");
-        String currTime = String.valueOf(entity.getProperty("currTime"));
-        Message message = new Message(sender, recipient, text, timestamp, currTime);
+        String timeStamp = String.valueOf(entity.getProperty("timeStamp"));
+        Message message = new Message(sender, recipient, text, timestamp, timeStamp);
         messages.add(message);
     }
     return messages;

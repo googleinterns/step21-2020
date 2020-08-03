@@ -64,7 +64,6 @@ public class User {
     return name;  
   }
 
-
   //Getter method for a user's preference answers
   public ArrayList<String> getPreferences() {
       if (preferences == null) {

@@ -86,9 +86,9 @@ public class ChatServlet extends HttpServlet {
     String text = request.getParameter("text");
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     Date date = new Date(System.currentTimeMillis());
-    String currTime = date.toString();
+    String timeStamp = date.toString();
     long timestamp = System.currentTimeMillis();
-    Message m = new Message(senderID, recipientID, text, timestamp, currTime);
+    Message m = new Message(senderID, recipientID, text, timestamp, timeStamp);
     MessageHandler.addMessage(m);
     doGet(request, response);
   }
