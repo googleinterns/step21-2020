@@ -305,8 +305,7 @@ body {
     grid-area: chat-form;
     border-radius: 0 0 10px 0;
     border-top: 1px solid rgb(0,0,0,0,25);
-    padding-left: 42px;
-    padding-right: 22px;
+    padding-left: 30px;
 }
 
 #chat-form input {
@@ -430,7 +429,7 @@ body {
 }
 
 .fa-paperclip {
-    height: 100px;
+    height: 20px;
 }
 ::-webkit-scrollbar {
     display: none;
