@@ -35,13 +35,13 @@ import java.util.Arrays;
 @WebServlet("/Homepage")
 public class HomepageServlet extends HttpServlet {
 
-  private static final int NUM_NOTIFS_TO_DISPLAY = 10;
-  private static final String MATCHES = "matches";
-  private static final String NOTIFICATIONS = "notifications";
-  private static final String STATUS = "status";
-  private static final String IMAGE = "image";
-  private static final String PENDING = "pending";
-  private static final String NOT_PENDING = "not pending";
+  private final int NUM_NOTIFS_TO_DISPLAY = 10;
+  private final String MATCHES = "matches";
+  private final String NOTIFICATIONS = "notifications";
+  private final String STATUS = "status";
+  private final String IMAGE = "image";
+  private final String PENDING = "pending";
+  private final String NOT_PENDING = "not pending";
 
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
