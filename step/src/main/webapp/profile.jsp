@@ -176,11 +176,11 @@ limitations under the License.
       <script>
 
       function setPage() {
-        getMatches();
+        displayMatchesAndNotifications();
         grabBlobURL();
       }
 
-      function getMatches() {
+      function displayMatchesAndNotifications() {
         fetch('/Homepage')
           .then((response) => {
             return response.json();
@@ -190,10 +190,11 @@ limitations under the License.
             notifications = json["notifications"];
             status = json["status"];
             image = json["image"];
+
             setImage(image);
             renderMatches(matches);
             renderNotifications(notifications);
-            getMatchStatus(status);
+            renderMatchStatus(status);
           });
       }
 
@@ -203,42 +204,49 @@ limitations under the License.
           name = match["name"];
           email = match["email"];
           image = match["match-image"];
-          const matchDiv = document.createElement('div');
-          matchDiv.className = 'match-item';
 
-          matchIcon = document.createElement('IMG');
-        
-          if (image === "") {
-            matchIcon.setAttribute('src', "avatar.png");
-          } else {
-            matchIcon.setAttribute('src', "/serve?key=" + image);
-          }
-          matchIcon.setAttribute('id', 'match-picture');
-          matchIcon.setAttribute('alt', "match picture");
-          matchContainer.appendChild(matchIcon);
-
-          const nameElement = document.createElement('div');
-          nameElement.innerText = name;
-          nameElement.className = 'match-name';
-
-          const newLine = document.createElement('p');
-
-          const emailElement = document.createElement('div');
-          emailElement.innerText = email;
-          emailElement.className = 'match-email';
-
-          const userInfoDiv = document.createElement('div');
-          userInfoDiv.appendChild(nameElement);
-          userInfoDiv.appendChild(newLine);
-          userInfoDiv.appendChild(emailElement);
-          userInfoDiv.className = 'user-info';
-
-          matchContainer.appendChild(userInfoDiv);
-          matchContainer.appendChild(matchDiv);
-
-          const lineBreak = document.createElement('br');
-          matchContainer.appendChild(lineBreak);
+          renderMatchPicture(image, matchContainer);
+          renderMatchUserInfo(name, email, matchContainer);
+          addLineBreak(matchContainer);
         });
+      }
+
+      function renderMatchPicture(image, matchContainer) {
+        matchIcon = document.createElement('IMG');
+        
+        if (image === "") {
+          matchIcon.setAttribute('src', "avatar.png");
+        } else {
+          matchIcon.setAttribute('src', "/serve?key=" + image);
+        }
+
+        matchIcon.setAttribute('id', 'match-picture');
+        matchIcon.setAttribute('alt', "match picture");
+        matchContainer.appendChild(matchIcon);
+      }
+
+      function renderMatchUserInfo(name, email, matchContainer) {
+        const nameElement = document.createElement('div');
+        nameElement.innerText = name;
+        nameElement.className = 'match-name';
+
+        const newLine = document.createElement('p');
+
+        const emailElement = document.createElement('div');
+        emailElement.innerText = email;
+        emailElement.className = 'match-email';
+
+        const userInfoDiv = document.createElement('div');
+        userInfoDiv.appendChild(nameElement);
+        userInfoDiv.appendChild(newLine);
+        userInfoDiv.appendChild(emailElement);
+        userInfoDiv.className = 'user-info';
+        matchContainer.appendChild(userInfoDiv);
+      }
+
+      function addLineBreak(matchContainer) {
+        const lineBreak = document.createElement('br');
+        matchContainer.appendChild(lineBreak);
       }
 
       function renderNotifications(notifications) {
@@ -255,7 +263,7 @@ limitations under the License.
         });
       }
 
-      function getMatchStatus(status) {
+      function renderMatchStatus(status) {
         if (status === "pending") {
           const statusContainer = document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
