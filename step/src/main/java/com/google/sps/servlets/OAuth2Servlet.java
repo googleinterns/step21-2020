@@ -44,6 +44,8 @@ public class OAuth2Servlet extends HttpServlet {
 
   private final static String AUTH_REDIRECT_URI = OAuth2Utilities.AUTH_REDIRECT_URI;
   private final static String DONE_REDIRECT_URL = "/ChatButton?request-type=request-type-match";
+  private final static String ALERT_AUTH_COMPLETE = "Authroization completed successfully. "
+      + "You can now send a Google Calendar invite to your matches!";
   private GoogleAuthorizationCodeFlow authFlow;
 
   @Override
@@ -107,7 +109,7 @@ public class OAuth2Servlet extends HttpServlet {
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
 
       System.out.println("Authorization code flow complete.");
-      response.sendRedirect(DONE_REDIRECT_URL);
+      AlertManager.setAlert(ALERT_AUTH_COMPLETE, DONE_REDIRECT_URL, response);
     }
     
   }
