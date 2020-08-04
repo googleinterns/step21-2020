@@ -59,7 +59,7 @@ public class CalendarServlet extends HttpServlet {
 
       User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
       if(!hostUser.isAuthenticated()) {
-        setAlert(HOST_USER_NOT_AUTHENTICATED, response);
+        AlertManager.setAlert(HOST_USER_NOT_AUTHENTICATED, REDIRECT_PAGE_ERROR, response);
         return;
       }
 
@@ -79,10 +79,6 @@ public class CalendarServlet extends HttpServlet {
     }
 
     response.sendRedirect(REDIRECT_PAGE);
-  }
-
-  private void setAlert(String message, HttpServletResponse response) throws IOException {
-    response.sendRedirect(REDIRECT_PAGE_ERROR + "?alert=" + message);
   }
 
 }
