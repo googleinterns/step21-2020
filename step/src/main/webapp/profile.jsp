@@ -165,7 +165,11 @@ limitations under the License.
                 <div class="match-item" id="notification-container"></div>
                 <br>
             </div>
-            <a class="button" href="/chat.jsp"> Chat</a>
+            <form class="chat-button" action="/ChatButton" method="get">
+                <input type="hidden" id="request-type" name="request-type" value="request-type-match">
+                <button id="chat-submit" class="button" type="submit" value="Submit">Chat</button>
+                <p id="match-status"></p>
+            </form>
         </div>
     </div>
 

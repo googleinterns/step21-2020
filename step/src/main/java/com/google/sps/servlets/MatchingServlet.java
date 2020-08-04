@@ -66,7 +66,8 @@ public class MatchingServlet extends HttpServlet {
     }
     //Send all the matches to the front-end
     request.setAttribute("matches", userMatches); 
-    request.getRequestDispatcher("chat.jsp").forward(request, response);
+    response.sendRedirect("profile.jsp");
+    //request.getRequestDispatcher("chat.jsp").forward(request, response);
   }
 
 }

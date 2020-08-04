@@ -129,6 +129,10 @@ h3 a:hover {
     padding-bottom: 20px;
 }
 
+.find-a-match-container {
+    width: 355px;
+}
+
 .personal-item {
     color: black;
     padding: 30px;
@@ -149,11 +153,7 @@ h3 a:hover {
     padding: 10px;
     color: black;
     border: 10px;
-    margin-left: 10%;
-}
-
-.match-button {
-    padding: 20px;
+    margin-left: 5%;
 }
 
 .item-label, .item-info {
@@ -178,25 +178,6 @@ h3 a:hover {
   float: right;
 }
 
-.button {
-    display: block;
-    width: 360px;
-    height: 25px;
-    background: #F4B400;
-    padding: 10px;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    line-height: 25px;
-    margin-top: 12.3%;
-    border: none;
-    border-radius: 5px;
-    font-family: 'Roboto', sans-serif;
-    font-size: large;
-    box-shadow: 0 8px 13px 0 rgba(0,0,0,0.2), 0 5px 15px 0 rgba(0,0,0,0.19);
-    text-decoration: none;
-}
-
 #log-out-button {
   background-color: #F4B400;
   border-radius: 5px;
@@ -208,8 +189,8 @@ h3 a:hover {
   cursor: pointer;
 }
 
-#match-submit {
-  width: 100%;
+#match-submit, #chat-submit {
+  width: 360px;
   padding: 6%;
   margin-top: 12.3%;
   border: none;
@@ -221,7 +202,7 @@ h3 a:hover {
   box-shadow: 0 8px 13px 0 rgba(0,0,0,0.2), 0 5px 15px 0 rgba(0,0,0,0.19)
 }
 
-#match-submit, #log-out-button {
+#match-submit, #log-out-button, #chat-submit {
   background-color: #F4B400;
 }
 
