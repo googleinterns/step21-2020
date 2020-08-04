@@ -198,7 +198,8 @@ limitations under the License.
                 console.log('alertIndex: ' + alertIndex);
                 var alertMessageIndex = queryParam.indexOf("=") + 1;
                 var alertMessage = queryParam.substr(alertMessageIndex);
-                alertMessage = alertMessage.replace(/%20/g, " "); // Replace the %20s with spaces
+                alertMessage = alertMessage.replace(/%20/g, " "); // Replace %20s with spaces
+                alertMessage = alertMessage.replace(/%22/g, "\""); // Replace %22s with quotes
                 alert(alertMessage);
               }
             }

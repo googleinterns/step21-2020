@@ -25,6 +25,11 @@ import com.google.sps.User;
 @WebServlet("/cal")
 public class CalendarServlet extends HttpServlet {
 
+  private static final String REDIRECT_PAGE = "/chat.jsp";
+  private static final String HOST_USER_NOT_AUTHENTICATED =
+      "You have not authenticated with Google Calendar yet. "
+      + "Please click \"Authroize access to Google Calendar\" before sending a Calendar invite.";
+
   @Override
   public void init() {}
 
@@ -52,10 +57,10 @@ public class CalendarServlet extends HttpServlet {
       int minuteInt = Integer.parseInt(minuteString);
 
       User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
-      // if(!hostUser.isAuthenticated()) {
-      //   response.getWriter().
-      // }
-      // response.getWriter().println("hellooooooo!");
+      if(!hostUser.isAuthenticated()) {
+        setAlert(HOST_USER_NOT_AUTHENTICATED, response);
+        return;
+      }
 
       User guestUser = null;
       for(User user : hostUser.getMatches()) {
@@ -72,8 +77,11 @@ public class CalendarServlet extends HttpServlet {
       }
     }
 
-    String alert = "user not authenticated";
-    response.sendRedirect("/chat.jsp?alert=" + alert);
+    response.sendRedirect(REDIRECT_PAGE);
+  }
+
+  private void setAlert(String message, HttpServletResponse response) throws IOException {
+    response.sendRedirect(REDIRECT_PAGE + "?alert=" + message);
   }
 
 }
