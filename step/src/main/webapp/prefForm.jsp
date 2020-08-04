@@ -42,7 +42,7 @@ limitations under the License.
     <form id="regForm" action="Pref" class="inputGroup" method="POST"> 
         <div class="tab"> <div class="question"> Are you staying in the US now? </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes" required>
+                <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes">
                 <label for="q1yes"> Yes </label>
             </p>
             <p>
@@ -52,7 +52,7 @@ limitations under the License.
         </div> 
         <div class="tab"> <div class="question"> Do you have any pets? </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q2" value="Yes" id="q2yes" required>
+                <input type="radio" oninput="this.className = ''" name="q2" value="Yes" id="q2yes">
                 <label for="q2yes"> Yes </label>
             </p>
             <p>
@@ -62,7 +62,7 @@ limitations under the License.
         </div> 
         <div class="tab"> <div class="question"> Do you have any siblings? </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q3" value="Yes" id="q3yes" required>
+                <input type="radio" oninput="this.className = ''" name="q3" value="Yes" id="q3yes">
                 <label for="q3yes"> Yes </label>
             </p>
             <p>
@@ -72,7 +72,7 @@ limitations under the License.
         </div>
         <div class="tab"> <div class="question"> <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank"> Is the dress blue or gold? </a> </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q4" value="Blue" id="q4blue" required>
+                <input type="radio" oninput="this.className = ''" name="q4" value="Blue" id="q4blue">
                 <label for="q4blue"> Blue </label>
             </p>
             <p>
@@ -82,7 +82,7 @@ limitations under the License.
         </div>
         <div class="tab"> <div class="question"> <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel? </a> </div>
             <p>
-                <input type="radio" oninput="this.className = ''" name="q5" value="Yanny" id="q5yanny" required>
+                <input type="radio" oninput="this.className = ''" name="q5" value="Yanny" id="q5yanny">
                 <label for="q5yanny"> Yanny </label>
             </p>
             <p>
