@@ -26,10 +26,10 @@ import com.google.sps.User;
 public class CalendarServlet extends HttpServlet {
 
   private static final String REDIRECT_PAGE = "/ChatButton?request-type=request-type-match";
-  private static final String REDIRECT_PAGE_ERROR = "/chat.jsp";
   private static final String ALERT_HOST_USER_NOT_AUTHENTICATED =
       "You have not authenticated with Google Calendar yet. "
-      + "Please click \"Authroize access to Google Calendar\" before sending a Calendar invite.";
+      + "Please click \"Authroize access to Google Calendar\" "
+      + "before sending a Google Calendar invite.";
   private static final String ALERT_EVENT_CREATED = "Your calendar invite has been sent!";
   private static final String ALERT_EVENT_NOT_CREATED =
       "There was an error while creating the Google Calendar event: ";
@@ -62,7 +62,7 @@ public class CalendarServlet extends HttpServlet {
 
       User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
       if(!hostUser.isAuthenticated()) {
-        AlertManager.setAlert(ALERT_HOST_USER_NOT_AUTHENTICATED, REDIRECT_PAGE_ERROR, response);
+        AlertManager.setAlert(ALERT_HOST_USER_NOT_AUTHENTICATED, REDIRECT_PAGE, response);
         return;
       }
 
@@ -76,7 +76,7 @@ public class CalendarServlet extends HttpServlet {
       if(guestUser == null) {
         System.out.println("Unable to find the guest user, unable to create Google Calendar event.");
         String eventNotCreated = ALERT_EVENT_NOT_CREATED + "unable to find the guest user.";
-        AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE_ERROR, response);
+        AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE, response);
       } else {
         try {
           CalendarManager.createMatchEvent(hostUser, guestUser, 
@@ -86,7 +86,7 @@ public class CalendarServlet extends HttpServlet {
           e.printStackTrace();
 
           String eventNotCreated = ALERT_EVENT_NOT_CREATED + "\n" + e.getMessage();
-          AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE_ERROR, response);
+          AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE, response);
         }
       }
     }
