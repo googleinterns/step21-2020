@@ -286,9 +286,6 @@ limitations under the License.
       }
 
       function setImage(image) {
-        console.log('image-2');
-        console.log(image);
-
         const imageContainer = document.getElementById('profile-pic');
         userIcon = document.createElement('IMG');
         
