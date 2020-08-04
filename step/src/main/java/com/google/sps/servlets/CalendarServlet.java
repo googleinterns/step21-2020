@@ -52,6 +52,11 @@ public class CalendarServlet extends HttpServlet {
       int minuteInt = Integer.parseInt(minuteString);
 
       User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
+      // if(!hostUser.isAuthenticated()) {
+      //   response.getWriter().
+      // }
+      // response.getWriter().println("hellooooooo!");
+
       User guestUser = null;
       for(User user : hostUser.getMatches()) {
         if(user.getName().equals(guestName)) {
@@ -67,7 +72,8 @@ public class CalendarServlet extends HttpServlet {
       }
     }
 
-    response.sendRedirect("/chat.jsp");
+    String alert = "user not authenticated";
+    response.sendRedirect("/chat.jsp?alert=" + alert);
   }
 
 }
