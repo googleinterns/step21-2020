@@ -123,23 +123,23 @@ limitations under the License.
             <h3> <a href="prefForm.jsp" style="#4B0082;"> Questionaire </a> </h3>
             <div class="questionaire-container" id="questionaire-container"> 
                 <div class="questionaire-item"> 
-                    <div class="item-label"> Are you staying in the US now? </div> 
+                    <div class="item-label"> Do you have any pets? </div>
                     <div class="item-info"><%= q1%> </div> 
                 </div> 
                 <div class="questionaire-item"> 
-                    <div class="item-label"> Do you have any pets? </div> 
+                    <div class="item-label"> <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank">  Is the dress blue or gold?</a> </div> 
                     <div class="item-info"> <%= q2%> </div> 
                 </div> 
                 <div class="questionaire-item"> 
-                    <div class="item-label"> Only be matched with someone from your institution? </div> 
+                    <div class="item-label"> Would you rather win the lottery or work at the perfect job? </div>
                     <div class="item-info"> <%= q3%> </div> 
                 </div> 
                 <div class="questionaire-item"> 
-                    <div class="item-label"> <a href="https://en.wikipedia.org/wiki/The_dress#:~:text=The%20dress%20itself%20was%20confirmed,not%20available%20at%20the%20time." target="_blank">  Is the dress blue or gold?</a> </div> 
+                    <div class="item-label"> Would you rather trade intelligence for looks or looks for intelligence? </div>
                     <div class="item-info"> <%= q4%> </div>
                 </div> 
                 <div class="questionaire-item"> 
-                    <div class="item-label"> <a href="https://www.youtube.com/watch?v=7X_WvGAhMlQ" target="_blank"> Is it Yanny or Laurel?</a> </div>
+                    <div class="item-label"> Is your glass half full or half empty? </div>
                     <div class="item-info"> <%= q5%> </div>
                 </div> 
             </div>
