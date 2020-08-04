@@ -35,37 +35,61 @@ import java.util.Arrays;
 @WebServlet("/Homepage")
 public class HomepageServlet extends HttpServlet {
 
-  private static final int NUM_NOTIFS_TO_DISPLAY = 10;
-  private static final String STATUS = "status";
-  private static final String PENDING = "pending";
-  private static final String NOT_PENDING = "not pending";
+  private final int NUM_NOTIFS_TO_DISPLAY = 10;
+  private final String MATCHES = "matches";
+  private final String NOTIFICATIONS = "notifications";
+  private final String STATUS = "status";
+  private final String IMAGE = "image";
+  private final String PENDING = "pending";
+  private final String NOT_PENDING = "not pending";
 
   @Override
-  // TODO: refactor this doGet to make it more readable
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-    PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
     String id = userService.getCurrentUser().getUserId();
     User user = new User(id);
 
+    JSONObject userData = new JSONObject();
+    userData.put(MATCHES, populateMatchesArray(user));
+    userData.put(NOTIFICATIONS, populateNotificationArray(id));
+    userData.put(STATUS, getMatchStatus(user));
+    userData.put(IMAGE, DatabaseHandler.getUserImageUrl(id));
+
+    response.getWriter().println(userData);
+  }
+
+
+  // Method for fetching a user's matches and handling potential errors
+  private Collection<User> fetchUserMatches(User user) {
     Collection<User> userMatches;
-    Collection<Notification> notifications;
     try {
       userMatches = user.getMatches();
     } catch(DatastoreNeedIndexException e) {
+      System.err.println("Error occured while fetching user's matches.");
       userMatches = new ArrayList<>();
     }
+    return userMatches;
+  }
 
+  // Method for fetching a user's notifications and handling potential errors
+  private Collection<Notification> fetchUserNotifications(String id) {
+    Collection<Notification> notifications;
     try {
       notifications = DatabaseHandler.getUserNotifications(id);
     } catch(DatastoreNeedIndexException e) {
+      System.err.println("Error occured while fetching user's notifications.");
       notifications = new ArrayList<>();
-   }
-    
-    JSONArray matchesArray = new JSONArray();
-    JSONArray notificationsArray = new JSONArray();
+    }
+    return notifications;
+  }
 
-    for (User match: userMatches) {
+  // Method for populating a JSON array with all relavant information about a
+  // user's matches
+  private JSONArray populateMatchesArray(User user) {
+    Collection<User> matches = fetchUserMatches(user);
+    JSONArray matchesArray = new JSONArray();
+
+    for (User match: matches) {
       JSONObject matchJson = new JSONObject();
       matchJson.put("name", match.getName());
       matchJson.put("email", match.getEmail());
@@ -73,7 +97,16 @@ public class HomepageServlet extends HttpServlet {
       matchesArray.add(matchJson);
     }
 
+    return matchesArray;
+  }
+
+  // Method for populating a JSON array with all relavant information about a user's
+  // notifications
+  private JSONArray populateNotificationArray(String id) {
+    Collection<Notification> notifications = fetchUserNotifications(id);
+    JSONArray notificationsArray = new JSONArray();
     int notificationCounter = 0;
+
     for (Notification notification: notifications) {
       if (notificationCounter == NUM_NOTIFS_TO_DISPLAY) {
         break;
@@ -82,22 +115,20 @@ public class HomepageServlet extends HttpServlet {
       notificationCounter += 1;
     }
 
+    return notificationsArray;
+  }
+
+  // Method for getting the right match status to put in the JSON based on whether the user
+  // is waiting on a match
+  private String getMatchStatus(User user) {
     boolean matchPending = user.isMatchPending();
 
-    JSONObject userData = new JSONObject();
-    userData.put("matches", matchesArray);
-    userData.put("notifications", notificationsArray);
-
     if (matchPending) {
-      userData.put(STATUS, PENDING);
+      return PENDING;
     } else {
-      userData.put(STATUS, NOT_PENDING);
+      return NOT_PENDING;
     }
-
-    String imgUrl = DatabaseHandler.getUserImageUrl(id);
-    userData.put("image", imgUrl);
-
-    out.println(userData);
   }
+
 
 }
