@@ -212,10 +212,10 @@ limitations under the License.
             notifications = json["notifications"];
             status = json["status"];
             image = json["image"];
+            setImage(image);
             renderMatches(matches);
             renderNotifications(notifications);
             getMatchStatus(status);
-            setImage(image);
           });
       }
 
@@ -224,7 +224,7 @@ limitations under the License.
         matches.forEach(match => {
           name = match["name"];
           email = match["email"];
-          image = match["image"];
+          image = match["match-image"];
           const matchDiv = document.createElement('div');
           matchDiv.className = 'match-item';
 
@@ -286,6 +286,9 @@ limitations under the License.
       }
 
       function setImage(image) {
+        console.log('image-2');
+        console.log(image);
+
         const imageContainer = document.getElementById('profile-pic');
         userIcon = document.createElement('IMG');
         
