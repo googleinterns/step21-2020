@@ -27,9 +27,12 @@ public class CalendarServlet extends HttpServlet {
 
   private static final String REDIRECT_PAGE = "/ChatButton?request-type=request-type-match";
   private static final String REDIRECT_PAGE_ERROR = "/chat.jsp";
-  private static final String HOST_USER_NOT_AUTHENTICATED =
+  private static final String ALERT_HOST_USER_NOT_AUTHENTICATED =
       "You have not authenticated with Google Calendar yet. "
       + "Please click \"Authroize access to Google Calendar\" before sending a Calendar invite.";
+  private static final String ALERT_EVENT_CREATED = "Your calendar invite has been sent!";
+  private static final String ALERT_EVENT_NOT_CREATED =
+      "There was an error while creating the Google Calendar event. Please try again.";
 
   @Override
   public void init() {}
@@ -59,7 +62,7 @@ public class CalendarServlet extends HttpServlet {
 
       User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
       if(!hostUser.isAuthenticated()) {
-        AlertManager.setAlert(HOST_USER_NOT_AUTHENTICATED, REDIRECT_PAGE_ERROR, response);
+        AlertManager.setAlert(ALERT_HOST_USER_NOT_AUTHENTICATED, REDIRECT_PAGE_ERROR, response);
         return;
       }
 
@@ -72,13 +75,19 @@ public class CalendarServlet extends HttpServlet {
 
       if(guestUser == null) {
         System.out.println("Unable to find the guest user, unable to create Google Calendar event.");
+        AlertManager.setAlert(ALERT_EVENT_NOT_CREATED, REDIRECT_PAGE_ERROR, response);
       } else {
-        CalendarManager.createMatchEvent(hostUser, guestUser, 
-                                          yearInt, monthInt, dayInt, hourInt, minuteInt);
+        try {
+          CalendarManager.createMatchEvent(hostUser, guestUser, 
+                                            yearInt, monthInt, dayInt, hourInt, minuteInt);
+          AlertManager.setAlert(ALERT_EVENT_CREATED, REDIRECT_PAGE, response);
+        } catch (Exception e) {
+          e.printStackTrace();
+          AlertManager.setAlert(ALERT_EVENT_NOT_CREATED, REDIRECT_PAGE_ERROR, response);
+        }
       }
     }
 
-    response.sendRedirect(REDIRECT_PAGE);
   }
 
 }
