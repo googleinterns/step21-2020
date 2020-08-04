@@ -43,6 +43,7 @@ import com.google.sps.OAuth2Utilities;
 public class OAuth2Servlet extends HttpServlet {
 
   private final static String AUTH_REDIRECT_URI = OAuth2Utilities.AUTH_REDIRECT_URI;
+  private final static String DONE_REDIRECT_URL = "/ChatButton?request-type=request-type-match";
   private GoogleAuthorizationCodeFlow authFlow;
 
   @Override
@@ -88,7 +89,7 @@ public class OAuth2Servlet extends HttpServlet {
       System.out.println("Beginning authorization code flow...");
       if (authFlow.loadCredential(userId) != null) { // If the user's credentials were found,
         System.out.println("User already has a credential.\nAuthorization code flow complete.");
-        response.sendRedirect("/chat.jsp");
+        response.sendRedirect(DONE_REDIRECT_URL);
         return; // we're done.
       }
 
@@ -111,7 +112,7 @@ public class OAuth2Servlet extends HttpServlet {
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
 
       System.out.println("Authorization code flow complete.");
-      response.sendRedirect("/chat.jsp");
+      response.sendRedirect(DONE_REDIRECT_URL);
     }
     
   }
