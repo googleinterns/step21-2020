@@ -27,30 +27,30 @@ limitations under the License.
 <html>
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="menu.css">
     <link rel="stylesheet" href="style_index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@900&display=swap" rel="stylesheet">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <title>Friend Matching Plus</title>
   </head>
   <body>
-    <nav>
-        <a href="<%= loginURL %>"> Log In </a>
-        <a class="active" href="index.jsp"> About </a>
-    </nav>
-    <div id="main-title">
-      <ul>
-        <li> Friend </li>
-        <li> Matching </li>
-        <li> Plus </li>
-      </ul>
-      <br>
-      <t>Friending. Made easy.
-        <i class="fa fa-cloud" style="font-size:30px;color:white;text-shadow:2px 2px 4px #000000;"></i>
-      </t>
-    </div>  
-    <% if (userService.isUserLoggedIn()) {
-        String userEmail = userService.getCurrentUser().getEmail();
-        response.sendRedirect("Login");   
-    } %>
+        <nav>
+            <div> <a href="<%= loginURL %>" class="btn"> Log In </a> <div>
+        </nav>
+        <% if (userService.isUserLoggedIn()) {	
+            String userEmail = userService.getCurrentUser().getEmail();	
+            response.sendRedirect("Login");   	
+        } %>
+        
+        <header class="showcase">
+            <div class="container showcase-inner">
+            <h1>Friend Matching Plus</h1>
+            <t>Friending. Made easy.
+            </t>
+            <a href="#" class="btn">Read More</a>
+            </div>
+        </header>
   </body>
 </html>

@@ -67,7 +67,7 @@ public class CalendarServlet extends HttpServlet {
       }
     }
 
-    response.sendRedirect("/profile.jsp");
+    response.sendRedirect("/chat.jsp");
   }
 
 }

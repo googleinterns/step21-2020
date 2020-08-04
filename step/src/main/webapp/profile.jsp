@@ -21,8 +21,6 @@ limitations under the License.
 <%@ page import="com.google.appengine.api.datastore.Entity" %>
 <%@ page import="com.google.appengine.api.datastore.PreparedQuery" %>
 <%@ page import="com.google.appengine.api.datastore.Query" %>
-<%@ page import="com.google.appengine.api.users.UserService" %>
-<%@ page import="com.google.appengine.api.users.UserServiceFactory" %>
 <% UserService userService = UserServiceFactory.getUserService();
    String urlToRedirectToAfterUserLogsOut = "/index.jsp";
    String logoutURL = userService.createLogoutURL(urlToRedirectToAfterUserLogsOut); %> 
@@ -80,7 +78,6 @@ limitations under the License.
     if (q5 == null) {
       q5 = "Unknown";
     }
-
     %>
 
     <div class="container">
@@ -99,30 +96,6 @@ limitations under the License.
                   Upload a new profile picture:
                   <input type="file" name="image" placeholder="Upload Icon">
                   <input type="submit" value="Submit"/> 
-                </form>
-
-                <br>
-                <br>
-                  
-                <form action="/oauth2" method="GET">
-                  <button type="submit">Authorize access to Google Calendar</button>
-                </form>
-
-                <form action="/cal" method="POST">
-                  <label>Month:</label><br>
-                  <input type="text" id="month" name="month"><br>
-                  <label>Day:</label><br>
-                  <input type="text" id="day" name="day"><br>
-                  <label>Year:</label><br>
-                  <input type="text" id="year" name="year"><br>
-                  <label>Hour:</label><br>
-                  <input type="text" id="hour" name="hour"><br>
-                  <label>Minute:</label><br>
-                  <input type="text" id="minute" name="minute"><br>
-                  <label>Match's name:</label><br>
-                  <input type="text" id="minute" name="guestName"><br>
-                  <button type="submit">Create a Google Calendar event</button>
-
                 </form>
             </div>
         </div>
@@ -192,6 +165,11 @@ limitations under the License.
                 <div class="match-item" id="notification-container"></div>
                 <br>
             </div>
+            <form class="chat-button" action="/ChatButton" method="get">
+                <input type="hidden" id="request-type" name="request-type" value="request-type-match">
+                <button id="chat-submit" class="button" type="submit" value="Submit">Chat</button>
+                <p id="match-status"></p>
+            </form>
         </div>
     </div>
 
@@ -279,8 +257,7 @@ limitations under the License.
 
       function getMatchStatus(status) {
         if (status === "pending") {
-          const statusContainer = 
-          document.getElementById('match-status');  
+          const statusContainer = document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
         }
       }

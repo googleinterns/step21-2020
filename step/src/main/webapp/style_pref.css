@@ -48,12 +48,13 @@ nav a:hover:not(.active) {
 }
 
 #regForm {
-  background-color: #ffffff;
+  background-color: #e7e7e7;
+  border-radius: 5px;
   margin: 100px auto;
   font-family: Raleway;
   padding: 40px;
-  width: 70%;
-  min-width: 300px;
+  width: 60%;
+  min-width: 200px;
   display: inline-block;
   text-align: center;
   align-items: center;
@@ -64,24 +65,13 @@ h1 {
   text-align: center;  
 }
 
-input {
-  padding: 10px;
-  width: 100%;
-  font-size: 17px;
-  font-family: Raleway;
-  border: 1px solid #aaaaaa;
-}
-
-input.invalid {
-  background-color: #ffdddd;
-}
-
 .tab {
   display: none;
 }
 
 button {
   background-color: #F4B400;
+  border-radius: 5px;
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -142,3 +132,4 @@ button:hover {
   color:#F4B400;
   border: 2px solid #F4B400;
 }
+

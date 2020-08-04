@@ -49,8 +49,11 @@ public final class MessageHandlerTest {
     private static final long TIMESTAMP_ONE = 1;
     private static final long TIMESTAMP_TWO = 2;
 
-    private static final Message MESSAGE_1 = new Message(USER_A_ID, USER_B_ID, TEXT_1, TIMESTAMP_ONE);
-    private static final Message MESSAGE_2 = new Message(USER_B_ID, USER_A_ID, TEXT_2, TIMESTAMP_TWO); 
+    private static final String CURRTIME_ONE = "1";
+    private static final String CURRTIME_TWO = "2"; 
+
+    private static final Message MESSAGE_1 = new Message(USER_A_ID, USER_B_ID, TEXT_1, TIMESTAMP_ONE, CURRTIME_ONE);
+    private static final Message MESSAGE_2 = new Message(USER_B_ID, USER_A_ID, TEXT_2, TIMESTAMP_TWO, CURRTIME_TWO); 
 
     private final LocalServiceTestHelper helper =
       new LocalServiceTestHelper(new LocalDatastoreServiceTestConfig());

@@ -199,6 +199,7 @@ public final class MatchManagerTest {
     Assert.assertEquals(MatchManager.getMatchQueue().size(), 1);
     Assert.assertEquals(USER_A.getMatches().size(), 1);
     Assert.assertEquals(USER_C.getMatches().size(), 0);
+    //Assert.assertEquals(USER_F.getMatches().size(), 1);
     Assert.assertTrue(!USER_A.isMatchedWith(USER_C));
     Assert.assertTrue(!USER_C.isMatchedWith(USER_A));
     Assert.assertTrue(USER_A.isMatchedWith(USER_F));
@@ -211,7 +212,7 @@ public final class MatchManagerTest {
     User USER_C = new User("3");
     User USER_G = new User("7"); 
 
-    // USER_C and USER_F each have 3 mutual interests with USER_A
+    // USER_C and USER_G each have 3 mutual interests with USER_A
     DatabaseHandler.addUser("User", "A", "1", "1", "2000", "userA@email.com", "1");
     DatabaseHandler.addUser("User", "C", "3", "3", "2003", "userC@email.com", "3");
     DatabaseHandler.addUser("User", "G", "6", "6", "2006", "userG@email.com", "7");

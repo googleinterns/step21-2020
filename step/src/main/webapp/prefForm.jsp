@@ -36,12 +36,11 @@ limitations under the License.
     
     
     <% if (!userService.isUserLoggedIn()) {
-        response.sendRedirect("index.jsp");   
+        response.sendRedirect("/index.jsp");   
     } %>
     <section class="prefform">
     <form id="regForm" action="Pref" method="POST"> 
         <div class="tab"> <div class="question"> Do you have any pets? </div>
-
             <p>
                 <input type="radio" oninput="this.className = ''" name="q1" value="Yes" id="q1yes">
                 <label for="q1yes"> Yes </label>

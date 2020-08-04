@@ -25,12 +25,14 @@ public final class Message {
   private final String recipientID; 
   private final String text; 
   private final long timestamp;
+  private final String timeStamp;
 
-  public Message(String senderID, String recipientID, String text, long timestamp) {
+  public Message(String senderID, String recipientID, String text, long timestamp, String timeStamp) {
       this.senderID = senderID;
       this.recipientID = recipientID;
       this.text = text;
       this.timestamp = timestamp;
+      this.timeStamp = timeStamp;
   }
   public String getSenderID() {
       return senderID;
@@ -44,6 +46,10 @@ public final class Message {
   public long timestamp() {
       return timestamp;
   }
+  public String gettimeStamp() {
+      return timeStamp;
+  }
+  
 
   //Overriden equals method
   @Override
@@ -60,6 +66,7 @@ public final class Message {
     return this.senderID.equals(message.getSenderID()) &&
            this.recipientID.equals(message.getRecipientID()) &&
            this.text.equals(message.getText()) &&
+           this.timeStamp.equals(message.gettimeStamp()) &&
            String.valueOf(this.timestamp).equals(String.valueOf(message.timestamp()));
   }
 

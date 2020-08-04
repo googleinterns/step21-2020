@@ -32,15 +32,14 @@ limitations under the License.
     <nav>
         <img src="logo.png" alt="logo" id="logo">
         <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
+        <% if (!userService.isUserLoggedIn()) {
+            response.sendRedirect("/index.jsp");   
+        } %>
     </nav>
     
-    
-    <% if (!userService.isUserLoggedIn()) {
-        response.sendRedirect("index.jsp");   
-    } %>
     <section class="infoform">
     <form id="regForm" action="Info" method="POST"> 
-        <div class="tab"> Name: 
+        <div class="tab"> Name 
             <p><input placeholder="First Name" oninput="this.className = ''"  name="firstName" required></p>
             <p><input placeholder="Last Name" oninput="this.className = ''"  name="lastName" required></p>
         </div>
