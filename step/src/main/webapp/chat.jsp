@@ -201,6 +201,7 @@ limitations under the License.
                 alertMessage = alertMessage.replace(/%20/g, " "); // Replace %20s with spaces
                 alertMessage = alertMessage.replace(/%22/g, "\""); // Replace %22s with quotes
                 alert(alertMessage);
+                location.replace('chat.jsp'); // Delete query parameters
               }
             }
         </script>
