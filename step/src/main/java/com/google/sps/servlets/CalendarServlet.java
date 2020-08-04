@@ -32,7 +32,7 @@ public class CalendarServlet extends HttpServlet {
       + "Please click \"Authroize access to Google Calendar\" before sending a Calendar invite.";
   private static final String ALERT_EVENT_CREATED = "Your calendar invite has been sent!";
   private static final String ALERT_EVENT_NOT_CREATED =
-      "There was an error while creating the Google Calendar event. Please try again.";
+      "There was an error while creating the Google Calendar event: ";
 
   @Override
   public void init() {}
@@ -75,7 +75,8 @@ public class CalendarServlet extends HttpServlet {
 
       if(guestUser == null) {
         System.out.println("Unable to find the guest user, unable to create Google Calendar event.");
-        AlertManager.setAlert(ALERT_EVENT_NOT_CREATED, REDIRECT_PAGE_ERROR, response);
+        String eventNotCreated = ALERT_EVENT_NOT_CREATED + "unable to find the guest user.";
+        AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE_ERROR, response);
       } else {
         try {
           CalendarManager.createMatchEvent(hostUser, guestUser, 
@@ -83,7 +84,9 @@ public class CalendarServlet extends HttpServlet {
           AlertManager.setAlert(ALERT_EVENT_CREATED, REDIRECT_PAGE, response);
         } catch (Exception e) {
           e.printStackTrace();
-          AlertManager.setAlert(ALERT_EVENT_NOT_CREATED, REDIRECT_PAGE_ERROR, response);
+
+          String eventNotCreated = ALERT_EVENT_NOT_CREATED + "\n" + e.getMessage();
+          AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE_ERROR, response);
         }
       }
     }

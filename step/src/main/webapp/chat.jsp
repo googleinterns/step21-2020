@@ -195,12 +195,13 @@ limitations under the License.
               var queryParam = window.location.search;
               var alertIndex = queryParam.indexOf("alert");
               if(alertIndex != -1) { // if there is an alert
-                console.log('alertIndex: ' + alertIndex);
-                var alertMessageIndex = queryParam.indexOf("=") + 1;
+                var alertMessageIndex = queryParam.indexOf("=", alertIndex) + 1;
                 var alertMessage = queryParam.substr(alertMessageIndex);
                 alertMessage = alertMessage.replace(/%20/g, " "); // Replace %20s with spaces
-                alertMessage = alertMessage.replace(/%22/g, "\""); // Replace %22s with quotes
+                alertMessage = alertMessage.replace(/%22/g, "\"");
+                alertMessage = alertMessage.replace(/%27/g, "\'");
                 alert(alertMessage);
+
                 location.href = '/ChatButton?request-type=request-type-match';
               }
             }
