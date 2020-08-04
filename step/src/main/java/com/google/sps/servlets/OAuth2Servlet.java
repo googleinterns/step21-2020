@@ -87,11 +87,6 @@ public class OAuth2Servlet extends HttpServlet {
     String authCode = request.getParameter("code");
     if (authCode == null) {
       System.out.println("Beginning authorization code flow...");
-      if (authFlow.loadCredential(userId) != null) { // If the user's credentials were found,
-        System.out.println("User already has a credential.\nAuthorization code flow complete.");
-        response.sendRedirect(DONE_REDIRECT_URL);
-        return; // we're done.
-      }
 
       // Redirect the user to Google's OAuth consent screen for our application.
       GoogleAuthorizationCodeRequestUrl authCodeRequestUrl = authFlow.newAuthorizationUrl();
