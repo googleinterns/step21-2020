@@ -69,7 +69,7 @@ public class HomepageServlet extends HttpServlet {
       JSONObject matchJson = new JSONObject();
       matchJson.put("name", match.getName());
       matchJson.put("email", match.getEmail());
-      matchJson.put("image", match.getImageUrl());
+      matchJson.put("match-image", match.getImageUrl());
       matchesArray.add(matchJson);
     }
 
