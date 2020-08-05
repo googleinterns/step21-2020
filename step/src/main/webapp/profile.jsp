@@ -89,14 +89,9 @@ limitations under the License.
                 <a href="#questionaire-container">Questionaire</a>
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
+                <a href="#modal" id="update-pic">Update Profile Picture</a>
 
                 <br>
-
-                <form id="image-form" method="POST" enctype="multipart/form-data">
-                  Upload a new profile picture:
-                  <input type="file" name="image" placeholder="Upload Icon">
-                  <input type="submit" value="Submit"/> 
-                </form>
             </div>
         </div>
         <div class="sub-container" id="profile-info"> 
@@ -172,9 +167,21 @@ limitations under the License.
             </form>
         </div>
     </div>
-          
-          <script>
-          
+
+    <div id="modal" class="modal">
+     <div class="modal-content">
+      <span class="close">&times;</span>
+      <form id="image-form" method="POST" enctype="multipart/form-data">
+        Upload a new profile picture:
+        <input type="file" name="image" placeholder="Upload Icon">
+        <input type="submit" value="Submit"/> 
+      </form>
+    </div>
+
+</div>
+
+      <script>
+
       function setPage() {
         getMatches();
         grabBlobURL();
@@ -281,6 +288,33 @@ limitations under the License.
         const myForm = document.getElementById("image-form");
         myForm.action = blobURL;
       }
+
+     var modal = document.getElementById("modal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("update-pic");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+    modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
     </script> 
   </body>
 </html>
