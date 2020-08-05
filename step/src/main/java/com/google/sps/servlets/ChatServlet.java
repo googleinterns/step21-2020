@@ -49,7 +49,6 @@ public class ChatServlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     //Collect all the matches and display them in the left container in chat.jsp
-    //Display name, user_id, timestamp getting matched
     PrintWriter out = response.getWriter();
     UserService userService = UserServiceFactory.getUserService();
     String id = userService.getCurrentUser().getUserId();
@@ -63,7 +62,7 @@ public class ChatServlet extends HttpServlet {
     //Send all the matches to the front-end
     request.setAttribute("matches", userMatches);   
 
-    //Display text
+    //Collect and filter all the messages based on 2 users' ID
     String senderID = userService.getCurrentUser().getUserId();
     String recipientID = request.getParameter("user");
     List<Message> messages = new ArrayList<>();
@@ -71,10 +70,12 @@ public class ChatServlet extends HttpServlet {
     Collections.reverse(messages); 
     User recipientU = new User(recipientID);
     String recipient = recipientU.getName();
+    String recipientPic = recipientU.getImageUrl();
     request.setAttribute("messages", messages);
     request.setAttribute("currUser", senderID);
     request.setAttribute("recipientID", recipientID);
     request.setAttribute("recipient", recipient);
+    request.setAttribute("recipientPic", recipientPic);
     request.getRequestDispatcher("chat.jsp").forward(request, response);
   }
 

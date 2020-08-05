@@ -24,8 +24,8 @@ public final class Message {
   private final String senderID; 
   private final String recipientID; 
   private final String text; 
-  private final long timestamp;
-  private final String timeStamp;
+  private final long timestamp; //This timestamp is unix time, used to sort the message
+  private final String timeStamp; //This one is easier to refer to when calling from jsp file
 
   public Message(String senderID, String recipientID, String text, long timestamp, String timeStamp) {
       this.senderID = senderID;

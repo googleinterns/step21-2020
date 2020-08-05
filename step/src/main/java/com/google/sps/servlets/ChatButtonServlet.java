@@ -33,10 +33,10 @@ import javax.servlet.ServletException;
 
 @WebServlet("/ChatButton")
 public class ChatButtonServlet extends HttpServlet {
+    // This servlet is to fetch the data from server when clicking on "chat" button on the profile page
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //Collect all the matches and display them in the left container in chat.jsp
-        //Collect name, user_id, timestamp getting matched
         PrintWriter out = response.getWriter();
         UserService userService = UserServiceFactory.getUserService();
         String id = userService.getCurrentUser().getUserId();

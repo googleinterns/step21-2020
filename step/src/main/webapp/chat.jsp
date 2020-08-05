@@ -38,6 +38,7 @@ limitations under the License.
     <body onload="onload()">
         <nav>
             <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
+            <a id="profile-button" href="profile.jsp"> My Profile </a>
         </nav>
         <img src="logo.png" alt="logo" id="logo">
         <div id="chat-container">
@@ -51,30 +52,36 @@ limitations under the License.
             <div id="conversation-list" class="tab"> 
                 <c:forEach items="${matches}" var="match">
                     <div id="conversation-box">
-                        <div class="message-text"></div>
-                        <div class="message-time"></div>
-                    <form action="Chat" method="POST">
-                        <button class="conversation" name="user" type="submit" value="${match.getId()}" onclick="openChatBox()">
-                            <img src="avatar.png" alt="Person 2" />
-                            <div class="title-text">
-                                <c:out value="${match.getName()}"/>
-                            </div>
-                            <div class="created-date">
-                                
-                            </div>
-                            <!-- <div class="conversation-message">  
-
-                            </div> -->
-                        </button>
-                    </form>
+                        <form action="Chat" method="POST">
+                            <button class="conversation" name="user" type="submit" value="${match.getId()}" onclick="openChatBox()">
+                                <c:choose>
+                                    <c:when test="${match.getImageUrl() == null}">
+                                        <img src="avatar.png" alt="Your match's profile pic" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src='/serve?key=${match.getImageUrl()}' alt="Match picture" />
+                                    </c:otherwise>
+                                </c:choose>
+                                <div class="title-text">
+                                    <c:out value="${match.getName()}"/>
+                                </div>
+                            </button>
+                        </form>
                     </div>
                 </c:forEach>
             </div>
-            <!-- Person 1 chatbox --> 
+            
             <div id="${recipientID}" class="tabcontent active">
                 <div id="chat-title" class="chat-title">
                     <span> ${recipient} </span>
-                    <img src="avatar.png" alt="Your match's avatar"/>
+                    <c:choose>
+                        <c:when test="${recipientPic == null}">
+                            <img src="avatar.png" alt="Your match's profile pic" />
+                        </c:when>
+                        <c:otherwise>
+                            <img src='/serve?key=${recipientPic}' alt="Your match's profile pic" />
+                        </c:otherwise>
+                    </c:choose>
                     <button id="calendar"> <img src="google_calendar_logo.png" alt="Google Calendar"/> </button>
                 </div>
                 <form action="Chat" class="chat-input" method="POST">
@@ -165,45 +172,6 @@ limitations under the License.
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
-            }
-
-            function setImage(image) {
-                const imageContainer = document.getElementById('profile-pic');
-                userIcon = document.createElement('IMG');
-                
-                if (image === "") {
-                userIcon.setAttribute('src', "avatar.png");
-                } else {
-                userIcon.setAttribute('src', "/serve?key=" + image);
-                }
-
-                userIcon.setAttribute('alt', "Profile picture.");
-                imageContainer.appendChild(userIcon);
-            }
-
-            async function grabBlobURL() {
-                const blobURL = await fetch("/image-upload").then((response) => {return response.text();});
-                const myForm = document.getElementById("image-form");
-                myForm.action = blobURL;
-            }
-
-            function onload() {
-              checkServerAlerts();
-            }
-
-            function checkServerAlerts() {
-              var queryParam = window.location.search;
-              var alertIndex = queryParam.indexOf("alert");
-              if(alertIndex != -1) { // if there is an alert
-                var alertMessageIndex = queryParam.indexOf("=", alertIndex) + 1;
-                var alertMessage = queryParam.substr(alertMessageIndex);
-                alertMessage = alertMessage.replace(/%20/g, " "); // Replace %20s with spaces
-                alertMessage = alertMessage.replace(/%22/g, "\"");
-                alertMessage = alertMessage.replace(/%27/g, "\'");
-                alert(alertMessage);
-
-                location.href = '/ChatButton?request-type=request-type-match';
-              }
             }
         </script>
     </body>

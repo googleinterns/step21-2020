@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.Comparator;
 import com.google.sps.Message;
+import java.util.Collections;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -52,7 +54,7 @@ public final class MessageHandler {
   }
 
   // Filter all the messages that the first user and the seconds user sent to each other
-  public static List<Message> getMessages(String id, String otherUserID) {
+  public static ArrayList<Message> getMessages(String id, String otherUserID) {
     Filter firstUserSenderFilter = new FilterPredicate("Sender", FilterOperator.EQUAL, id);
     Filter secondUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, otherUserID);
     Filter firstUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, id);
@@ -65,9 +67,9 @@ public final class MessageHandler {
             firstUserRecipientFilter, secondUserSenderFilter
     ))));
 
-    Query query = new Query("Message").setFilter(compositeFilter).addSort("timestamp", SortDirection.ASCENDING);
+    Query query = new Query("Message").setFilter(compositeFilter);
     PreparedQuery results = datastore.prepare(query);
-    List<Message> messages = new ArrayList<>();
+    ArrayList<Message> messages = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
         String sender = (String) entity.getProperty("Sender");
         String recipient = (String) entity.getProperty("Recipient");
@@ -77,6 +79,11 @@ public final class MessageHandler {
         Message message = new Message(sender, recipient, text, timestamp, timeStamp);
         messages.add(message);
     }
+    Collections.sort(messages, new Comparator<Message>() {
+        public int compare(Message m1, Message m2) {
+            return String.valueOf(m1.timestamp()).compareTo(String.valueOf(m2.timestamp()));
+        }
+    });
     return messages;
   } 
 }
