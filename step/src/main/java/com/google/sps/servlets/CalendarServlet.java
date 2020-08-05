@@ -25,6 +25,15 @@ import com.google.sps.User;
 @WebServlet("/cal")
 public class CalendarServlet extends HttpServlet {
 
+  private static final String REDIRECT_PAGE = "/ChatButton?request-type=request-type-match";
+  private static final String ALERT_HOST_USER_NOT_AUTHENTICATED =
+      "You have not authenticated with Google Calendar yet. "
+      + "Please click \"Authroize access to Google Calendar\" "
+      + "before sending a Google Calendar invite.";
+  private static final String ALERT_EVENT_CREATED = "Your calendar invite has been sent!";
+  private static final String ALERT_EVENT_NOT_CREATED =
+      "There was an error while creating the Google Calendar event: ";
+
   @Override
   public void init() {}
 
@@ -52,6 +61,11 @@ public class CalendarServlet extends HttpServlet {
       int minuteInt = Integer.parseInt(minuteString);
 
       User hostUser = new User(UserServiceFactory.getUserService().getCurrentUser().getUserId());
+      if(!hostUser.isAuthenticated()) {
+        AlertManager.setAlert(ALERT_HOST_USER_NOT_AUTHENTICATED, REDIRECT_PAGE, response);
+        return;
+      }
+
       User guestUser = null;
       for(User user : hostUser.getMatches()) {
         if(user.getName().equals(guestName)) {
@@ -61,13 +75,22 @@ public class CalendarServlet extends HttpServlet {
 
       if(guestUser == null) {
         System.out.println("Unable to find the guest user, unable to create Google Calendar event.");
+        String eventNotCreated = ALERT_EVENT_NOT_CREATED + "unable to find the guest user.";
+        AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE, response);
       } else {
-        CalendarManager.createMatchEvent(hostUser, guestUser, 
-                                          yearInt, monthInt, dayInt, hourInt, minuteInt);
+        try {
+          CalendarManager.createMatchEvent(hostUser, guestUser, 
+                                            yearInt, monthInt, dayInt, hourInt, minuteInt);
+          AlertManager.setAlert(ALERT_EVENT_CREATED, REDIRECT_PAGE, response);
+        } catch (Exception e) {
+          e.printStackTrace();
+
+          String eventNotCreated = ALERT_EVENT_NOT_CREATED + "\n" + e.getMessage();
+          AlertManager.setAlert(eventNotCreated, REDIRECT_PAGE, response);
+        }
       }
     }
 
-    response.sendRedirect("/chat.jsp");
   }
 
 }

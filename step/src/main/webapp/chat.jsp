@@ -35,7 +35,7 @@ limitations under the License.
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
-    <body>
+    <body onload="onload()">
         <nav>
             <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
         </nav>
@@ -181,10 +181,29 @@ limitations under the License.
                 imageContainer.appendChild(userIcon);
             }
 
-            async function grabBlobURL(){
+            async function grabBlobURL() {
                 const blobURL = await fetch("/image-upload").then((response) => {return response.text();});
                 const myForm = document.getElementById("image-form");
                 myForm.action = blobURL;
+            }
+
+            function onload() {
+              checkServerAlerts();
+            }
+
+            function checkServerAlerts() {
+              var queryParam = window.location.search;
+              var alertIndex = queryParam.indexOf("alert");
+              if(alertIndex != -1) { // if there is an alert
+                var alertMessageIndex = queryParam.indexOf("=", alertIndex) + 1;
+                var alertMessage = queryParam.substr(alertMessageIndex);
+                alertMessage = alertMessage.replace(/%20/g, " "); // Replace %20s with spaces
+                alertMessage = alertMessage.replace(/%22/g, "\"");
+                alertMessage = alertMessage.replace(/%27/g, "\'");
+                alert(alertMessage);
+
+                location.href = '/ChatButton?request-type=request-type-match';
+              }
             }
         </script>
     </body>

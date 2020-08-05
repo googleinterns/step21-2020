@@ -43,6 +43,10 @@ import com.google.sps.OAuth2Utilities;
 public class OAuth2Servlet extends HttpServlet {
 
   private final static String AUTH_REDIRECT_URI = OAuth2Utilities.AUTH_REDIRECT_URI;
+  private final static String DONE_REDIRECT_URL = "/ChatButton?request-type=request-type-match";
+  private final static String ALERT_AUTH_COMPLETE = "Authroization completed successfully. "
+      + "You can now send a Google Calendar invite to your matches!";
+  private final static String ALERT_AUTH_FAILED = "Authorization failed: ";
   private GoogleAuthorizationCodeFlow authFlow;
 
   @Override
@@ -70,12 +74,18 @@ public class OAuth2Servlet extends HttpServlet {
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if (authFlow == null) {
+      String authFailed = ALERT_AUTH_FAILED + "a server-side error occured "
+          + "(authFlow not initialized)";
+      AlertManager.setAlert(authFailed, DONE_REDIRECT_URL, response);
       throw new IllegalStateException("The user cannot be authenticated without authFlow "
                                       + "being initialized.");
     }
 
     String userId = UserServiceFactory.getUserService().getCurrentUser().getUserId();
     if (userId == null) {
+      String authFailed = ALERT_AUTH_FAILED + "a server-side error occured "
+          + "(Unable to obtain userId)";
+      AlertManager.setAlert(authFailed, DONE_REDIRECT_URL, response);
       throw new IllegalStateException("Unable to obtain userId while authenticating. "
                                       + "/oauth2 may only be called while a user is logged in.");
     }
@@ -86,11 +96,6 @@ public class OAuth2Servlet extends HttpServlet {
     String authCode = request.getParameter("code");
     if (authCode == null) {
       System.out.println("Beginning authorization code flow...");
-      if (authFlow.loadCredential(userId) != null) { // If the user's credentials were found,
-        System.out.println("User already has a credential.\nAuthorization code flow complete.");
-        response.sendRedirect("/chat.jsp");
-        return; // we're done.
-      }
 
       // Redirect the user to Google's OAuth consent screen for our application.
       GoogleAuthorizationCodeRequestUrl authCodeRequestUrl = authFlow.newAuthorizationUrl();
@@ -111,7 +116,7 @@ public class OAuth2Servlet extends HttpServlet {
       Credential credential = authFlow.createAndStoreCredential(tokenResponse, userId);
 
       System.out.println("Authorization code flow complete.");
-      response.sendRedirect("/chat.jsp");
+      AlertManager.setAlert(ALERT_AUTH_COMPLETE, DONE_REDIRECT_URL, response);
     }
     
   }
