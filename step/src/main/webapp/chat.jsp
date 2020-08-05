@@ -35,7 +35,7 @@ limitations under the License.
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     </head>
-    <body>
+    <body onload="onload()">
         <nav>
             <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
             <a id="profile-button" href="profile.jsp"> My Profile </a>

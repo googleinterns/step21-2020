@@ -89,14 +89,9 @@ limitations under the License.
                 <a href="#questionaire-container">Questionaire</a>
                 <a href="#matches-container">Your Matches</a>
                 <a href="#find-a-match-container">Find a match!</a>
+                <a href="#modal" id="update-pic">Update Profile Picture</a>
 
                 <br>
-
-                <form id="image-form" method="POST" enctype="multipart/form-data">
-                  Upload a new profile picture:
-                  <input type="file" name="image" placeholder="Upload Icon">
-                  <input type="submit" value="Submit"/> 
-                </form>
             </div>
         </div>
         <div class="sub-container" id="profile-info"> 
@@ -173,14 +168,26 @@ limitations under the License.
         </div>
     </div>
 
+    <div id="modal" class="modal">
+     <div class="modal-content">
+      <span class="close">&times;</span>
+      <form id="image-form" method="POST" enctype="multipart/form-data">
+        Upload a new profile picture:
+        <input type="file" name="image" placeholder="Upload Icon">
+        <input type="submit" value="Submit"/> 
+      </form>
+    </div>
+
+</div>
+
       <script>
 
       function setPage() {
-        getMatches();
+        displayMatchesAndNotifications();
         grabBlobURL();
       }
 
-      function getMatches() {
+      function displayMatchesAndNotifications() {
         fetch('/Homepage')
           .then((response) => {
             return response.json();
@@ -190,10 +197,11 @@ limitations under the License.
             notifications = json["notifications"];
             status = json["status"];
             image = json["image"];
+
             setImage(image);
             renderMatches(matches);
             renderNotifications(notifications);
-            getMatchStatus(status);
+            renderMatchStatus(status);
           });
       }
 
@@ -203,42 +211,49 @@ limitations under the License.
           name = match["name"];
           email = match["email"];
           image = match["match-image"];
-          const matchDiv = document.createElement('div');
-          matchDiv.className = 'match-item';
 
-          matchIcon = document.createElement('IMG');
-        
-          if (image === "") {
-            matchIcon.setAttribute('src', "avatar.png");
-          } else {
-            matchIcon.setAttribute('src', "/serve?key=" + image);
-          }
-          matchIcon.setAttribute('id', 'match-picture');
-          matchIcon.setAttribute('alt', "match picture");
-          matchContainer.appendChild(matchIcon);
-
-          const nameElement = document.createElement('div');
-          nameElement.innerText = name;
-          nameElement.className = 'match-name';
-
-          const newLine = document.createElement('p');
-
-          const emailElement = document.createElement('div');
-          emailElement.innerText = email;
-          emailElement.className = 'match-email';
-
-          const userInfoDiv = document.createElement('div');
-          userInfoDiv.appendChild(nameElement);
-          userInfoDiv.appendChild(newLine);
-          userInfoDiv.appendChild(emailElement);
-          userInfoDiv.className = 'user-info';
-
-          matchContainer.appendChild(userInfoDiv);
-          matchContainer.appendChild(matchDiv);
-
-          const lineBreak = document.createElement('br');
-          matchContainer.appendChild(lineBreak);
+          renderMatchPicture(image, matchContainer);
+          renderMatchUserInfo(name, email, matchContainer);
+          addLineBreak(matchContainer);
         });
+      }
+
+      function renderMatchPicture(image, matchContainer) {
+        matchIcon = document.createElement('IMG');
+        
+        if (image === "") {
+          matchIcon.setAttribute('src', "avatar.png");
+        } else {
+          matchIcon.setAttribute('src', "/serve?key=" + image);
+        }
+
+        matchIcon.setAttribute('id', 'match-picture');
+        matchIcon.setAttribute('alt', "match picture");
+        matchContainer.appendChild(matchIcon);
+      }
+
+      function renderMatchUserInfo(name, email, matchContainer) {
+        const nameElement = document.createElement('div');
+        nameElement.innerText = name;
+        nameElement.className = 'match-name';
+
+        const newLine = document.createElement('p');
+
+        const emailElement = document.createElement('div');
+        emailElement.innerText = email;
+        emailElement.className = 'match-email';
+
+        const userInfoDiv = document.createElement('div');
+        userInfoDiv.appendChild(nameElement);
+        userInfoDiv.appendChild(newLine);
+        userInfoDiv.appendChild(emailElement);
+        userInfoDiv.className = 'user-info';
+        matchContainer.appendChild(userInfoDiv);
+      }
+
+      function addLineBreak(matchContainer) {
+        const lineBreak = document.createElement('br');
+        matchContainer.appendChild(lineBreak);
       }
 
       function renderNotifications(notifications) {
@@ -255,7 +270,7 @@ limitations under the License.
         });
       }
 
-      function getMatchStatus(status) {
+      function renderMatchStatus(status) {
         if (status === "pending") {
           const statusContainer = document.getElementById('match-status');  
           statusContainer.innerText = "Match pending... please check back later."
@@ -281,6 +296,33 @@ limitations under the License.
         const myForm = document.getElementById("image-form");
         myForm.action = blobURL;
       }
+
+     var modal = document.getElementById("modal");
+
+    // Get the button that opens the modal
+    var btn = document.getElementById("update-pic");
+
+    // Get the <span> element that closes the modal
+    var span = document.getElementsByClassName("close")[0];
+
+    // When the user clicks on the button, open the modal
+    btn.onclick = function() {
+    modal.style.display = "block";
+    }
+
+    // When the user clicks on <span> (x), close the modal
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+
     </script> 
   </body>
 </html>
