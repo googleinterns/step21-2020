@@ -172,9 +172,9 @@ limitations under the License.
             </form>
         </div>
     </div>
-
-      <script>
-
+          
+          <script>
+          
       function setPage() {
         getMatches();
         grabBlobURL();
