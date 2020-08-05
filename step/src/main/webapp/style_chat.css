@@ -33,7 +33,7 @@ nav a:hover:not(.active) {
   width: auto;
 }
 
-#log-out-button {
+#log-out-button, #profile-button {
   background-color: #F4B400;
   border-radius: 5px;
   color: #ffffff;
@@ -44,7 +44,7 @@ nav a:hover:not(.active) {
   cursor: pointer;
 }
 
-#log-out-button:hover {
+#log-out-button:hover, #profile-button:hover {
   background-color: white;
   color:#F4B400;
   border: 2px solid #F4B400;

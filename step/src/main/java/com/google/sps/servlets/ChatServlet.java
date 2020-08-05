@@ -71,10 +71,12 @@ public class ChatServlet extends HttpServlet {
     Collections.reverse(messages); 
     User recipientU = new User(recipientID);
     String recipient = recipientU.getName();
+    String recipientPic = recipientU.getImageUrl();
     request.setAttribute("messages", messages);
     request.setAttribute("currUser", senderID);
     request.setAttribute("recipientID", recipientID);
     request.setAttribute("recipient", recipient);
+    request.setAttribute("recipientPic", recipientPic);
     request.getRequestDispatcher("chat.jsp").forward(request, response);
   }
 
@@ -83,6 +85,7 @@ public class ChatServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     String senderID = userService.getCurrentUser().getUserId();
     String recipientID = request.getParameter("user"); 
+    if (recipientID  == null) doGet(request, response);
     String text = request.getParameter("text");
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     Date date = new Date(System.currentTimeMillis());

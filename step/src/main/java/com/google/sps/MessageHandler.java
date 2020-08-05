@@ -52,7 +52,7 @@ public final class MessageHandler {
   }
 
   // Filter all the messages that the first user and the seconds user sent to each other
-  public static List<Message> getMessages(String id, String otherUserID) {
+  public static ArrayList<Message> getMessages(String id, String otherUserID) {
     Filter firstUserSenderFilter = new FilterPredicate("Sender", FilterOperator.EQUAL, id);
     Filter secondUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, otherUserID);
     Filter firstUserRecipientFilter = new FilterPredicate("Recipient", FilterOperator.EQUAL, id);
@@ -65,9 +65,10 @@ public final class MessageHandler {
             firstUserRecipientFilter, secondUserSenderFilter
     ))));
 
-    Query query = new Query("Message").setFilter(compositeFilter).addSort("timestamp", SortDirection.ASCENDING);
+    Query query = new Query("Message").setFilter(compositeFilter);
+    //query.addSort("timestamp", SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
-    List<Message> messages = new ArrayList<>();
+    ArrayList<Message> messages = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
         String sender = (String) entity.getProperty("Sender");
         String recipient = (String) entity.getProperty("Recipient");
