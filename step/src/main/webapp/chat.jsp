@@ -168,10 +168,36 @@ limitations under the License.
             div.onclick = function() {
                 modal.style.display = "none";
             }
+
             window.onclick = function(event) {
                 if (event.target == modal) {
                     modal.style.display = "none";
                 }
+            }
+
+            async function grabBlobURL() {
+                const blobURL = await fetch("/image-upload").then((response) => {return response.text();});
+                const myForm = document.getElementById("image-form");
+                myForm.action = blobURL;
+            }
+
+            function onload() {
+              checkServerAlerts();
+            }
+
+            function checkServerAlerts() {
+              var queryParam = window.location.search;
+              var alertIndex = queryParam.indexOf("alert");
+              if(alertIndex != -1) { // if there is an alert
+                var alertMessageIndex = queryParam.indexOf("=", alertIndex) + 1;
+                var alertMessage = queryParam.substr(alertMessageIndex);
+                alertMessage = alertMessage.replace(/%20/g, " "); // Replace %20s with spaces
+                alertMessage = alertMessage.replace(/%22/g, "\"");
+                alertMessage = alertMessage.replace(/%27/g, "\'");
+                alert(alertMessage);
+
+                location.href = '/ChatButton?request-type=request-type-match';
+              }
             }
         </script>
     </body>
