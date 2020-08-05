@@ -37,8 +37,8 @@ limitations under the License.
     </head>
     <body>
         <nav>
-            <a id="profile-button" href="profile.jsp"> My Profile </a>
             <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
+            <a id="profile-button" href="profile.jsp"> My Profile </a>
         </nav>
         <img src="logo.png" alt="logo" id="logo">
         <div id="chat-container">
@@ -52,24 +52,21 @@ limitations under the License.
             <div id="conversation-list" class="tab"> 
                 <c:forEach items="${matches}" var="match">
                     <div id="conversation-box">
-                    <form action="Chat" method="POST">
-                        <button class="conversation" name="user" type="submit" value="${match.getId()}" onclick="openChatBox()">
-                            <c:choose>
-                                <c:when test="${match.getImageUrl() == null}">
-                                    <img src="avatar.png" alt="Your match's profile pic" />
-                                </c:when>
-                                <c:otherwise>
-                                    <img src='/serve?key=${match.getImageUrl()}' alt="Match picture" />
-                                </c:otherwise>
-                            </c:choose>
-                            <div class="title-text">
-                                <c:out value="${match.getName()}"/>
-                            </div>
-                            <div class="created-date">
-                                
-                            </div>
-                        </button>
-                    </form>
+                        <form action="Chat" method="POST">
+                            <button class="conversation" name="user" type="submit" value="${match.getId()}" onclick="openChatBox()">
+                                <c:choose>
+                                    <c:when test="${match.getImageUrl() == null}">
+                                        <img src="avatar.png" alt="Your match's profile pic" />
+                                    </c:when>
+                                    <c:otherwise>
+                                        <img src='/serve?key=${match.getImageUrl()}' alt="Match picture" />
+                                    </c:otherwise>
+                                </c:choose>
+                                <div class="title-text">
+                                    <c:out value="${match.getName()}"/>
+                                </div>
+                            </button>
+                        </form>
                     </div>
                 </c:forEach>
             </div>

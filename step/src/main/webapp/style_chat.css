@@ -190,11 +190,6 @@ body {
 }
 
 #chat-title {
-    /* display: grid;
-    grid: 36px / 1fr 36px;
-    align-content: center;
-    align-items: center;
-    grid-area: chat-title; */
     height: 72px;
     color: #0048AA;
     font-weight: bold;

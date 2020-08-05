@@ -48,17 +48,17 @@ import static org.mockito.Mockito.anyString;
 import org.mockito.ArgumentMatchers;
 
 
-//@RunWith(MockitoJUnitRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public final class CalendarTest {
 
-  //@Test
+  @Test
   public void testUserNotAuthenticated() {
     User mockUser = mock(User.class);
     Assert.assertFalse(mockUser.isAuthenticated());
   }
 
   //Test that createMatchEvent() throws IllegalStateException if the host user isn't authenticated
-  //@Test(expected = IllegalStateException.class)
+  @Test(expected = IllegalStateException.class)
   public void testCreateEventHostNotAuthenticated() {
     User mockHostUser = mock(User.class);
     User mockGuestUser = mock(User.class);
