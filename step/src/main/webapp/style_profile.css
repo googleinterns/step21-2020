@@ -132,9 +132,6 @@ h3 a:hover {
     padding-bottom: 20px;
 }
 
-.find-a-match-container {
-    width: 355px;
-}
 
 .personal-item {
     color: black;
@@ -150,6 +147,8 @@ h3 a:hover {
     color: black;
     padding: 30px;
     border: 2px;
+    display: grid;
+    grid-template-columns: 70%; 
 }
 
 .match-item {
@@ -173,8 +172,14 @@ h3 a:hover {
     font-weight: bold;
 }
 
+.item-label {
+  float: left;
+}
+
 .item-info {
-    float: right;
+  float: right;
+  position: absolute;
+  right: 3%;
 }
 
 .user-info {
@@ -193,7 +198,7 @@ h3 a:hover {
 }
 
 #match-submit, #chat-submit {
-  width: 360px;
+  width: 100%;
   padding: 6%;
   margin-top: 12.3%;
   border: none;
