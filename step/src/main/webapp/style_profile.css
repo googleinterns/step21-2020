@@ -148,7 +148,7 @@ h3 a:hover {
     padding: 30px;
     border: 2px;
     display: grid;
-    grid-template-columns: 70%; 
+    grid-template-columns: 60%; 
 }
 
 .match-item {
