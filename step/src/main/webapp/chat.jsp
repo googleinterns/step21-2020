@@ -37,7 +37,7 @@ limitations under the License.
     </head>
     <body>
         <nav>
-            <a id="profile-button" href="profile.jsp"> Profile </a>
+            <a id="profile-button" href="profile.jsp"> My Profile </a>
             <a id="log-out-button" href="<%= logoutURL %>"> Log Out </a>
         </nav>
         <img src="logo.png" alt="logo" id="logo">
@@ -73,7 +73,7 @@ limitations under the License.
                     </div>
                 </c:forEach>
             </div>
-            <!-- Person 1 chatbox --> 
+            
             <div id="${recipientID}" class="tabcontent active">
                 <div id="chat-title" class="chat-title">
                     <span> ${recipient} </span>
@@ -176,9 +176,6 @@ limitations under the License.
                     modal.style.display = "none";
                 }
             }
-
-            document.cookie = 'same-site-cookie=foo; SameSite=None; Secure';
-            document.cookie = 'cross-site-cookie=bar; SameSite=None; Secure';
         </script>
     </body>
 </html>

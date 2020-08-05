@@ -21,7 +21,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.UUID;
+import java.util.Comparator;
 import com.google.sps.Message;
+import java.util.Collections;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.SortDirection;
@@ -66,7 +68,6 @@ public final class MessageHandler {
     ))));
 
     Query query = new Query("Message").setFilter(compositeFilter);
-    //query.addSort("timestamp", SortDirection.ASCENDING);
     PreparedQuery results = datastore.prepare(query);
     ArrayList<Message> messages = new ArrayList<>();
     for (Entity entity : results.asIterable()) {
@@ -78,6 +79,11 @@ public final class MessageHandler {
         Message message = new Message(sender, recipient, text, timestamp, timeStamp);
         messages.add(message);
     }
+    Collections.sort(messages, new Comparator<Message>() {
+        public int compare(Message m1, Message m2) {
+            return String.valueOf(m1.timestamp()).compareTo(String.valueOf(m2.timestamp()));
+        }
+    });
     return messages;
   } 
 }

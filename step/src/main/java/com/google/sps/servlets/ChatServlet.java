@@ -85,7 +85,6 @@ public class ChatServlet extends HttpServlet {
     UserService userService = UserServiceFactory.getUserService();
     String senderID = userService.getCurrentUser().getUserId();
     String recipientID = request.getParameter("user"); 
-    if (recipientID  == null) doGet(request, response);
     String text = request.getParameter("text");
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
     Date date = new Date(System.currentTimeMillis());
